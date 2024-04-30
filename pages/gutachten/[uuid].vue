@@ -373,6 +373,7 @@ function copyGutachten() {
                                         <TableRow>
                                             <TableHead>Name</TableHead>
                                             <TableHead>Ergebnis</TableHead>
+                                            <TableHead></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
