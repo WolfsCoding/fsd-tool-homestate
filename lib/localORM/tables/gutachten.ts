@@ -40,7 +40,7 @@ export class Gutachten extends BaseEntry implements IGutachten {
 
 export const WeaponNames: { title: string; models: string[] }[] = [
     { title: "Keckler&Loch", models: ["P1T3", "45 Compact"] },
-    { title: "FN", models: ["FN FNX-45"] },
+    { title: "FN", models: ["FNX-45"] },
     { title: "Müller&Wesseon", models: ["MW2023"] },
     { title: "Maurus", models: ["PT92F"] },
     { title: "Schlock", models: ["69"] },
