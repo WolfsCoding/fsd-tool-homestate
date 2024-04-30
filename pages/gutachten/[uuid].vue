@@ -316,17 +316,17 @@ function copyGutachten() {
                                     <TableBody>
                                         <TableRow v-for="weapon in gutachten?.weapons" :key="weapon.id">
                                             <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
-                                            <TableCell class="hidden md:table-cell"> {{ weapon.model }} </TableCell>
-                                            <TableCell class="hidden md:table-cell"> {{ weapon.serial }} </TableCell>
-                                            <TableCell class="hidden md:table-cell">
+                                            <TableCell class=""> {{ weapon.model }} </TableCell>
+                                            <TableCell class=""> {{ weapon.serial }} </TableCell>
+                                            <TableCell class="">
                                                 <Badge variant="default" class="bg-red-900 hover:bg-red-900 text-white" v-if="weapon.schmauchspuren"> Ja </Badge>
                                                 <Badge variant="default" class="bg-green-900 hover:bg-green-900 text-white" v-else> Nein </Badge>
                                             </TableCell>
-                                            <TableCell class="hidden md:table-cell">
+                                            <TableCell class="">
                                                 <Badge variant="default" class="bg-red-900 hover:bg-red-900 text-white" v-if="weapon.zustand == 'warm'"> Warm </Badge>
                                                 <Badge variant="default" class="bg-blue-900 hover:bg-blue-900 text-white" v-else> Kalt </Badge>
                                             </TableCell>
-                                            <TableCell class="hidden md:table-cell"> {{ weapon.munition }} </TableCell>
+                                            <TableCell class=""> {{ weapon.munition }} </TableCell>
                                             <TableCell>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger as-child>
@@ -378,7 +378,7 @@ function copyGutachten() {
                                     <TableBody>
                                         <TableRow v-for="schmauchspurentest in gutachten?.schmauchspuren" :key="schmauchspurentest.id">
                                             <TableCell class="font-medium"> {{ schmauchspurentest.name }} </TableCell>
-                                            <TableCell class="hidden md:table-cell"> {{ schmauchspurentest.schmauchspuren ? "Positiv" : "Negativ" }} </TableCell>
+                                            <TableCell class=""> {{ schmauchspurentest.schmauchspuren ? "Positiv" : "Negativ" }} </TableCell>
                                             <TableCell>
                                                 <DropdownMenu>
                                                     <DropdownMenuTrigger as-child>
