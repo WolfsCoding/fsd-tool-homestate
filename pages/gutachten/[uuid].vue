@@ -14,15 +14,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorageORM, Gutachten, WeaponNames } from "@/lib/localORM";
+import { LocalStorage, Gutachten, WeaponNames } from "@/lib/localORM";
 import { TextBuilder } from "@/lib/utils";
 
 const { $locally }: { $locally: any } = useNuxtApp() as any;
 const route = useRoute();
 const { toast } = useToast();
 
-const gutachtenORM = new LocalStorageORM<Gutachten>("gutachten");
-const gutachten: Ref<Gutachten | undefined> = ref(await gutachtenORM.get(route.params.uuid));
+const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
+const gutachten: Ref<Gutachten | undefined> = ref(await gutachtenDB.get(route.params.uuid));
 
 const createWeaponDialog = ref({
     name: "",
@@ -43,7 +43,7 @@ const activeTab = ref("weapons");
 function addWeapon() {
     if (!gutachten.value) return;
     gutachten.value?.weapons.push({ id: v4(), ...createWeaponDialog.value });
-    gutachtenORM.update(gutachten.value.id, gutachten.value);
+    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
     createWeaponDialog.value = { name: "", model: "", serial: "", schmauchspuren: false, zustand: "warm", munition: 0 };
 
@@ -51,15 +51,13 @@ function addWeapon() {
         title: "Waffe hinzugefügt",
         description: "Die Waffe wurde erfolgreich hinzugefügt.",
     });
-
-    console.log(gutachten.value);
 }
 
 function deleteWeapon(uuid: string) {
     if (!gutachten.value) return;
 
     gutachten.value.weapons = gutachten.value.weapons.filter((weapon) => weapon.id !== uuid);
-    gutachtenORM.update(gutachten.value.id, gutachten.value);
+    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
     toast({
         title: "Waffe entfernt",
@@ -71,7 +69,7 @@ function addSchmauchspuren() {
     if (!gutachten.value) return;
 
     gutachten.value.schmauchspuren.push({ id: v4(), ...createSchmauchspurenDialog.value });
-    gutachtenORM.update(gutachten.value.id, gutachten.value);
+    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
     toast({
         title: "Schmauchspurentest hinzugefügt",
@@ -83,7 +81,7 @@ function deleteSchmauchspuren(uuid: string) {
     if (!gutachten.value) return;
 
     gutachten.value.schmauchspuren = gutachten.value.schmauchspuren.filter((schmauchspuren) => schmauchspuren.id !== uuid);
-    gutachtenORM.update(gutachten.value.id, gutachten.value);
+    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
     toast({
         title: "Schmauchspurentest entfernt",
@@ -94,50 +92,11 @@ function deleteSchmauchspuren(uuid: string) {
 function saveDetails() {
     if (!gutachten.value) return;
 
-    gutachtenORM.update(gutachten.value.id, gutachten.value);
+    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
     toast({
         title: "Details gespeichert",
         description: "Die Details wurden erfolgreich gespeichert.",
-    });
-}
-
-function copyGutachten() {
-    if (!gutachten.value) return;
-    const textBuilder = new TextBuilder();
-
-    textBuilder.addLine("<!-- Titel: [FSD - BA] Akz. " + gutachten.value.akz + " - " + (gutachten.value.weapons.length <= 2 ? gutachten.value.weapons.map((weapon) => weapon.model).join(", ") : "Schusswaffen") + " -->");
-    textBuilder.addLine("<!-- Titel: Balistiches Gutachten - " + (gutachten.value.weapons.length <= 2 ? gutachten.value.weapons.map((weapon) => weapon.model).join(", ") : "Schusswaffen") + " -->");
-    textBuilder.addLine("");
-    textBuilder.addLine("| Name | Schusswaffe | Modell | Seriennummer | Schmauchspuren |  Zustand | Munition");
-    textBuilder.addLine("|--------|--------|--------|--------|--------|--------|--------|");
-
-    for (const weapon of gutachten.value.weapons) {
-        textBuilder.addLine(`| ${weapon.name} | Ja | ${weapon.model} | ${weapon.serial} | ${weapon.schmauchspuren ? "Ja" : "Nein"} | ${weapon.zustand === "warm" ? "Warm" : "Kalt"} | ${weapon.munition} Schuss Geladen |`);
-    }
-
-    if (gutachten.value.schmauchspuren.length > 0) {
-        textBuilder.addLine("");
-        textBuilder.addLine("---");
-        textBuilder.addLine("");
-        textBuilder.addLine("`Schmauchspuren Tests:`");
-        textBuilder.addLine("");
-
-        for (const schmauchspuren of gutachten.value.schmauchspuren) {
-            textBuilder.addLine("- Schmauchspuren Test von **" + schmauchspuren.name + "** » **Ergebnis:** " + (schmauchspuren.schmauchspuren ? "<font color=#004225><b>POSITIV</b></font>" : "<font color=#8d1d2c><b>NEGATIV</b></font>"));
-        }
-    }
-
-    textBuilder.addLine("");
-    textBuilder.addLine("---");
-    textBuilder.addLine("");
-    textBuilder.addLine(`Gutachter: ${gutachten.value.gutachter}`);
-
-    textBuilder.copyClipboard();
-
-    toast({
-        title: "Gutachten kopiert",
-        description: "Das Gutachten wurde erfolgreich in deine Zwischenablage kopiert.",
     });
 }
 </script>
@@ -150,13 +109,13 @@ function copyGutachten() {
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink as-child>
-                                <a href="/gutachten">Balistiche Gutachten</a>
+                                <a href="/gutachten">Ballistische Gutachten</a>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <BreadcrumbLink as-child>
-                                <a :href="'/gutachten' + route.path.split('/')[2]">{{ route.path.split("/")[2] }} </a>
+                                <a :href="'/gutachten' + route.params.uuid">{{ route.params.uuid }} </a>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
@@ -193,11 +152,11 @@ function copyGutachten() {
                                     </CardHeader>
                                     <CardContent>
                                         <div class="grid gap-4 py-4">
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="name" class="text-right"> Täter </Label>
                                                 <Input id="name" class="col-span-3" type="text" v-model="createWeaponDialog.name" />
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="model" class="text-right"> Model </Label>
                                                 <Select class="col-span-3" v-model="createWeaponDialog.model">
                                                     <SelectTrigger class="col-span-3">
@@ -212,11 +171,11 @@ function copyGutachten() {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="serial" class="text-right"> Seriennummer </Label>
                                                 <Input id="serial" class="col-span-3" type="text" v-model="createWeaponDialog.serial" />
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="schmauchspuren" class="text-right"> Schmauchspuren </Label>
                                                 <Select class="col-span-3" v-model="createWeaponDialog.schmauchspuren">
                                                     <SelectTrigger class="col-span-3">
@@ -228,7 +187,7 @@ function copyGutachten() {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="zustand" class="text-right"> Zustand </Label>
                                                 <Select class="col-span-3" v-model="createWeaponDialog.zustand">
                                                     <SelectTrigger class="col-span-3">
@@ -240,7 +199,7 @@ function copyGutachten() {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="munition" class="text-right"> Munition </Label>
                                                 <Input id="munition" class="col-span-3" type="number" v-model="createWeaponDialog.munition" />
                                             </div>
@@ -267,11 +226,11 @@ function copyGutachten() {
                                     </CardHeader>
                                     <CardContent>
                                         <div class="grid gap-4 py-4">
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="name" class="text-right"> Name </Label>
                                                 <Input id="name" class="col-span-3" type="text" v-model="createSchmauchspurenDialog.name" />
                                             </div>
-                                            <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="schmauchspuren" class="text-right"> Schmauchspuren </Label>
                                                 <Select class="col-span-3" v-model="createSchmauchspurenDialog.schmauchspuren">
                                                     <SelectTrigger class="col-span-3">
@@ -392,7 +351,7 @@ function copyGutachten() {
                                                         <DropdownMenuItem
                                                             @click="
                                                                 () => {
-                                                                    $locally.copyClipboard(schmauchspurentest.name + (gutachten?.akz == '' ? '' : ' - Akz.: ' + gutachten?.akz) + ' - ' + (schmauchspurentest.schmauchspuren ? 'Positiv' : 'Negativ'));
+                                                                    $locally.copyClipboard('Schmauchspurentest - ' + schmauchspurentest.name + (gutachten?.akz == '' ? '' : ' - Akz.: ' + gutachten?.akz) + ' - ' + (schmauchspurentest.schmauchspuren ? 'Positiv' : 'Negativ'));
                                                                 }
                                                             "
                                                             >Kopieren</DropdownMenuItem
@@ -421,18 +380,18 @@ function copyGutachten() {
                             </CardHeader>
                             <CardContent>
                                 <div class="grid gap-4 py-4" v-if="gutachten">
-                                    <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                    <div class="grid grid-cols-4 items-center gap-4">
                                         <Label for="aktenzeichen" class="text-right"> Aktenzeichen </Label>
                                         <Input id="aktenzeichen" class="col-span-3" type="text" v-model="gutachten.akz" />
                                     </div>
-                                    <div class="grid grid-cols-4 items-center justify-items-start gap-24">
+                                    <div class="grid grid-cols-4 items-center gap-4">
                                         <Label for="gutachter" class="text-right"> Gutachter </Label>
                                         <Input id="gutachter" class="col-span-3" type="text" v-model="gutachten.gutachter" />
                                     </div>
 
                                     <div class="flex gap-2 justify-start">
                                         <Button @click="saveDetails"> Änderungen speichern </Button>
-                                        <Button @click="copyGutachten"> Gutachten kopieren </Button>
+                                        <Button @click="gutachten.copyToClipboard()"> Gutachten kopieren </Button>
                                     </div>
                                 </div>
                             </CardContent>

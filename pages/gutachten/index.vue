@@ -9,13 +9,13 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { Gutachten, LocalStorageORM } from "@/lib/localORM";
+import { Gutachten, LocalStorage } from "@/lib/localORM";
 
 const router = useRouter();
 const { toast } = useToast();
 
-const gutachtenORM = new LocalStorageORM<Gutachten>("gutachten");
-const gutachten: Ref<Gutachten[]> = ref(await gutachtenORM.getAll());
+const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
+const gutachten: Ref<Gutachten[]> = ref(await gutachtenDB.getAll());
 
 const createDialog = ref({
     akz: "",
@@ -27,7 +27,7 @@ function createGutachten() {
         akz: createDialog.value.akz,
         gutachter: createDialog.value.gutachter,
     });
-    gutachtenORM.add(createdGutachten);
+    gutachtenDB.add(createdGutachten);
     gutachten.value.push(createdGutachten);
 
     createDialog.value = { akz: "", gutachter: "" };
@@ -39,7 +39,7 @@ function createGutachten() {
 }
 
 function deleteGutachten(index: number) {
-    gutachtenORM.delete(gutachten.value[index].id);
+    gutachtenDB.delete(gutachten.value[index].id);
     gutachten.value.splice(index, 1);
     toast({
         title: "Gutachten gelöscht",
@@ -55,7 +55,7 @@ function deleteGutachten(index: number) {
                 <Breadcrumb class="hidden md:flex">
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <BreadcrumbPage>Balistiche Gutachten</BreadcrumbPage>
+                            <BreadcrumbPage>Ballistische Gutachten</BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -81,7 +81,7 @@ function deleteGutachten(index: number) {
                                 <DialogContent class="sm:max-w-[425px]">
                                     <DialogHeader>
                                         <DialogTitle>Gutachten erstellen</DialogTitle>
-                                        <DialogDescription> Erstelle ein neues balistiches Gutachten.</DialogDescription>
+                                        <DialogDescription> Erstelle ein neues ballistisches Gutachten.</DialogDescription>
                                     </DialogHeader>
                                     <div class="grid gap-4 py-4">
                                         <div class="grid grid-cols-4 items-center gap-4">
@@ -106,7 +106,7 @@ function deleteGutachten(index: number) {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Gutachten</CardTitle>
-                                <CardDescription> Finde alle deine balistichen Gutachten. </CardDescription>
+                                <CardDescription> Finde alle deine ballistischen Gutachten. </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>
@@ -118,7 +118,7 @@ function deleteGutachten(index: number) {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten" :key="gutachten.akz">
+                                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten" :key="gutachtenItem.akz">
                                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
                                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
                                             <TableCell align="end">
@@ -131,14 +131,7 @@ function deleteGutachten(index: number) {
                                                     <DropdownMenuContent align="end">
                                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                                         <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)"> Öffnen </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            @click="
-                                                                () => {
-                                                                    // Todo implement copy gutachten
-                                                                }
-                                                            "
-                                                            >Gutachten kopieren</DropdownMenuItem
-                                                        >
+                                                        <DropdownMenuItem @click="gutachtenItem.copyToClipboard()">Gutachten kopieren</DropdownMenuItem>
                                                         <DropdownMenuItem @click="deleteGutachten(gutachtenIndex)">Löschen</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
