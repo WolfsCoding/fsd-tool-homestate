@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { Gutachten, LocalStorage, Toxi } from "@/lib/localORM";
+import { string } from "zod";
 
 const router = useRouter();
 const { toast } = useToast();
@@ -48,6 +49,15 @@ function create() {
     toast({
         title: "Analyse erstellt",
         description: "Die Analyse wurde erfolgreich erstellt.",
+    });
+}
+
+function deleteAnalyse(analysenId: string) {
+    toxiDB.delete(analysenId);
+    analysen.value = analysen.value.filter((analyse) => analyse.id !== analysenId);
+    toast({
+        title: "Analyse gelöscht",
+        description: "Die Analyse wurde erfolgreich gelöscht.",
     });
 }
 </script>
@@ -142,7 +152,7 @@ function create() {
                                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                                         <DropdownMenuItem @click="router.push('/toxikologisch/' + analyse.id)"> Öffnen </DropdownMenuItem>
                                                         <DropdownMenuItem @click="analyse.copyToClipboard()">Analyse kopieren</DropdownMenuItem>
-                                                        <DropdownMenuItem @click="">Löschen</DropdownMenuItem>
+                                                        <DropdownMenuItem @click="deleteAnalyse(analyse.id)">Löschen</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
                                             </TableCell>
@@ -150,12 +160,6 @@ function create() {
                                     </TableBody>
                                 </Table>
                             </CardContent>
-                            <!-- <CardFooter> -->
-                            <!-- <div class="text-xs text-muted-foreground">
-                                    Showing <strong>1-10</strong> of <strong>32</strong>
-                                    products
-                                </div> -->
-                            <!-- </CardFooter> -->
                         </Card>
                     </TabsContent>
                 </Tabs>
