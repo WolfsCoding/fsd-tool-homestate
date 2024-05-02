@@ -19,12 +19,24 @@ export class TextBuilder {
 
     copyClipboard() {
         navigator.clipboard.writeText(this.text).then(
-            function () {
-                console.log("Copying to clipboard was successful!");
-            },
+            function () {},
             function (err) {
                 console.error("Could not copy text: ", err);
             }
         );
+
+        return this;
+    }
+
+    replaceVariables(variables: { key: string; value: string }[]) {
+        for (let i = 0; i < variables.length; i++) {
+            this.text = this.text.replaceAll(variables[i].key, variables[i].value);
+        }
+
+        return this;
+    }
+
+    getAsString(): string {
+        return this.text;
     }
 }

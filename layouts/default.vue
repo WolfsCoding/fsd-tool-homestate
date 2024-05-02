@@ -15,9 +15,9 @@ const navigation: {
     link: string;
     badge?: string;
 }[] = [
-    { name: "Balistiche Gutachten", icon: Swords, link: "/gutachten" },
-    { name: "Hieb und Stichwaffen", icon: Home, link: "/stichwaffen" },
-    // { name: "Toxikologische Analysen", icon: ShoppingCart, link: "/toxikologisch" },
+    { name: "Ballistische Gutachten", icon: Swords, link: "/gutachten" },
+    // { name: "Hieb und Stichwaffen", icon: Home, link: "/stichwaffen" },
+    { name: "Toxikologische Analysen", icon: ShoppingCart, link: "/toxikologisch" },
     // { name: "Großeinsätze", icon: LineChart, link: "/grosseinsatz" },
 ];
 
