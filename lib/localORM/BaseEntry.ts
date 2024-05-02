@@ -7,16 +7,22 @@ export interface IEntry {
 }
 
 export abstract class BaseEntry implements IEntry {
-    id: string = uuidv4();
-    createdAt: Date = new Date();
+    id: string;
+    createdAt: Date;
     updatedAt?: Date;
 
     constructor(data?: Partial<IEntry>) {
+        this.id = uuidv4();
+        this.createdAt = new Date();
+
         if (data) {
             Object.assign(this, data);
+
             if (!this.updatedAt) {
                 this.updatedAt = new Date();
             }
+
+            return;
         }
     }
 }

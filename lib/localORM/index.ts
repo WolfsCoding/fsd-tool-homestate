@@ -1,11 +1,7 @@
 import type { IEntry } from "./BaseEntry";
 
-export class LocalStorageORM<T extends IEntry> {
-    private readonly tableName: string;
-
-    constructor(tableName: string) {
-        this.tableName = tableName;
-    }
+export class LocalStorage<T extends IEntry> {
+    constructor(private readonly tableName: string, private readonly factory: Factory<T>) {}
 
     private getStorageKey(): string {
         return `local-storage-${this.tableName}`;
@@ -13,7 +9,7 @@ export class LocalStorageORM<T extends IEntry> {
 
     private getEntries(): T[] {
         const data = localStorage.getItem(this.getStorageKey());
-        return data ? JSON.parse(data) : [];
+        return data ? JSON.parse(data).map(this.factory) : [];
     }
 
     private setEntries(entries: T[]): void {
@@ -56,3 +52,5 @@ export class LocalStorageORM<T extends IEntry> {
 
 export { Gutachten, WeaponNames } from "./tables/gutachten";
 export type { IGutachten, ISchnmauchspuren, IWeapon } from "./tables/gutachten";
+export { Toxi } from "./tables/toxi";
+export type { IDrug } from "./tables/toxi";
