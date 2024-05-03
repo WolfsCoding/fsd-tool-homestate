@@ -54,3 +54,5 @@ export { Gutachten, WeaponNames } from "./tables/gutachten";
 export type { IGutachten, ISchnmauchspuren, IWeapon } from "./tables/gutachten";
 export { Toxi } from "./tables/toxi";
 export type { IDrug } from "./tables/toxi";
+export { Stichwaffen } from "./tables/stichwaffen";
+export type { IStichwaffe } from "./tables/stichwaffen";

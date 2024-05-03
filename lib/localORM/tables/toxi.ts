@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/toast";
 
 const { toast } = useToast();
 
-export class Toxi extends BaseEntry implements Toxi {
+export class Toxi extends BaseEntry {
     akz: string = "";
     gutachter: string = "";
     forName: string = "";

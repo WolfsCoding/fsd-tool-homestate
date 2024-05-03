@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Swords, Moon, CircleUser, Home, LineChart, Menu, Package, Package2, Search, ShoppingCart, Users, Dna } from "lucide-vue-next";
+import { Swords, Moon, CircleUser, Home, LineChart, Menu, Package, Package2, Search, ShoppingCart, Users, Axe, Dna, Tablets } from "lucide-vue-next";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,8 +16,8 @@ const navigation: {
     badge?: string;
 }[] = [
     { name: "Ballistische Gutachten", icon: Swords, link: "/gutachten" },
-    // { name: "Hieb und Stichwaffen", icon: Home, link: "/stichwaffen" },
-    { name: "Toxikologische Analysen", icon: ShoppingCart, link: "/toxikologisch" },
+    { name: "Toxikologische Analysen", icon: Tablets, link: "/toxikologisch" },
+    { name: "Hieb und Stichwaffen", icon: Axe, link: "/stichwaffen" },
     // { name: "Großeinsätze", icon: LineChart, link: "/grosseinsatz" },
 ];
 

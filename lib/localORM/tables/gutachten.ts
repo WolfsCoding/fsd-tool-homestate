@@ -27,13 +27,13 @@ export interface IGutachten {
     schmauchspuren: ISchnmauchspuren[];
 }
 
-export class Gutachten extends BaseEntry implements IGutachten {
+export class Gutachten extends BaseEntry {
     akz: string = "";
     gutachter: string = "";
     weapons: IWeapon[] = [];
     schmauchspuren: ISchnmauchspuren[] = [];
 
-    constructor(data: Partial<IGutachten>) {
+    constructor(data: Partial<Gutachten>) {
         super(data);
         this.akz = data.akz || "";
         this.gutachter = data.gutachter || "";
