@@ -42,7 +42,7 @@ function saveDetails() {
 function addWeapon() {
     if (!stichwaffe.value) return;
 
-    stichwaffe.value.weapons.push({ id: v4(), from: createDialog.value.name || "", name: createDialog.value.name || "", dnas: createDialog.value.dnas || [] });
+    stichwaffe.value.weapons.push({ id: v4(), from: createDialog.value.from || "", name: createDialog.value.name || "", dnas: createDialog.value.dnas || [] });
     stichwaffenDB.update(stichwaffe.value.id, stichwaffe.value);
 
     createDialog.value.name = "";
@@ -167,7 +167,7 @@ function deleteWeapon(weaponId: string) {
                                                     <DropdownMenuContent align="end">
                                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                                         <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
-                                                        <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz)">Beschriftung kopieren</DropdownMenuItem>
+                                                        <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz).copyClipboard()">Beschriftung kopieren</DropdownMenuItem>
                                                         <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
