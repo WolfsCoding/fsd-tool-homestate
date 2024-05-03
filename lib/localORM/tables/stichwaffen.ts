@@ -6,6 +6,7 @@ const { toast } = useToast();
 
 export interface IStichwaffe {
     id: string;
+    from: string;
     name: string;
     dnas: string[];
 }
@@ -33,7 +34,11 @@ export class Stichwaffen extends BaseEntry {
         textBuilder.addLine("");
         textBuilder.addLine("| Name des Täters | Tatwaffe | " + Array.from({ length: maxDnaCount }, (_, i) => "DNA " + (i + 1)).join(" | ") + " |");
         textBuilder.addLine("|---|---|" + Array.from({ length: maxDnaCount }, () => "---").join("|") + "|");
-        textBuilder.addLine("| " + this.gutachter + " | " + this.weapons.map((x) => x.name).join(", ") + " | " + this.weapons.map((x) => x.dnas.join(" | ")).join(" | ") + " |");
+
+        for (const weapon of this.weapons) {
+            textBuilder.addLine("| " + weapon.from + " | " + weapon.name + " | " + weapon.dnas.join(" | ") + " |");
+        }
+
         textBuilder.addLine("");
         textBuilder.addLine("---");
         textBuilder.addLine("");

@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { LocalStorage, Stichwaffen, type IStichwaffe } from "@/lib/localORM";
 import { v4 } from "uuid";
+import { TextBuilder } from "@/lib/utils";
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +23,7 @@ const stichwaffe: Ref<Stichwaffen | undefined> = ref(await stichwaffenDB.get(rou
 const activeTab = ref("weapons");
 
 const createDialog: Ref<Partial<IStichwaffe>> = ref({
+    from: "",
     name: "",
     dnas: [],
 });
@@ -40,7 +42,7 @@ function saveDetails() {
 function addWeapon() {
     if (!stichwaffe.value) return;
 
-    stichwaffe.value.weapons.push({ id: v4(), name: createDialog.value.name || "", dnas: createDialog.value.dnas || [] });
+    stichwaffe.value.weapons.push({ id: v4(), from: createDialog.value.name || "", name: createDialog.value.name || "", dnas: createDialog.value.dnas || [] });
     stichwaffenDB.update(stichwaffe.value.id, stichwaffe.value);
 
     createDialog.value.name = "";
@@ -116,6 +118,10 @@ function deleteWeapon(weaponId: string) {
                                             <p class="text-lg font-semibold leading-none tracking-tight">Waffe hinzufügen</p>
                                             <p class="text-sm text-muted-foreground -mt-3">Füge der Analyse eine Waffe hinzu.</p>
                                             <div class="grid grid-cols-4 items-center gap-4">
+                                                <Label for="model" class="text-right"> Täter </Label>
+                                                <Input id="name" class="col-span-3" type="text" v-model="createDialog.name" />
+                                            </div>
+                                            <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="model" class="text-right"> Waffe </Label>
                                                 <Input id="name" class="col-span-3" type="text" v-model="createDialog.name" />
                                             </div>
@@ -140,6 +146,7 @@ function deleteWeapon(weaponId: string) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
+                                            <TableHead>Täter</TableHead>
                                             <TableHead>Name</TableHead>
                                             <TableHead>Anzahl der DNAS</TableHead>
                                             <TableHead></TableHead>
@@ -147,6 +154,7 @@ function deleteWeapon(weaponId: string) {
                                     </TableHeader>
                                     <TableBody>
                                         <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id">
+                                            <TableCell class="font-medium"> {{ weapon.from }} </TableCell>
                                             <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
                                             <TableCell class=""> {{ weapon.dnas.length }} </TableCell>
                                             <TableCell>
@@ -159,6 +167,7 @@ function deleteWeapon(weaponId: string) {
                                                     <DropdownMenuContent align="end">
                                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                                         <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
+                                                        <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz)">Beschriftung kopieren</DropdownMenuItem>
                                                         <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
