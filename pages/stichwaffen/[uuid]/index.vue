@@ -119,7 +119,7 @@ function deleteWeapon(weaponId: string) {
                                             <p class="text-sm text-muted-foreground -mt-3">Füge der Analyse eine Waffe hinzu.</p>
                                             <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="model" class="text-right"> Täter </Label>
-                                                <Input id="name" class="col-span-3" type="text" v-model="createDialog.name" />
+                                                <Input id="name" class="col-span-3" type="text" v-model="createDialog.from" />
                                             </div>
                                             <div class="grid grid-cols-4 items-center gap-4">
                                                 <Label for="model" class="text-right"> Waffe </Label>
