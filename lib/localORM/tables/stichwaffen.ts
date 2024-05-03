@@ -43,7 +43,7 @@ export class Stichwaffen extends BaseEntry {
 
         toast({
             title: "Analyse kopiert",
-            description: "Das Analyse wurde erfolgreich in deine Zwischenablage kopiert.",
+            description: "Die Analyse wurde erfolgreich in deine Zwischenablage kopiert.",
         });
     }
 }
