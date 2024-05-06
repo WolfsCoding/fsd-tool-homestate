@@ -18,9 +18,8 @@ export abstract class BaseEntry implements IEntry {
         if (data) {
             Object.assign(this, data);
 
-            if (!this.updatedAt) {
-                this.updatedAt = new Date();
-            }
+            this.createdAt = data.createdAt ? new Date(data.createdAt) : new Date();
+            this.updatedAt = data.updatedAt ? new Date(data.updatedAt) : new Date();
 
             return;
         }
