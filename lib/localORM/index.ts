@@ -9,7 +9,7 @@ export class LocalStorage<T extends IEntry> {
 
     private getEntries(): T[] {
         const data = localStorage.getItem(this.getStorageKey());
-        return data ? JSON.parse(data).map(this.factory) : [];
+        return data ? JSON.parse(data).map(this.factory).reverse() : [];
     }
 
     private setEntries(entries: T[]): void {
