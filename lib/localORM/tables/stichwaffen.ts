@@ -18,7 +18,10 @@ export class Stichwaffen extends BaseEntry {
 
     constructor(data: Partial<Stichwaffen>) {
         super(data);
-        Object.assign(this, data);
+
+        this.akz = data.akz || "";
+        this.gutachter = data.gutachter || "";
+        this.weapons = data.weapons || [];
     }
 
     public copyToClipboard(): void {

@@ -131,6 +131,7 @@ function deleteAnalyse(analysenId: string) {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Akz.</TableHead>
+                                            <TableHead>Erstellt am</TableHead>
                                             <TableHead>Gutachter</TableHead>
                                             <TableHead>Im Auftrag von</TableHead>
                                             <TableHead align="end"></TableHead>
@@ -139,6 +140,7 @@ function deleteAnalyse(analysenId: string) {
                                     <TableBody>
                                         <TableRow v-for="(analyse, analysenIndex) in analysen" :key="analyse.akz">
                                             <TableCell> {{ analyse.akz }} </TableCell>
+                                            <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                                             <TableCell> {{ analyse.gutachter }} </TableCell>
                                             <TableCell> {{ analyse.forName }} </TableCell>
                                             <TableCell align="end">

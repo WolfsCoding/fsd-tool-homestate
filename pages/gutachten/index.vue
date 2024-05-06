@@ -113,6 +113,7 @@ function deleteGutachten(index: number) {
                                     <TableHeader>
                                         <TableRow>
                                             <TableHead>Akz.</TableHead>
+                                            <TableHead>Erstellt am</TableHead>
                                             <TableHead>Gutachter</TableHead>
                                             <TableHead align="end"></TableHead>
                                         </TableRow>
@@ -120,6 +121,7 @@ function deleteGutachten(index: number) {
                                     <TableBody>
                                         <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten" :key="gutachtenItem.akz">
                                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
+                                            <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
                                             <TableCell align="end">
                                                 <DropdownMenu>
