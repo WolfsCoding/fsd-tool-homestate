@@ -87,6 +87,7 @@ export const WeaponNames: { title: string; models: string[] }[] = [
     { title: "Müller&Wesseon", models: ["MW2023"] },
     { title: "Maurus", models: ["PT92F"] },
     { title: "Schlock", models: ["69"] },
+    { title: "Schalter", models: ["P88 Compact"] },
     { title: "Fuger", models: ["SR40"] },
     { title: "Bretta", models: ["M9"] },
     { title: "Lukarev", models: ["TT-33"] },
