@@ -22,7 +22,7 @@ const createDialog = ref({
     gutachter: "",
 });
 
-function create() {
+async function create() {
     if (createDialog.value.akz === "" || createDialog.value.gutachter === "") {
         toast({
             title: "Fehler",
@@ -38,7 +38,7 @@ function create() {
     });
 
     stichwaffenDB.add(newStichwaffe);
-    stichwaffen.value.push(newStichwaffe);
+    stichwaffen.value = await stichwaffenDB.getAll();
 
     createDialog.value.akz = "";
     createDialog.value.gutachter = "";

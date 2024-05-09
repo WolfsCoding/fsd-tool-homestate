@@ -24,7 +24,7 @@ const createDialog = ref({
     forName: "",
 });
 
-function create() {
+async function create() {
     if (!createDialog.value.akz || !createDialog.value.gutachter || !createDialog.value.forName) {
         toast({
             title: "Fehler beim Erstellen",
@@ -41,7 +41,7 @@ function create() {
     });
 
     toxiDB.add(newAnalyse);
-    analysen.value.push(newAnalyse);
+    analysen.value = await toxiDB.getAll();
     createDialog.value.akz = "";
     createDialog.value.gutachter = "";
     createDialog.value.forName = "";

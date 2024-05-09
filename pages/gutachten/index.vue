@@ -22,13 +22,13 @@ const createDialog = ref({
     gutachter: "",
 });
 
-function createGutachten() {
+async function createGutachten() {
     const createdGutachten = new Gutachten({
         akz: createDialog.value.akz,
         gutachter: createDialog.value.gutachter,
     });
     gutachtenDB.add(createdGutachten);
-    gutachten.value.push(createdGutachten);
+    gutachten.value = await gutachtenDB.getAll();
 
     createDialog.value = { akz: "", gutachter: "" };
 
