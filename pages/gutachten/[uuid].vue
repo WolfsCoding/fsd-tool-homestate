@@ -114,12 +114,6 @@ function saveDetails() {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbLink as-child>
-                                <a :href="'/gutachten' + route.params.uuid">{{ route.params.uuid }} </a>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
                             <BreadcrumbPage> {{ gutachten?.akz }} </BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>

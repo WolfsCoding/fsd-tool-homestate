@@ -87,17 +87,7 @@ function saveDetails() {
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             <BreadcrumbLink as-child>
-                                <a :href="'/stichwaffen/' + route.params.uuid">{{ route.params.uuid }} </a>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbPage> {{ stichwaffe?.akz }} </BreadcrumbPage>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbLink as-child>
-                                <a :href="'/stichwaffen/' + route.params.uuid + '/' + route.params.weapon_uuid">{{ route.params.weapon_uuid }} </a>
+                                <a :href="'/stichwaffen/' + route.params.uuid">{{ stichwaffe?.akz }} </a>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />

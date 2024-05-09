@@ -82,12 +82,6 @@ function deleteWeapon(weaponId: string) {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbLink as-child>
-                                <a :href="'/stichwaffen/' + route.params.uuid">{{ route.params.uuid }} </a>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
                             <BreadcrumbPage> {{ stichwaffe?.akz }} </BreadcrumbPage>
                         </BreadcrumbItem>
                     </BreadcrumbList>

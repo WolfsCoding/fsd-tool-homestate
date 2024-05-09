@@ -115,13 +115,7 @@ function saveDetails() {
                     <BreadcrumbList>
                         <BreadcrumbItem>
                             <BreadcrumbLink as-child>
-                                <a href="/toxikologisch">Balistiche Gutachten</a>
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                            <BreadcrumbLink as-child>
-                                <a :href="'/toxikologisch/' + route.params.uuid">{{ route.params.uuid }} </a>
+                                <a href="/toxikologisch">Toxikologische Analysen</a>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
