@@ -124,7 +124,7 @@ function deleteAnalyse(analysenId: string) {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Toxikologische Analysen</CardTitle>
-                                <CardDescription> Finde alle deine toxikologische Analysen. </CardDescription>
+                                <CardDescription> Finde alle deine toxikologischen Analysen. </CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <Table>

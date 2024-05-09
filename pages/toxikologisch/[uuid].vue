@@ -180,8 +180,8 @@ function saveDetails() {
                                                 <Label for="serial" class="text-right"> Einheit </Label>
                                                 <Input id="serial" class="col-span-3" type="text" v-model="createDialog.unit" />
                                             </div>
-                                            <p class="text-lg font-semibold leading-none tracking-tight" v-if="createDialog.variables.length > 0">Droge spezifiche Werte</p>
-                                            <p class="text-sm text-muted-foreground -mt-3" v-if="createDialog.variables.length > 0">Füge hier die Droge spezifiche Werte der Analyse ein.</p>
+                                            <p class="text-lg font-semibold leading-none tracking-tight" v-if="createDialog.variables.length > 0">Drogenspezifiche Werte</p>
+                                            <p class="text-sm text-muted-foreground -mt-3" v-if="createDialog.variables.length > 0">Füge hier die Drogenspezifiche Werte der Analyse ein.</p>
                                             <div class="grid grid-cols-4 items-center gap-4" v-for="variable in createDialog.variables" :key="variable.key">
                                                 <Label for="serial" class="text-right"> {{ variable.name }} </Label>
                                                 <Input id="serial" class="col-span-3" type="text" v-model="variable.value" />
