@@ -17,6 +17,8 @@ const { toast } = useToast();
 const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
 const stichwaffen: Ref<Stichwaffen[]> = ref(await stichwaffenDB.getAll());
 
+const search = ref("");
+
 function deleteAnalyse(analyseId: string) {
     const analyseIndex = stichwaffen.value.findIndex((analyse) => analyse.id === analyseId);
 
@@ -43,7 +45,7 @@ function deleteAnalyse(analyseId: string) {
                 </Breadcrumb>
                 <div class="relative ml-auto flex-1 md:grow-0">
                     <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" />
+                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" v-model="search" />
                 </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -57,7 +59,7 @@ function deleteAnalyse(analyseId: string) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(analyse, analysenIndex) in stichwaffen" :key="analyse.akz" :href="'/stichwaffen/' + analyse.id">
+                        <TableRow v-for="(analyse, analysenIndex) in stichwaffen.filter((x) => x.akz.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.gutachter.includes().startsWith(search.includes()))" :key="analyse.akz" :href="'/stichwaffen/' + analyse.id">
                             <TableCell> {{ analyse.akz }} </TableCell>
                             <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ analyse.gutachter }} </TableCell>
