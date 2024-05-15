@@ -1,5 +1,28 @@
 import type { IEntry } from "./BaseEntry";
 
+export class SingleLocalStorage<T> {
+    constructor(private readonly tableName: string) {}
+
+    private getStorageKey(): string {
+        return `local-storage-${this.tableName}`;
+    }
+
+    public get(): Promise<T | undefined> {
+        const data = localStorage.getItem(this.getStorageKey());
+        return Promise.resolve(data ? JSON.parse(data) : undefined);
+    }
+
+    public set(data: T): Promise<void> {
+        localStorage.setItem(this.getStorageKey(), JSON.stringify(data));
+        return Promise.resolve();
+    }
+
+    public delete(): Promise<void> {
+        localStorage.removeItem(this.getStorageKey());
+        return Promise.resolve();
+    }
+}
+
 export class LocalStorage<T extends IEntry> {
     constructor(private readonly tableName: string, private readonly factory: Factory<T>) {}
 
