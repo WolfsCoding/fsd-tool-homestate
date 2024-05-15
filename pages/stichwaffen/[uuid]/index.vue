@@ -20,7 +20,7 @@ const { toast } = useToast();
 const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
 const stichwaffe: Ref<Stichwaffen | undefined> = ref(await stichwaffenDB.get(route.params.uuid));
 
-const activeTab = ref("weapons");
+const activeTab = ref("Waffen");
 
 const createDialog: Ref<Partial<IStichwaffe>> = ref({
     from: "",
@@ -84,22 +84,22 @@ function deleteWeapon(weaponId: string) {
                         <BreadcrumbItem>
                             <BreadcrumbPage> {{ stichwaffe?.akz }} </BreadcrumbPage>
                         </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage> {{ activeTab }} </BreadcrumbPage>
+                        </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div class="relative ml-auto flex-1 md:grow-0">
-                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suchen..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" disabled />
-                </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                <Tabs default-value="weapons" v-model="activeTab">
+                <Tabs default-value="Waffen" v-model="activeTab">
                     <div class="flex items-center">
                         <TabsList>
-                            <TabsTrigger value="weapons"> Waffen </TabsTrigger>
-                            <TabsTrigger value="details"> Details </TabsTrigger>
+                            <TabsTrigger value="Waffen"> Waffen </TabsTrigger>
+                            <TabsTrigger value="Details"> Details </TabsTrigger>
                         </TabsList>
                         <div class="ml-auto flex items-center gap-2">
-                            <Dialog v-if="activeTab === 'weapons'">
+                            <Dialog v-if="activeTab === 'Waffen'">
                                 <DialogTrigger as-child>
                                     <Button size="sm" class="h-7 gap-1">
                                         <PlusCircle class="h-3.5 w-3.5" />
@@ -130,72 +130,56 @@ function deleteWeapon(weaponId: string) {
                             </Dialog>
                         </div>
                     </div>
-                    <TabsContent value="weapons">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Waffen</CardTitle>
-                                <CardDescription> Alle der Analyse hinzugefügten Hieb und/oder Stichwaffen. </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Täter</TableHead>
-                                            <TableHead>Name</TableHead>
-                                            <TableHead>Anzahl der DNAS</TableHead>
-                                            <TableHead></TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id">
-                                            <TableCell class="font-medium"> {{ weapon.from }} </TableCell>
-                                            <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
-                                            <TableCell class=""> {{ weapon.dnas.length }} </TableCell>
-                                            <TableCell>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger as-child>
-                                                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                            <MoreHorizontal class="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                                                        <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
-                                                        <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz).copyClipboard()">Beschriftung kopieren</DropdownMenuItem>
-                                                        <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </CardContent>
-                        </Card>
+                    <TabsContent value="Waffen">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Täter</TableHead>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Anzahl der DNAS</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id">
+                                    <TableCell class="font-medium"> {{ weapon.from }} </TableCell>
+                                    <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
+                                    <TableCell class=""> {{ weapon.dnas.length }} </TableCell>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger as-child>
+                                                <Button aria-haspopup="true" size="icon" variant="ghost">
+                                                    <MoreHorizontal class="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                                <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
+                                                <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz).copyClipboard()">Beschriftung kopieren</DropdownMenuItem>
+                                                <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </TabsContent>
-                    <TabsContent value="details">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Details</CardTitle>
-                                <CardDescription> Hier kannst du die Details zum Gutachten bearbeiten und das Gutachten kopieren. </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div class="grid gap-4 py-4" v-if="stichwaffe">
-                                    <div class="grid grid-cols-4 items-center gap-4">
-                                        <Label for="aktenzeichen" class="text-right"> Aktenzeichen </Label>
-                                        <Input id="aktenzeichen" class="col-span-3" type="text" v-model="stichwaffe.akz" />
-                                    </div>
-                                    <div class="grid grid-cols-4 items-center gap-4">
-                                        <Label for="gutachter" class="text-right"> Gutachter </Label>
-                                        <Input id="gutachter" class="col-span-3" type="text" v-model="stichwaffe.gutachter" />
-                                    </div>
+                    <TabsContent value="Details">
+                        <div class="grid gap-4 py-4" v-if="stichwaffe">
+                            <div class="grid grid-cols-12 items-center gap-4">
+                                <Label for="aktenzeichen" class=""> Aktenzeichen </Label>
+                                <Input id="aktenzeichen" class="col-span-11" type="text" v-model="stichwaffe.akz" />
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-4">
+                                <Label for="gutachter" class=""> Gutachter </Label>
+                                <Input id="gutachter" class="col-span-11" type="text" v-model="stichwaffe.gutachter" />
+                            </div>
 
-                                    <div class="flex gap-2 justify-start">
-                                        <Button @click="saveDetails"> Änderungen speichern </Button>
-                                        <Button @click="stichwaffe.copyToClipboard()"> Gutachten kopieren </Button>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                            <div class="flex gap-2 justify-start">
+                                <Button @click="saveDetails"> Änderungen speichern </Button>
+                                <Button @click="stichwaffe.copyToClipboard()"> Gutachten kopieren </Button>
+                            </div>
+                        </div>
                     </TabsContent>
                 </Tabs>
             </main>

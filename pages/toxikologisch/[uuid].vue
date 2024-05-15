@@ -25,7 +25,7 @@ const { toast } = useToast();
 const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
 const analyse: Ref<Toxi | undefined> = ref(await toxiDB.get(route.params.uuid));
 
-const activeTab = ref("drugs");
+const activeTab = ref("Drogen");
 
 const createDialog: Ref<{
     name: string;
@@ -122,22 +122,22 @@ function saveDetails() {
                         <BreadcrumbItem>
                             <BreadcrumbPage> {{ analyse?.akz }} </BreadcrumbPage>
                         </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                            <BreadcrumbPage> {{ activeTab }} </BreadcrumbPage>
+                        </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div class="relative ml-auto flex-1 md:grow-0">
-                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suchen..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" disabled />
-                </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                <Tabs default-value="drugs" v-model="activeTab">
+                <Tabs default-value="Drogen" v-model="activeTab">
                     <div class="flex items-center">
                         <TabsList>
-                            <TabsTrigger value="drugs"> Drogen </TabsTrigger>
-                            <TabsTrigger value="details"> Details </TabsTrigger>
+                            <TabsTrigger value="Drogen"> Drogen </TabsTrigger>
+                            <TabsTrigger value="Details"> Details </TabsTrigger>
                         </TabsList>
                         <div class="ml-auto flex items-center gap-2">
-                            <Dialog v-if="activeTab === 'drugs'">
+                            <Dialog v-if="activeTab === 'Drogen'">
                                 <DialogTrigger as-child>
                                     <Button size="sm" class="h-7 gap-1">
                                         <PlusCircle class="h-3.5 w-3.5" />
@@ -191,83 +191,61 @@ function saveDetails() {
                             </Dialog>
                         </div>
                     </div>
-                    <TabsContent value="drugs">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Drogen</CardTitle>
-                                <CardDescription> Alle der Analyse hinzugefügten Drogen. </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Name</TableHead>
-                                            <TableHead>Anzahl</TableHead>
-                                            <TableHead>Davon getestet</TableHead>
-                                            <TableHead>Einnheit</TableHead>
-                                            <TableHead></TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <TableRow v-for="drug in analyse?.drugs" :key="drug.id">
-                                            <TableCell class="font-medium"> {{ drug.name }} </TableCell>
-                                            <TableCell class=""> {{ drug.amount }} </TableCell>
-                                            <TableCell class=""> {{ drug.tested }} </TableCell>
-                                            <TableCell class=""> {{ drug.unit }} </TableCell>
-                                            <TableCell>
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger as-child>
-                                                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                            <MoreHorizontal class="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                                                        <!-- <DropdownMenuItem>Bearbeiten</DropdownMenuItem> -->
-                                                        <DropdownMenuItem @click="deleteDrug(drug.id)">Löschen</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </CardContent>
-                            <!-- <CardFooter>
-                                <div class="text-xs text-muted-foreground">
-                                    Showing <strong>1-10</strong> of <strong>32</strong>
-                                    products
-                                </div>
-                            </CardFooter> -->
-                        </Card>
+                    <TabsContent value="Drogen">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>Anzahl</TableHead>
+                                    <TableHead>Davon getestet</TableHead>
+                                    <TableHead>Einnheit</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow v-for="drug in analyse?.drugs" :key="drug.id">
+                                    <TableCell class="font-medium"> {{ drug.name }} </TableCell>
+                                    <TableCell class=""> {{ drug.amount }} </TableCell>
+                                    <TableCell class=""> {{ drug.tested }} </TableCell>
+                                    <TableCell class=""> {{ drug.unit }} </TableCell>
+                                    <TableCell>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger as-child>
+                                                <Button aria-haspopup="true" size="icon" variant="ghost">
+                                                    <MoreHorizontal class="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                                <!-- <DropdownMenuItem>Bearbeiten</DropdownMenuItem> -->
+                                                <DropdownMenuItem @click="deleteDrug(drug.id)">Löschen</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </TabsContent>
-                    <TabsContent value="details">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Details</CardTitle>
-                                <CardDescription> Hier kannst du die Details zum Gutachten bearbeiten und das Gutachten kopieren. </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div class="grid gap-4 py-4" v-if="analyse">
-                                    <div class="grid grid-cols-4 items-center gap-4">
-                                        <Label for="aktenzeichen" class="text-right"> Aktenzeichen </Label>
-                                        <Input id="aktenzeichen" class="col-span-3" type="text" v-model="analyse.akz" />
-                                    </div>
-                                    <div class="grid grid-cols-4 items-center gap-4">
-                                        <Label for="gutachter" class="text-right"> Gutachter </Label>
-                                        <Input id="gutachter" class="col-span-3" type="text" v-model="analyse.gutachter" />
-                                    </div>
-                                    <div class="grid grid-cols-4 items-center gap-4">
-                                        <Label for="gutachter" class="text-right"> Im Auftrag von </Label>
-                                        <Input id="gutachter" class="col-span-3" type="text" v-model="analyse.forName" />
-                                    </div>
+                    <TabsContent value="Details">
+                        <div class="grid gap-4 py-4" v-if="analyse">
+                            <div class="grid grid-cols-12 items-center gap-4">
+                                <Label for="aktenzeichen" class=""> Aktenzeichen </Label>
+                                <Input id="aktenzeichen" class="col-span-11" type="text" v-model="analyse.akz" />
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-4">
+                                <Label for="gutachter" class=""> Gutachter </Label>
+                                <Input id="gutachter" class="col-span-11" type="text" v-model="analyse.gutachter" />
+                            </div>
+                            <div class="grid grid-cols-12 items-center gap-4">
+                                <Label for="gutachter" class=""> Im Auftrag von </Label>
+                                <Input id="gutachter" class="col-span-11" type="text" v-model="analyse.forName" />
+                            </div>
 
-                                    <div class="flex gap-2 justify-start">
-                                        <Button @click="saveDetails"> Änderungen speichern </Button>
-                                        <Button @click="analyse.copyToClipboard()"> Gutachten kopieren </Button>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                            <div class="flex gap-2 justify-start">
+                                <Button @click="saveDetails"> Änderungen speichern </Button>
+                                <Button @click="analyse.copyToClipboard()"> Gutachten kopieren </Button>
+                            </div>
+                        </div>
                     </TabsContent>
                 </Tabs>
             </main>

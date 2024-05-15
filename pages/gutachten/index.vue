@@ -61,11 +61,43 @@ function deleteGutachten(index: number) {
                 </Breadcrumb>
                 <div class="relative ml-auto flex-1 md:grow-0">
                     <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Search..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" />
+                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" />
                 </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                <Tabs default-value="all">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Akz.</TableHead>
+                            <TableHead>Erstellt am</TableHead>
+                            <TableHead>Gutachter</TableHead>
+                            <TableHead align="end"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten" :key="gutachtenItem.akz" :href="'/gutachten/' + gutachtenItem.id">
+                            <TableCell> {{ gutachtenItem.akz }} </TableCell>
+                            <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
+                            <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
+                            <TableCell align="end">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger as-child>
+                                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                                            <MoreHorizontal class="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                        <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)"> Öffnen </DropdownMenuItem>
+                                        <DropdownMenuItem @click="gutachtenItem.copyToClipboard()">Gutachten kopieren</DropdownMenuItem>
+                                        <DropdownMenuItem @click="deleteGutachten(gutachtenIndex)">Löschen</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+                <!-- <Tabs default-value="all">
                     <div class="flex items-center">
                         <TabsList>
                             <TabsTrigger value="all"> Alle </TabsTrigger>
@@ -109,42 +141,11 @@ function deleteGutachten(index: number) {
                                 <CardDescription> Finde alle deine ballistischen Gutachten. </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Akz.</TableHead>
-                                            <TableHead>Erstellt am</TableHead>
-                                            <TableHead>Gutachter</TableHead>
-                                            <TableHead align="end"></TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten" :key="gutachtenItem.akz">
-                                            <TableCell> {{ gutachtenItem.akz }} </TableCell>
-                                            <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
-                                            <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
-                                            <TableCell align="end">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger as-child>
-                                                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                                                            <MoreHorizontal class="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                                                        <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)"> Öffnen </DropdownMenuItem>
-                                                        <DropdownMenuItem @click="gutachtenItem.copyToClipboard()">Gutachten kopieren</DropdownMenuItem>
-                                                        <DropdownMenuItem @click="deleteGutachten(gutachtenIndex)">Löschen</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
+                                
                             </CardContent>
                         </Card>
                     </TabsContent>
-                </Tabs>
+                </Tabs> -->
             </main>
         </div>
     </div>
