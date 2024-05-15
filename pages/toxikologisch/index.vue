@@ -56,12 +56,12 @@ function deleteAnalyse(analysenId: string) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(analyse, analysenIndex) in analysen" :key="analyse.akz">
+                        <TableRow v-for="(analyse, analysenIndex) in analysen" :key="analyse.akz" :href="'/toxikologisch/' + analyse.id">
                             <TableCell> {{ analyse.akz }} </TableCell>
                             <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ analyse.gutachter }} </TableCell>
                             <TableCell> {{ analyse.forName }} </TableCell>
-                            <TableCell align="end">
+                            <TableCell align="end" class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger as-child>
                                         <Button aria-haspopup="true" size="icon" variant="ghost">

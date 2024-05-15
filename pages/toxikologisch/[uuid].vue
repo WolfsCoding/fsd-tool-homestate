@@ -208,7 +208,7 @@ function saveDetails() {
                                     <TableCell class=""> {{ drug.amount }} </TableCell>
                                     <TableCell class=""> {{ drug.tested }} </TableCell>
                                     <TableCell class=""> {{ drug.unit }} </TableCell>
-                                    <TableCell>
+                                    <TableCell class="[--table-padding:0] pl-4">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger as-child>
                                                 <Button aria-haspopup="true" size="icon" variant="ghost">

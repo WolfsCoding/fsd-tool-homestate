@@ -79,7 +79,7 @@ function deleteGutachten(index: number) {
                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
                             <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
-                            <TableCell align="end">
+                            <TableCell align="end" class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger as-child>
                                         <Button aria-haspopup="true" size="icon" variant="ghost">

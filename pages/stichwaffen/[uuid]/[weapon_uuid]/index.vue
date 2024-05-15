@@ -141,7 +141,7 @@ function saveDetails() {
                     <TableBody>
                         <TableRow v-for="dna in stichwaffe?.weapons.find((x) => x.id == route.params.weapon_uuid)?.dnas" :key="dna">
                             <TableCell class="font-medium"> {{ dna }} </TableCell>
-                            <TableCell>
+                            <TableCell class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger as-child>
                                         <Button aria-haspopup="true" size="icon" variant="ghost">

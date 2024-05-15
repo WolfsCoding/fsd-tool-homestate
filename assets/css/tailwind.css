@@ -10,7 +10,7 @@
         --card: 240 10% 3.9%;
         --card-foreground: 0 0% 98%;
 
-        --popover: 240 10% 3.9%;
+        --popover: 240, 3%, 8%;
         --popover-foreground: 0 0% 98%;
 
         --primary: 0 0% 98%;
@@ -33,6 +33,7 @@
         --ring: 240 4.9% 83.9%;
 
         --radius: 0.5rem;
+        --table-padding: 1rem;
     }
 
     .dark {

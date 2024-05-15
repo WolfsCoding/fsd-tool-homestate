@@ -103,7 +103,7 @@ function deleteWeapon(weaponId: string) {
                                 <DialogTrigger as-child>
                                     <Button size="sm" class="h-7 gap-1">
                                         <PlusCircle class="h-3.5 w-3.5" />
-                                        <span class="sr-only sm:not-sr-only sm:whitespace-nowrap"> Waffe hinzufügen </span>
+                                        <span class="sm:whitespace-nowrap"> Waffe hinzufügen </span>
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent aria-describedby="undefined">
@@ -141,11 +141,11 @@ function deleteWeapon(weaponId: string) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id">
+                                <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id" :href="'/stichwaffen/' + route.params.uuid + '/' + weapon.id">
                                     <TableCell class="font-medium"> {{ weapon.from }} </TableCell>
                                     <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
                                     <TableCell class=""> {{ weapon.dnas.length }} </TableCell>
-                                    <TableCell>
+                                    <TableCell class="[--table-padding:0] pl-4">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger as-child>
                                                 <Button aria-haspopup="true" size="icon" variant="ghost">
