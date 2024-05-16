@@ -25,7 +25,7 @@ const type = ref(TYPES.Unbekannt);
 
 async function createBeschriftung() {
     const date = new Date();
-    date.setMinutes(date.getMinutes() - parseInt(minutes.value));
+    date.setMinutes(date.getMinutes() - parseInt(minutes.value) - 1);
 
     beschriftungsDB.add(
         new Beschriftung({
