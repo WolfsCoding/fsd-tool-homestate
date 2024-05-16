@@ -37,7 +37,7 @@ const alerts = [
     {
         id: "ce9e1f1a-1542-4506-972f-4aba3e5b9465",
         title: "Neues Update!",
-        description: "Du kannst nun Beschrifunten für Asservate erstellen.",
+        description: "Du kannst nun Beschriftungen für Asservate erstellen.",
     },
 ];
 </script>
