@@ -21,9 +21,19 @@ const search = ref("");
 const minutes = ref("");
 const ort = ref("");
 const akz = ref("");
-const type = ref(TYPES.Unbekannt);
+const type = ref(TYPES.Eigntumsdelikt);
 
 async function createBeschriftung() {
+    if (minutes.value === "" || ort.value === "" || akz.value === "") {
+        toast({
+            title: "Fehler",
+            description: "Bitte fülle alle Felder aus.",
+            variant: "destructive",
+        });
+
+        return;
+    }
+
     const date = new Date();
     date.setMinutes(date.getMinutes() - parseInt(minutes.value));
 
