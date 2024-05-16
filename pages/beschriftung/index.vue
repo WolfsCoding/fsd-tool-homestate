@@ -36,11 +36,12 @@ async function createBeschriftung() {
 
     const date = new Date();
     date.setMinutes(date.getMinutes() - parseInt(minutes.value));
+    date.setMinutes(date.getMinutes() - (date.getMinutes() % 5));
 
     beschriftungsDB.add(
         new Beschriftung({
             datum: date.getDate().toString().padStart(2, "0") + "." + date.getMonth().toString().padStart(2, "0") + "." + date.getFullYear(),
-            uhrzeit: new Date(Math.round(date.getTime() / 300000) * 300000).getHours().toString().padStart(2, "0") + ":" + new Date(Math.round(date.getTime() / 300000) * 300000).getMinutes().toString().padStart(2, "0") + " Uhr",
+            uhrzeit: date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0") + " Uhr",
             ort: ort.value,
             akz: akz.value,
             type: type.value,
