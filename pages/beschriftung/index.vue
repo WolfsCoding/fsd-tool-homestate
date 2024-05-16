@@ -24,7 +24,7 @@ const akz = ref("");
 const type = ref(TYPES.Eigntumsdelikt);
 
 async function createBeschriftung() {
-    if (minutes.value === "" || ort.value === "" || akz.value === "") {
+    if (minutes.value === "" || ort.value === "") {
         toast({
             title: "Fehler",
             description: "Bitte fülle alle Felder aus.",
