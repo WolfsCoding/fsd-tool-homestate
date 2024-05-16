@@ -25,7 +25,7 @@ const navigation: {
     { name: "Ballistische Gutachten", icon: "fa-solid fa-gun", link: "/gutachten" },
     { name: "Toxikologische Analysen", icon: "fa-regular fa-pills", link: "/toxikologisch" },
     { name: "Hieb und Stichwaffen", icon: "fa-duotone fa-knife", link: "/stichwaffen" },
-    // { name: "Großeinsätze", icon: LineChart, link: "/grosseinsatz" },
+    { name: "Beschriftung", icon: "fa-duotone fa-pencil", link: "/beschriftung" },
 ];
 
 const router = useRoute();
