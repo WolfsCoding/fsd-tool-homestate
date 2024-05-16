@@ -48,7 +48,9 @@ export class LocalStorage<T extends IEntry> {
     }
 
     public add(entry: T): Promise<void> {
-        const entries = this.getEntries();
+        const data = localStorage.getItem(this.getStorageKey());
+
+        const entries = data ? JSON.parse(data).map(this.factory) : [];
         entries.push(entry);
         this.setEntries(entries);
         return Promise.resolve();
