@@ -34,9 +34,7 @@ async function createBeschriftung() {
         return;
     }
 
-    const date = new Date();
-    date.setMinutes(date.getMinutes() - parseInt(minutes.value));
-    date.setMinutes(date.getMinutes() - (date.getMinutes() % 5));
+    const date = calculateOffset(-parseInt(minutes.value));
 
     beschriftungsDB.add(
         new Beschriftung({
@@ -65,6 +63,24 @@ async function deleteBeschriftung(beschriftung: Beschriftung) {
         description: "Die Beschriftung wurde erfolgreich gelöscht.",
     });
 }
+
+function calculateOffset(offsetInMinutes: number): Date {
+    const now = new Date();
+    const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+    const offsetDate = new Date(now.getTime() + offsetInMilliseconds);
+
+    const roundedMinutes = Math.round(offsetDate.getMinutes() / 5) * 5;
+    offsetDate.setMinutes(roundedMinutes);
+    if (Math.abs(offsetInMinutes - (offsetDate.getTime() - now.getTime()) / 60000) > 5) {
+        if (offsetInMinutes > 0) {
+            offsetDate.setMinutes(roundedMinutes - 5);
+        } else {
+            offsetDate.setMinutes(roundedMinutes + 5);
+        }
+    }
+
+    return offsetDate;
+}
 </script>
 
 <template>
@@ -78,10 +94,6 @@ async function deleteBeschriftung(beschriftung: Beschriftung) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div class="relative ml-auto flex-1 md:grow-0">
-                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" v-model="search" />
-                </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <div class="grid gap-4 py-4 grid-cols-12">
@@ -121,7 +133,7 @@ async function deleteBeschriftung(beschriftung: Beschriftung) {
                     </TableHeader>
                     <TableBody>
                         <!-- Only show latest 20 entrys -->
-                        <TableRow v-for="(beschriftung, analysenIndex) in beschriftungen.filter((x) => x.akz.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.datum.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.uhrzeit.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.ort.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.type.toLocaleLowerCase().includes(search.toLocaleLowerCase())).slice(0, 20)">
+                        <TableRow v-for="(beschriftung, analysenIndex) in beschriftungen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.datum.toLowerCase().includes(props.search.toLowerCase()) || x.uhrzeit.toLowerCase().includes(props.search.toLowerCase()) || x.ort.toLowerCase().includes(props.search.toLowerCase()) || x.type.toLowerCase().includes(props.search.toLowerCase())).slice(0, 20)">
                             <TableCell> {{ beschriftung.datum }} </TableCell>
                             <TableCell> {{ beschriftung.uhrzeit }} </TableCell>
                             <TableCell> {{ beschriftung.ort }} </TableCell>
