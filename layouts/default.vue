@@ -40,7 +40,7 @@ const dialogType = ref("");
             <div class="flex h-full max-h-screen flex-col gap-2">
                 <div class="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
                     <a href="/" class="flex items-center gap-2 font-semibold">
-                        <Dna class="h-6 w-6" />
+                        <img src="/logo_2.png" alt="FSD Homestate" class="h-8 w-auto" />
                         <span class="">FSD Homestate</span>
                     </a>
                 </div>
