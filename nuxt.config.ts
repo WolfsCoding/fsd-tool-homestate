@@ -4,18 +4,23 @@ export default defineNuxtConfig({
     modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/color-mode"],
     plugins: ["~/plugins/locally.js"],
     shadcn: {
-        /**
-         * Prefix for all the imported component
-         */
         prefix: "",
-        /**
-         * Directory that the component lives in.
-         * @default "./components/ui"
-         */
         componentDir: "./components/ui",
     },
     colorMode: {
         classSuffix: "hs-fsd",
     },
     ssr: false,
+    vite: {
+        build: {
+            target: ["es2022", "edge89", "firefox89", "chrome89", "safari15"],
+        },
+    },
+    nitro: {
+        esbuild: {
+            options: {
+                target: "es2022",
+            },
+        },
+    },
 });
