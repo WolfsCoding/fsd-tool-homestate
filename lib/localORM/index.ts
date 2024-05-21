@@ -69,7 +69,13 @@ export class LocalStorage<T extends IEntry> {
     }
 
     public delete(id: string): Promise<void> {
-        const entries = this.getEntries().filter((entry) => entry.id !== id);
+        const data = localStorage.getItem(this.getStorageKey());
+
+        const entries = data
+            ? JSON.parse(data)
+                  .map(this.factory)
+                  .filter((x: any) => x.id != id)
+            : [];
         this.setEntries(entries);
         return Promise.resolve();
     }
