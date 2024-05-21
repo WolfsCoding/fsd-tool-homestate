@@ -33,11 +33,11 @@ export class Beschriftung extends BaseEntry {
         }
 
         switch (this.type) {
-            case TYPES.Schussgefächt:
+            case TYPES.Schussgefecht:
                 text += " - ";
                 text += "SG";
                 break;
-            case TYPES.Messerstecherrei:
+            case TYPES.Messerstecherei:
                 text += " - ";
                 text += "MS";
                 break;
@@ -56,9 +56,9 @@ export class Beschriftung extends BaseEntry {
 
 export const TYPES = {
     Unbekannt: "Unbekannt",
-    Schussgefächt: "Schussgefächt",
-    Messerstecherrei: "Messerstecherrei",
-    Eigntumsdelikt: "Eigentumdelikt",
+    Schussgefecht: "Schussgefecht",
+    Messerstecherei: "Messerstecherei",
+    Eigentumsdelikt: "Eigentumsdelikt",
 } as const;
 
 export type T_TYPES = (typeof TYPES)[keyof typeof TYPES];
