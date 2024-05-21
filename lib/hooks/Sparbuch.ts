@@ -5,7 +5,8 @@ import { ENTRY_TYPES, SparbuchEntry } from "../localORM/tables/sparbuch";
 const { toast } = useToast();
 
 const sparbuchDB = new LocalStorage<SparbuchEntry>("sparbuch", (data: any) => new SparbuchEntry(data));
-const sparbuchEntrys: Ref<SparbuchEntry[]> = ref(await sparbuchDB.getAll());
+const sparbuchEntrys: Ref<SparbuchEntry[]> = ref([]);
+await sparbuchDB.getAll().then((data) => (sparbuchEntrys.value = data));
 
 function getSparbuchAmount(): ComputedRef<number> {
     return computed((): number => {
