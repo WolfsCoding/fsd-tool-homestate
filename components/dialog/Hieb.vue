@@ -23,16 +23,13 @@
 <script setup lang="ts">
 import { LocalStorage, SingleLocalStorage, Stichwaffen } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
+import { useSettings } from "@/lib/hooks/Settings";
 
 const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
-const settings = (await new SingleLocalStorage<{
-    gutachter: string;
-}>("settings").get()) ?? {
-    gutachter: "",
-};
+const { settings } = useSettings();
 
 const akz = ref("");
-const gutachter = ref(settings.gutachter);
+const gutachter = ref(settings.value.gutachter);
 
 async function create() {
     if (akz.value === "" || gutachter.value === "") {

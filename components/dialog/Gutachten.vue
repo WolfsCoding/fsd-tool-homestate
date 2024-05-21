@@ -23,16 +23,13 @@
 <script setup lang="ts">
 import { Gutachten, LocalStorage, SingleLocalStorage } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
+import { useSettings } from "@/lib/hooks/Settings";
 
 const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
-const settings = (await new SingleLocalStorage<{
-    gutachter: string;
-}>("settings").get()) ?? {
-    gutachter: "",
-};
+const { settings } = useSettings();
 
 const akz = ref("");
-const gutachter = ref(settings.gutachter);
+const gutachter = ref(settings.value.gutachter);
 
 async function createGutachten() {
     if (akz.value === "" || gutachter.value === "") {

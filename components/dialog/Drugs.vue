@@ -27,16 +27,13 @@
 <script setup lang="ts">
 import { LocalStorage, SingleLocalStorage, Toxi } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
+import { useSettings } from "@/lib/hooks/Settings";
 
 const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
-const settings = (await new SingleLocalStorage<{
-    gutachter: string;
-}>("settings").get()) ?? {
-    gutachter: "",
-};
+const { settings } = useSettings();
 
 const akz = ref("");
-const gutachter = ref(settings.gutachter);
+const gutachter = ref(settings.value.gutachter);
 const forName = ref("");
 
 async function create() {

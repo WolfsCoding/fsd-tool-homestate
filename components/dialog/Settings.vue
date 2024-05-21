@@ -29,19 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import { SingleLocalStorage } from "@/lib/localORM";
 import { Switch } from "../ui/switch";
 import { useToast } from "../ui/toast";
+import { useSettings } from "@/lib/hooks/Settings";
 
-const settings = ref(
-    (await new SingleLocalStorage<{
-        gutachter: string;
-        sparbuch: boolean;
-    }>("settings").get()) ?? { gutachter: "", sparbuch: false }
-);
+const { settings, setSettings } = useSettings();
 
 function saveSettings() {
-    new SingleLocalStorage("settings").set(settings.value);
+    setSettings(settings.value);
 
     useToast().toast({
         title: "Einstellungen gespeichert",

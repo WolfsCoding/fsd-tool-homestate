@@ -10,7 +10,7 @@ import Toaster from "@/components/ui/toast/Toaster.vue";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 import { SpeedInsights } from "@vercel/speed-insights/nuxt";
-import { getSparbuchAmount } from "@/lib/localORM/tables/sparbuch";
+import { useSettings } from "@/lib/hooks/Settings";
 import { SingleLocalStorage } from "@/lib/localORM";
 
 const navigation: {
@@ -30,13 +30,9 @@ const router = useRoute();
 const dialogType = ref("");
 
 const search = ref("");
-const sparbuchAmount = ref(await getSparbuchAmount());
 
-const settings = (await new SingleLocalStorage<{
-    sparbuch: boolean;
-}>("settings").get()) ?? {
-    sparbuch: false,
-};
+const { settings } = useSettings();
+const { getSparbuchAmount } = useSparbuch();
 </script>
 
 <template>
