@@ -11,7 +11,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 
 import { SpeedInsights } from "@vercel/speed-insights/nuxt";
 import { useSettings } from "@/lib/hooks/Settings";
-import { SingleLocalStorage } from "@/lib/localORM";
+import { useSparbuch } from "@/lib/hooks/Sparbuch";
 
 const navigation: {
     name: string;
@@ -102,7 +102,7 @@ const { getSparbuchAmount } = useSparbuch();
                         <a v-if="settings.sparbuch" href="/sparbuch" class="mx-[-0.30rem] flex items-center gap-3 rounded-full px-3 py-2 mt-6 text-foreground hover:text-foreground" :class="{ 'bg-[#004A77] text-[#c2e7ff] hover:bg-[#004A77] hover:text-[#c2e7ff]': router.path.startsWith('/sparbuch'), 'hover:bg-[#2B2B2B]': !router.path.startsWith('/sparbuch') }">
                             <i class="fa-duotone fa-money-bill"></i>
                             Sparbuch
-                            <Badge class="ml-auto flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full"> {{ sparbuchAmount }} $</Badge>
+                            <Badge class="ml-auto flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full"> {{ getSparbuchAmount() }} $</Badge>
                         </a>
                     </nav>
                 </div>

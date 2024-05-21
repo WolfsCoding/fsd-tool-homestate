@@ -1,30 +1,20 @@
 <script setup lang="ts">
-import { MoreHorizontal, Search } from "lucide-vue-next";
-
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Toxi } from "@/lib/localORM";
 import { ENTRY_TYPES, SparbuchEntry } from "@/lib/localORM/tables/sparbuch";
+import { useSparbuch } from "@/lib/hooks/Sparbuch";
 
-const router = useRouter();
 const { toast } = useToast();
 
-const sparbuchDB = new LocalStorage<SparbuchEntry>("sparbuch", (data: any) => new SparbuchEntry(data));
-const sparbuchEntrys: Ref<SparbuchEntry[]> = ref(await sparbuchDB.getAll());
-
 const props = defineProps(["search"]);
+const { addSparbuchEntry, sparbuchEntrys, getSparbuchAmount, deleteSparbuchEntry } = useSparbuch();
 
 const type = ref(null);
 const betrag = ref("");
 const beschreibung = ref("");
-
-const fullAmount = computed(() => {
-    return sparbuchEntrys.value.reduce((acc, entry) => acc + entry.betrag, 0);
-});
 
 async function addEntry() {
     if (betrag.value === "" || beschreibung.value === "" || type.value === null) {
@@ -39,16 +29,14 @@ async function addEntry() {
 
     const value = parseFloat(betrag.value);
 
-    sparbuchDB.add(
+    addSparbuchEntry(
         new SparbuchEntry({
             datum: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().split(":").slice(0, 2).join(":") + " Uhr",
-            betrag: Math.round((type.value === ENTRY_TYPES.Zinsen ? value - fullAmount.value : type.value === ENTRY_TYPES.Einzahlung ? value : -value + Number.EPSILON) * 100) / 100,
+            betrag: Math.round((type.value === ENTRY_TYPES.Zinsen ? value - getSparbuchAmount().value : type.value === ENTRY_TYPES.Einzahlung ? value : -value + Number.EPSILON) * 100) / 100,
             beschreibung: beschreibung.value,
             type: type.value,
         })
     );
-
-    sparbuchEntrys.value = await sparbuchDB.getAll();
 
     toast({
         title: "Eintrag hinzugefügt",
@@ -57,8 +45,7 @@ async function addEntry() {
 }
 
 async function deleteEntry(entry: SparbuchEntry) {
-    sparbuchDB.delete(entry.id);
-    sparbuchEntrys.value = await sparbuchDB.getAll();
+    deleteSparbuchEntry(entry.id);
 }
 </script>
 
@@ -74,7 +61,7 @@ async function deleteEntry(entry: SparbuchEntry) {
                     </BreadcrumbList>
                 </Breadcrumb>
 
-                <div class="ml-auto mr-auto">{{ fullAmount }} $</div>
+                <div class="ml-auto">{{ getSparbuchAmount() }} $</div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <div class="grid gap-4 py-4 grid-cols-12">

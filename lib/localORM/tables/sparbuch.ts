@@ -1,3 +1,4 @@
+import { useToast } from "@/components/ui/toast";
 import { LocalStorage } from "..";
 import { BaseEntry } from "../BaseEntry";
 
@@ -22,10 +23,3 @@ export const ENTRY_TYPES = {
     Auszahlung: "Auszahlung",
     Zinsen: "Zinsen",
 } as const;
-
-export async function getSparbuchAmount(): Promise<number> {
-    const sparbuchDB = new LocalStorage<SparbuchEntry>("sparbuch", (data: any) => new SparbuchEntry(data));
-    const sparbuchEntrys: Ref<SparbuchEntry[]> = ref(await sparbuchDB.getAll());
-
-    return sparbuchEntrys.value.reduce((acc, entry) => acc + entry.betrag, 0);
-}
