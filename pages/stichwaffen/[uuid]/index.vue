@@ -152,7 +152,7 @@ function deleteWeapon(weaponId: string) {
                                                     <MoreHorizontal class="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
+                                            <DropdownMenuContent>
                                                 <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                                 <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
                                                 <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz).copyClipboard()">Beschriftung kopieren</DropdownMenuItem>

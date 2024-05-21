@@ -53,7 +53,7 @@ function deleteGutachten(index: number) {
                             <TableHead>Akz.</TableHead>
                             <TableHead>Erstellt am</TableHead>
                             <TableHead>Gutachter</TableHead>
-                            <TableHead align="end"></TableHead>
+                            <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -61,14 +61,14 @@ function deleteGutachten(index: number) {
                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
                             <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
-                            <TableCell align="end" class="[--table-padding:0] pl-4">
+                            <TableCell class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger as-child>
                                         <Button aria-haspopup="true" size="icon" variant="ghost">
                                             <MoreHorizontal class="h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
+                                    <DropdownMenuContent>
                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                         <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)"> Öffnen </DropdownMenuItem>
                                         <DropdownMenuItem @click="gutachtenItem.copyToClipboard()">Gutachten kopieren</DropdownMenuItem>

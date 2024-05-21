@@ -128,7 +128,7 @@ function calculateOffset(offsetInMinutes: number): Date {
                             <TableHead>Ort</TableHead>
                             <TableHead>Akz.</TableHead>
                             <TableHead>Type</TableHead>
-                            <TableHead align="end"></TableHead>
+                            <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

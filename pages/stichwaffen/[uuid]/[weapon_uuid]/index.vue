@@ -148,7 +148,7 @@ function saveDetails() {
                                             <MoreHorizontal class="h-4 w-4" />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
+                                    <DropdownMenuContent>
                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                         <DropdownMenuItem @click="deleteDNA(dna)">Löschen</DropdownMenuItem>
                                     </DropdownMenuContent>
