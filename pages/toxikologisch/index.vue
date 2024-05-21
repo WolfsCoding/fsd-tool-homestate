@@ -15,7 +15,7 @@ const { toast } = useToast();
 const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
 const analysen: Ref<Toxi[]> = ref(await toxiDB.getAll());
 
-const search = ref("");
+const props = defineProps(["search"]);
 
 function deleteAnalyse(analysenId: string) {
     toxiDB.delete(analysenId);
@@ -38,10 +38,6 @@ function deleteAnalyse(analysenId: string) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div class="relative ml-auto flex-1 md:grow-0">
-                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" v-model="search" />
-                </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <Table>
@@ -55,7 +51,7 @@ function deleteAnalyse(analysenId: string) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(analyse, analysenIndex) in analysen.filter((x) => x.akz.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.forName.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.gutachter.toLocaleLowerCase().includes(search.toLocaleLowerCase()))" :key="analyse.akz" :href="'/toxikologisch/' + analyse.id">
+                        <TableRow v-for="(analyse, analysenIndex) in analysen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.forName.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="analyse.akz" :href="'/toxikologisch/' + analyse.id">
                             <TableCell> {{ analyse.akz }} </TableCell>
                             <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ analyse.gutachter }} </TableCell>

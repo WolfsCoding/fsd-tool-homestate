@@ -31,6 +31,8 @@ const navigation: {
 const router = useRoute();
 
 const dialogType = ref("");
+
+const search = ref("");
 </script>
 
 <template>
@@ -45,11 +47,11 @@ const dialogType = ref("");
                     </a>
                 </div>
                 <div class="flex-1">
-                    <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
+                    <nav class="grid items-start px-6 text-sm font-medium">
                         <Dialog>
                             <DropdownMenu>
                                 <DropdownMenuTrigger as-child>
-                                    <Button class="mx-[-0.65rem] flex items-center justify-center gap-4 rounded-2xl text-foreground hover:text-foreground hover:bg-[#004a77] bg-muted mb-3 h-14 w-24">
+                                    <Button class="mx-[-0.65rem] flex items-center justify-center gap-4 rounded-2xl text-foreground hover:bg-[#4A4E53] bg-[#37393b] mb-3 h-14 w-24 shadow-md hover:shadow-lg">
                                         <i class="fa-solid fa-plus"></i>
                                         Neu
                                     </Button>
@@ -101,7 +103,7 @@ const dialogType = ref("");
             </div>
         </div>
         <div class="flex flex-col">
-            <header class="flex h-14 items-center gap-4 px-4 lg:h-[60px] lg:px-6">
+            <header class="flex h-14 items-center gap-4 lg:h-[60px] pr-6">
                 <Sheet>
                     <SheetTrigger as-child>
                         <Button variant="outline" size="icon" class="shrink-0 md:hidden">
@@ -119,13 +121,17 @@ const dialogType = ref("");
                         </nav>
                     </SheetContent>
                 </Sheet>
+                <div class="relative">
+                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input placeholder="Suche..." class="w-full rounded-full bg-[#282A2C] pl-8 md:w-[320px] lg:w-[560px] focus-visible:[--tw-ring-offset-width:0] focus-visible:[--tw-ring-color:transparent]" v-model="search" />
+                </div>
                 <DialogSettings />
             </header>
 
             <ContextMenu>
                 <ContextMenuTrigger>
-                    <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-[#131314] rounded-3xl mb-4 mr-4">
-                        <NuxtPage />
+                    <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-[#131314] rounded-2xl mb-4 mr-4">
+                        <NuxtPage :search="search" />
                     </main>
                 </ContextMenuTrigger>
                 <ContextMenuContent>

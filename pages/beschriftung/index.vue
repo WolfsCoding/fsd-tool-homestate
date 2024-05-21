@@ -16,12 +16,12 @@ const { toast } = useToast();
 const beschriftungsDB = new LocalStorage<Beschriftung>("beschriftungen", (data: any) => new Beschriftung(data));
 const beschriftungen: Ref<Beschriftung[]> = ref(await beschriftungsDB.getAll());
 
-const search = ref("");
-
 const minutes = ref("");
 const ort = ref("");
 const akz = ref("");
 const type = ref(TYPES.Eigntumsdelikt);
+
+const props = defineProps(["search"]);
 
 async function createBeschriftung() {
     if (minutes.value === "" || ort.value === "") {

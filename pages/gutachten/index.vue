@@ -22,7 +22,7 @@ const createDialog = ref({
     gutachter: "",
 });
 
-const search = ref("");
+const props = defineProps(["search"]);
 
 function deleteGutachten(index: number) {
     gutachtenDB.delete(gutachten.value[index].id);
@@ -45,10 +45,6 @@ function deleteGutachten(index: number) {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <div class="relative ml-auto flex-1 md:grow-0">
-                    <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Suche..." class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" v-model="search" />
-                </div>
             </header>
             <main class="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <Table>
@@ -61,7 +57,7 @@ function deleteGutachten(index: number) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten.filter((x) => x.akz.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || x.gutachter.toLocaleLowerCase().includes(search.toLocaleLowerCase()))" :key="gutachtenItem.akz" :href="'/gutachten/' + gutachtenItem.id">
+                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="gutachtenItem.akz" :href="'/gutachten/' + gutachtenItem.id">
                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
                             <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
