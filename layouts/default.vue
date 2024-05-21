@@ -3,18 +3,15 @@ import { Swords, Moon, CircleUser, Home, LineChart, Menu, Package, Package2, Sea
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Toaster from "@/components/ui/toast/Toaster.vue";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
 
 import { SpeedInsights } from "@vercel/speed-insights/nuxt";
+import { getSparbuchAmount } from "@/lib/localORM/tables/sparbuch";
 import { SingleLocalStorage } from "@/lib/localORM";
-import { useToast } from "@/components/ui/toast";
 
 const navigation: {
     name: string;
@@ -33,6 +30,13 @@ const router = useRoute();
 const dialogType = ref("");
 
 const search = ref("");
+const sparbuchAmount = ref(await getSparbuchAmount());
+
+const settings = (await new SingleLocalStorage<{
+    sparbuch: boolean;
+}>("settings").get()) ?? {
+    sparbuch: false,
+};
 </script>
 
 <template>
@@ -93,10 +97,16 @@ const search = ref("");
                             </DialogContent>
                         </Dialog>
 
-                        <a :href="navigationItem.link" class="mx-[-0.30rem] flex items-center gap-3 rounded-full px-3 py-2 text-foreground hover:text-foreground" v-for="navigationItem in navigation" :class="{ 'bg-[#004A77] text-[#c2e7ff] hover:bg-[#004A77] hover:text-[#c2e7ff]': router.path.startsWith(navigationItem.link), 'hover:bg-[#2B2B2B]': !router.path.startsWith(navigationItem.link) }">
+                        <a v-for="navigationItem in navigation" :href="navigationItem.link" class="mx-[-0.30rem] flex items-center gap-3 rounded-full px-3 py-2 text-foreground hover:text-foreground" :class="{ 'bg-[#004A77] text-[#c2e7ff] hover:bg-[#004A77] hover:text-[#c2e7ff]': router.path.startsWith(navigationItem.link), 'hover:bg-[#2B2B2B]': !router.path.startsWith(navigationItem.link) }">
                             <i :class="navigationItem.icon + ''"></i>
                             {{ navigationItem.name }}
                             <Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full" v-if="navigationItem.badge"> {{ navigationItem.badge }} </Badge>
+                        </a>
+
+                        <a v-if="settings.sparbuch" href="/sparbuch" class="mx-[-0.30rem] flex items-center gap-3 rounded-full px-3 py-2 mt-6 text-foreground hover:text-foreground" :class="{ 'bg-[#004A77] text-[#c2e7ff] hover:bg-[#004A77] hover:text-[#c2e7ff]': router.path.startsWith('/sparbuch'), 'hover:bg-[#2B2B2B]': !router.path.startsWith('/sparbuch') }">
+                            <i class="fa-duotone fa-money-bill"></i>
+                            Sparbuch
+                            <Badge class="ml-auto flex h-6 min-w-6 shrink-0 items-center justify-center rounded-full"> {{ sparbuchAmount }} $</Badge>
                         </a>
                     </nav>
                 </div>

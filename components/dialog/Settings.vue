@@ -12,9 +12,15 @@
                 </div>
                 <div class="grid gap-2">
                     <div class="grid grid-cols-3 items-center gap-4">
-                        <Label for="width">Gutachter:</Label>
-                        <Input id="width" type="text" class="col-span-2 h-8" v-model="settings.gutachter" />
+                        <Label for="gutachter">Gutachter:</Label>
+                        <Input id="gutachter" type="text" class="col-span-2 h-8" v-model="settings.gutachter" />
                     </div>
+                    <Form v-slot="{ values }">
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label for="sparbuch">Sparbuch:</Label>
+                            <Switch id="sparbuch" class="col-span-2" v-model:checked="settings.sparbuch" />
+                        </div>
+                    </Form>
                 </div>
                 <Button variant="secondary" @click="saveSettings">Speichern</Button>
             </div>
@@ -24,14 +30,18 @@
 
 <script setup lang="ts">
 import { SingleLocalStorage } from "@/lib/localORM";
+import { Switch } from "../ui/switch";
 import { useToast } from "../ui/toast";
 
-const settings = (await new SingleLocalStorage<{
-    gutachter: string;
-}>("settings").get()) ?? { gutachter: "" };
+const settings = ref(
+    (await new SingleLocalStorage<{
+        gutachter: string;
+        sparbuch: boolean;
+    }>("settings").get()) ?? { gutachter: "", sparbuch: false }
+);
 
 function saveSettings() {
-    new SingleLocalStorage("settings").set(settings);
+    new SingleLocalStorage("settings").set(settings.value);
 
     useToast().toast({
         title: "Einstellungen gespeichert",
