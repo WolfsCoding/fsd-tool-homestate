@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },
-    modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/color-mode"],
+    modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/color-mode", "@nuxtjs/supabase"],
     plugins: ["~/plugins/locally.js"],
     shadcn: {
         prefix: "",
@@ -22,5 +22,10 @@ export default defineNuxtConfig({
                 target: "es2022",
             },
         },
+    },
+    supabase: {
+        redirect: false,
+        key: process.env.SUPABASE_KEY,
+        url: process.env.SUPABASE_URL,
     },
 });

@@ -98,9 +98,26 @@ async function deleteEntry(entry: SparbuchEntry) {
                     <TableBody>
                         <TableRow v-for="entry in sparbuchEntrys.filter((x) => true).slice(0, 20)">
                             <TableCell> {{ entry.datum }} </TableCell>
-                            <TableCell> {{ entry.betrag }} $ </TableCell>
+                            <TableCell
+                                :class="{
+                                    'text-green-500': entry.type === ENTRY_TYPES.Zinsen || entry.type === ENTRY_TYPES.Einzahlung,
+                                    'text-red-500': entry.type === ENTRY_TYPES.Auszahlung,
+                                }"
+                            >
+                                {{ entry.type === ENTRY_TYPES.Auszahlung ? "-" : "+" }} {{ entry.type === ENTRY_TYPES.Auszahlung ? entry.betrag * -1 : entry.betrag }} $
+                            </TableCell>
                             <TableCell> {{ entry.beschreibung }} </TableCell>
-                            <TableCell> {{ entry.type }} </TableCell>
+                            <TableCell>
+                                <Badge
+                                    :class="{
+                                        'bg-[#2B2B2B] text-white': entry.type === ENTRY_TYPES.Zinsen,
+                                        'bg-[#004A77] text-white': entry.type === ENTRY_TYPES.Einzahlung,
+                                        'bg-epa text-white': entry.type === ENTRY_TYPES.Auszahlung,
+                                    }"
+                                >
+                                    {{ entry.type }}
+                                </Badge>
+                            </TableCell>
                             <TableCell class="[--table-padding:0]">
                                 <Button variant="ghost" @click="deleteEntry(entry)">
                                     <i class="fa-duotone fa-trash"></i>
