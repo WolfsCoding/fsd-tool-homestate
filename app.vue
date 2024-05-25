@@ -25,27 +25,17 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 const client = useSupabaseClient();
 let realtimeChannel: RealtimeChannel;
 
-const readAlerts = ref((await new SingleLocalStorage<string[]>("readAlerts").get()) ?? []);
-
-function readAlert(id: string) {
-    readAlerts.value.push(id);
-    new SingleLocalStorage("readAlerts").set(readAlerts.value);
+interface AlertData {
+    id: string;
+    title: string;
+    description: string;
 }
 
-const { data: alerts, refresh: refreshAlerts } = await useAsyncData("alerts", async () => {
-    const {
-        data,
-    }: {
-        data: {
-            id: string;
-            title: string;
-            description: string;
-        }[];
-    } = await client.from("alerts").select("*").order("created_at", { ascending: false });
-    return data;
-});
+const { data: alerts, refresh: refreshAlerts } = await useAsyncData<AlertData[]>("alerts", async () => {
+    const { data } = await client.from("alerts").select("*").order("created_at", { ascending: false });
 
-console.log(alerts);
+    return data as AlertData[];
+});
 
 onMounted(() => {
     realtimeChannel = client.channel("public:alerts").on("postgres_changes", { event: "*", schema: "public", table: "alerts" }, () => refreshAlerts());
@@ -57,16 +47,10 @@ onUnmounted(() => {
     client.removeChannel(realtimeChannel);
 });
 
-// const alerts = [
-//     {
-//         id: "bcffe55c-ea88-4a12-9798-76e192ac6caf",
-//         title: "Neues Update!",
-//         description: "Du kannst nun einen standart Gutachter in den Einstellungen oben rechts festlegen.",
-//     },
-//     {
-//         id: "ce9e1f1a-1542-4506-972f-4aba3e5b9465",
-//         title: "Neues Update!",
-//         description: "Du kannst nun Beschriftungen für Asservate erstellen.",
-//     },
-// ];
+const readAlerts = ref((await new SingleLocalStorage<string[]>("readAlerts").get()) ?? []);
+
+function readAlert(id: string) {
+    readAlerts.value.push(id);
+    new SingleLocalStorage("readAlerts").set(readAlerts.value);
+}
 </script>
