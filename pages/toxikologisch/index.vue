@@ -3,23 +3,22 @@ import { MoreHorizontal, Search } from "lucide-vue-next";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Toxi } from "@/lib/localORM";
+import { useToxi } from "@/lib/hooks/Toxikologisch";
+import { useDate } from "@/lib/hooks/Date";
 
 const router = useRouter();
 const { toast } = useToast();
-
-const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
-const analysen: Ref<Toxi[]> = ref(await toxiDB.getAll());
+const { getFormattedDate } = useDate();
+const { analysen, remove: removeAnalyse } = useToxi();
 
 const props = defineProps(["search"]);
 
-function deleteAnalyse(analysenId: string) {
-    toxiDB.delete(analysenId);
-    analysen.value = analysen.value.filter((analyse) => analyse.id !== analysenId);
+function handleDeleteToxi(analysenId: string) {
+    removeAnalyse(analysenId);
+
     toast({
         title: "Analyse gelöscht",
         description: "Die Analyse wurde erfolgreich gelöscht.",
@@ -51,9 +50,9 @@ function deleteAnalyse(analysenId: string) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(analyse, analysenIndex) in analysen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.forName.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="analyse.akz" :href="'/toxikologisch/' + analyse.id">
+                        <TableRow v-for="analyse in analysen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.forName.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="analyse.akz" :href="'/toxikologisch/' + analyse.id">
                             <TableCell> {{ analyse.akz }} </TableCell>
-                            <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
+                            <TableCell> {{ getFormattedDate(analyse.createdAt, "DD.MM.YYYY hh:mm Uhr") }}</TableCell>
                             <TableCell> {{ analyse.gutachter }} </TableCell>
                             <TableCell> {{ analyse.forName }} </TableCell>
                             <TableCell class="[--table-padding:0] pl-4">
@@ -67,7 +66,7 @@ function deleteAnalyse(analysenId: string) {
                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                         <DropdownMenuItem @click="router.push('/toxikologisch/' + analyse.id)"> Öffnen </DropdownMenuItem>
                                         <DropdownMenuItem @click="analyse.copyToClipboard()">Analyse kopieren</DropdownMenuItem>
-                                        <DropdownMenuItem @click="deleteAnalyse(analyse.id)">Löschen</DropdownMenuItem>
+                                        <DropdownMenuItem @click="handleDeleteToxi(analyse.id)">Löschen</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </TableCell>

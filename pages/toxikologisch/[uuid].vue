@@ -1,29 +1,21 @@
 <script setup lang="ts">
-import { CircleUser, File, Home, LineChart, ListFilter, MoreHorizontal, Package, Package2, PanelLeft, PlusCircle, Search, Settings, ShoppingCart, Users2 } from "lucide-vue-next";
-import { v4 } from "uuid";
+import { MoreHorizontal, PlusCircle } from "lucide-vue-next";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Gutachten, WeaponNames, Toxi, type IDrug } from "@/lib/localORM";
-import { TextBuilder } from "@/lib/utils";
-import { drugs } from "@/lib/Drugs";
+import { drugs } from "@/data/Drugs";
+import { useToxi } from "@/lib/hooks/Toxikologisch";
 
-const { $locally }: { $locally: any } = useNuxtApp() as any;
-const route = useRoute();
+const { params } = useRoute();
 const { toast } = useToast();
-
-const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
-const analyse: Ref<Toxi | undefined> = ref(await toxiDB.get(route.params.uuid));
+const { get: getToxi, update: updateToxi, addDrug, removeDrug } = useToxi();
+const analyse = await getToxi(params.uuid);
 
 const activeTab = ref("Drogen");
 
@@ -41,48 +33,27 @@ const createDialog: Ref<{
     variables: [],
 });
 
-function addDrug() {
+async function handelAddDrug() {
     if (!analyse.value) return;
 
-    const drug: IDrug = {
-        id: v4(),
+    addDrug(analyse.value.id, {
         name: createDialog.value.name,
         amount: createDialog.value.amount,
         tested: createDialog.value.tested,
         unit: createDialog.value.unit,
-        analyse:
-            drugs
-                .find((x) => x.name === createDialog.value.name)
-                ?.analyse.replaceVariables(
-                    createDialog.value.variables.map((x) => {
-                        return { key: x.key, value: x.value };
-                    })
-                )
-                .getAsString() || "",
-    };
-
-    analyse.value?.drugs.push(drug);
-    toxiDB.update(analyse.value.id, analyse.value);
+        variables: createDialog.value.variables,
+    });
 
     toast({
         title: "Droge hinzugefügt",
         description: "Die Droge wurde erfolgreich hinzugefügt.",
     });
-
-    createDialog.value = {
-        name: "",
-        amount: 0,
-        tested: 0,
-        unit: "",
-        variables: [],
-    };
 }
 
-function deleteDrug(drugId: string) {
+async function handleRemoveDrug(drugId: string) {
     if (!analyse.value) return;
 
-    analyse.value.drugs = analyse.value.drugs.filter((x) => x.id !== drugId);
-    toxiDB.update(analyse.value.id, analyse.value);
+    removeDrug(params.uuid, drugId);
 
     toast({
         title: "Droge gelöscht",
@@ -98,7 +69,7 @@ function selectDrug() {
 function saveDetails() {
     if (!analyse.value) return;
 
-    toxiDB.update(analyse.value.id, analyse.value);
+    updateToxi(analyse.value.id, analyse.value);
 
     toast({
         title: "Details gespeichert",
@@ -184,7 +155,7 @@ function saveDetails() {
                                     </CardContent>
                                     <DialogFooter>
                                         <DialogClose as-child>
-                                            <Button type="submit" @click="addDrug"> Hinzufügen </Button>
+                                            <Button type="submit" @click="handelAddDrug"> Hinzufügen </Button>
                                         </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
@@ -217,8 +188,7 @@ function saveDetails() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
                                                 <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                                                <!-- <DropdownMenuItem>Bearbeiten</DropdownMenuItem> -->
-                                                <DropdownMenuItem @click="deleteDrug(drug.id)">Löschen</DropdownMenuItem>
+                                                <DropdownMenuItem @click="handleRemoveDrug(drug.id)">Löschen</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

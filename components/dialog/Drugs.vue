@@ -25,12 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { LocalStorage, SingleLocalStorage, Toxi } from "@/lib/localORM";
+import { Toxi } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
 import { useSettings } from "@/lib/hooks/Settings";
+import { useToxi } from "@/lib/hooks/Toxikologisch";
 
-const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
 const { settings } = useSettings();
+const { add: addToxi } = useToxi();
 
 const akz = ref("");
 const gutachter = ref(settings.value.gutachter);
@@ -52,7 +53,7 @@ async function create() {
         forName: forName.value,
     });
 
-    toxiDB.add(newAnalyse);
+    addToxi(newAnalyse);
 
     akz.value = "";
     gutachter.value = "";

@@ -1,29 +1,23 @@
 <script setup lang="ts">
-import { MoreHorizontal, PlusCircle, Search } from "lucide-vue-next";
+import { MoreHorizontal } from "lucide-vue-next";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Stichwaffen } from "@/lib/localORM";
+import { useStichwaffen } from "@/lib/hooks/Stichwaffen";
+import { useDate } from "@/lib/hooks/Date";
 
 const router = useRouter();
 const { toast } = useToast();
-
-const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
-const stichwaffen: Ref<Stichwaffen[]> = ref(await stichwaffenDB.getAll());
+const { deleteStichwaffe, stichwaffen } = useStichwaffen();
+const { getFormattedDate } = useDate();
 
 const props = defineProps(["search"]);
 
-function deleteAnalyse(analyseId: string) {
-    const analyseIndex = stichwaffen.value.findIndex((analyse) => analyse.id === analyseId);
-
-    stichwaffenDB.delete(analyseId);
-    stichwaffen.value.splice(analyseIndex, 1);
+function handleDeleteStichwaffe(analyseId: string) {
+    deleteStichwaffe(analyseId);
 
     toast({
         title: "Analyse gelöscht",
@@ -57,7 +51,7 @@ function deleteAnalyse(analyseId: string) {
                     <TableBody>
                         <TableRow v-for="(analyse, analysenIndex) in stichwaffen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="analyse.akz" :href="'/stichwaffen/' + analyse.id">
                             <TableCell> {{ analyse.akz }} </TableCell>
-                            <TableCell> {{ analyse.createdAt.getDate().toString().padStart(2, "0") }}.{{ analyse.createdAt.getMonth().toString().padStart(2, "0") }}.{{ analyse.createdAt.getFullYear() }} - {{ analyse.createdAt.getHours().toString().padStart(2, "0") }}:{{ analyse.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
+                            <TableCell> {{ getFormattedDate(analyse.createdAt, "DD.MM.YYYY mm:hh Uhr") }} </TableCell>
                             <TableCell> {{ analyse.gutachter }} </TableCell>
                             <TableCell class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
@@ -70,7 +64,7 @@ function deleteAnalyse(analyseId: string) {
                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                         <DropdownMenuItem @click="router.push('/stichwaffen/' + analyse.id)"> Öffnen </DropdownMenuItem>
                                         <DropdownMenuItem @click="analyse.copyToClipboard()">Analyse kopieren</DropdownMenuItem>
-                                        <DropdownMenuItem @click="deleteAnalyse(analyse.id)">Löschen</DropdownMenuItem>
+                                        <DropdownMenuItem @click="handleDeleteStichwaffe(analyse.id)">Löschen</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </TableCell>

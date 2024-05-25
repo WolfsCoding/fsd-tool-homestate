@@ -40,17 +40,21 @@ export class Toxi extends BaseEntry {
         }
 
         builder.addLine("```");
-        builder.addLine("");
-        builder.addLine("    davon getestest (10%) :");
+        builder.addLine("```");
+        builder.addLine("davon getestest (10%):");
+        builder.addLine("```");
         builder.addLine("```");
 
         for (const drug of this.drugs) {
-            builder.addLine(`- ${drug.name + " ".repeat(21 - drug.name.length)}${drug.tested.toString() + " ".repeat(21 - drug.amount.toString().length)}${drug.unit}`);
+            builder.addLine(`- ${drug.name + " ".repeat(21 - drug.name.length)}${drug.tested.toString() + " ".repeat(21 - drug.tested.toString().length)}${drug.unit}`);
         }
 
         builder.addLine("```");
-        builder.addLine("    weitere Informationen:");
+        builder.addLine("```");
+        builder.addLine("weitere Informationen:");
+        builder.addLine("```");
         builder.addLine("");
+        builder.addLine("---");
 
         for (const drug of this.drugs) {
             builder.addLine(drug.analyse);

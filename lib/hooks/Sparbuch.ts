@@ -25,19 +25,15 @@ function getSparbuchAmount(): ComputedRef<number> {
     });
 }
 
-function addSparbuchEntry(entry: SparbuchEntry) {
+async function addSparbuchEntry(entry: SparbuchEntry) {
     sparbuchDB.add(entry);
-    sparbuchDB.getAll().then((data) => {
-        sparbuchEntrys.value = data;
-    });
+    sparbuchEntrys.value = await sparbuchDB.getAll();
 }
 
-function deleteSparbuchEntry(id: string) {
+async function removeSparbuchEntry(id: string) {
     sparbuchDB.delete(id);
 
-    sparbuchDB.getAll().then((data) => {
-        sparbuchEntrys.value = data;
-    });
+    sparbuchEntrys.value = await sparbuchDB.getAll();
 
     toast({
         title: "Erfolgreich gelöscht",
@@ -47,7 +43,7 @@ function deleteSparbuchEntry(id: string) {
 
 export function useSparbuch() {
     return {
-        deleteSparbuchEntry,
+        removeSparbuchEntry,
         addSparbuchEntry,
         sparbuchEntrys,
         getSparbuchAmount,

@@ -21,12 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import { LocalStorage, SingleLocalStorage, Stichwaffen } from "@/lib/localORM";
+import { LocalStorage, Stichwaffen } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
 import { useSettings } from "@/lib/hooks/Settings";
+import { useStichwaffen } from "@/lib/hooks/Stichwaffen";
 
-const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
 const { settings } = useSettings();
+const { addStichwaffe } = useStichwaffen();
 
 const akz = ref("");
 const gutachter = ref(settings.value.gutachter);
@@ -46,7 +47,7 @@ async function create() {
         gutachter: gutachter.value,
     });
 
-    stichwaffenDB.add(newStichwaffe);
+    addStichwaffe(newStichwaffe);
 
     akz.value = "";
     gutachter.value = "";

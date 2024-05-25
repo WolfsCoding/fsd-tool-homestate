@@ -14,38 +14,44 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Gutachten, WeaponNames } from "@/lib/localORM";
-import { TextBuilder } from "@/lib/utils";
+import { Gutachten, WeaponNames } from "@/lib/localORM";
+import { useGutachten } from "@/lib/hooks/Gutachten";
 
 const { $locally }: { $locally: any } = useNuxtApp() as any;
 const route = useRoute();
 const { toast } = useToast();
 
-const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
-const gutachten: Ref<Gutachten | undefined> = ref(await gutachtenDB.get(route.params.uuid));
+const { getById: getGutachtenById, update: updateGutachten, addWeapon: addWeaponToGutachten, removeWeapon: removeWeaponFromGutachten, addSchmauchspuren: addSchmauchspurenToGutachten, removeSchmauchspuren: removeSchmauchspurenFromGutachten } = useGutachten();
+const gutachten = ref<Gutachten | undefined>(await getGutachtenById(route.params.uuid));
 
 const createWeaponDialog = ref({
     name: "",
     model: "",
     serial: "",
-    schmauchspuren: false,
+    schmauchspuren: "false",
     zustand: "kalt",
     munition: 0,
 });
 
 const createSchmauchspurenDialog = ref({
     name: "",
-    schmauchspuren: true,
+    schmauchspuren: "true",
 });
 
 const activeTab = ref("Waffen");
 
-function addWeapon() {
+function handleAddWeapon() {
     if (!gutachten.value) return;
-    gutachten.value?.weapons.push({ id: v4(), ...createWeaponDialog.value });
-    gutachtenDB.update(gutachten.value.id, gutachten.value);
 
-    createWeaponDialog.value = { name: "", model: "", serial: "", schmauchspuren: false, zustand: "warm", munition: 0 };
+    addWeaponToGutachten(gutachten.value.id, {
+        name: createWeaponDialog.value.name,
+        model: createWeaponDialog.value.model,
+        serial: createWeaponDialog.value.serial,
+        schmauchspuren: createWeaponDialog.value.schmauchspuren == "true",
+        zustand: createWeaponDialog.value.zustand,
+        munition: createWeaponDialog.value.munition,
+    });
+    createWeaponDialog.value = { name: "", model: "", serial: "", schmauchspuren: "false", zustand: "warm", munition: 0 };
 
     toast({
         title: "Waffe hinzugefügt",
@@ -53,11 +59,10 @@ function addWeapon() {
     });
 }
 
-function deleteWeapon(uuid: string) {
+function handleRemoveWeapon(uuid: string) {
     if (!gutachten.value) return;
 
-    gutachten.value.weapons = gutachten.value.weapons.filter((weapon) => weapon.id !== uuid);
-    gutachtenDB.update(gutachten.value.id, gutachten.value);
+    removeWeaponFromGutachten(gutachten.value.id, uuid);
 
     toast({
         title: "Waffe entfernt",
@@ -65,11 +70,10 @@ function deleteWeapon(uuid: string) {
     });
 }
 
-function addSchmauchspuren() {
+function handleAddSchmauchspuren() {
     if (!gutachten.value) return;
 
-    gutachten.value.schmauchspuren.push({ id: v4(), ...createSchmauchspurenDialog.value });
-    gutachtenDB.update(gutachten.value.id, gutachten.value);
+    addSchmauchspurenToGutachten(gutachten.value.id, createSchmauchspurenDialog.value.name, createSchmauchspurenDialog.value.schmauchspuren == "true");
 
     toast({
         title: "Schmauchspurentest hinzugefügt",
@@ -77,11 +81,10 @@ function addSchmauchspuren() {
     });
 }
 
-function deleteSchmauchspuren(uuid: string) {
+function handleRemoveSchmauchspuren(uuid: string) {
     if (!gutachten.value) return;
 
-    gutachten.value.schmauchspuren = gutachten.value.schmauchspuren.filter((schmauchspuren) => schmauchspuren.id !== uuid);
-    gutachtenDB.update(gutachten.value.id, gutachten.value);
+    removeSchmauchspurenFromGutachten(gutachten.value.id, uuid);
 
     toast({
         title: "Schmauchspurentest entfernt",
@@ -92,7 +95,7 @@ function deleteSchmauchspuren(uuid: string) {
 function saveDetails() {
     if (!gutachten.value) return;
 
-    gutachtenDB.update(gutachten.value.id, gutachten.value);
+    updateGutachten(gutachten.value.id, gutachten.value);
 
     toast({
         title: "Details gespeichert",
@@ -178,8 +181,8 @@ function saveDetails() {
                                                         <SelectValue placeholder="Wähle aus" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem :value="false"> Nein </SelectItem>
-                                                        <SelectItem :value="true"> Ja </SelectItem>
+                                                        <SelectItem :value="'false'"> Nein </SelectItem>
+                                                        <SelectItem :value="'true'"> Ja </SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -203,7 +206,7 @@ function saveDetails() {
                                     </CardContent>
                                     <DialogFooter>
                                         <DialogClose as-child>
-                                            <Button type="submit" @click="addWeapon()"> Hinzufügen </Button>
+                                            <Button type="submit" @click="handleAddWeapon()"> Hinzufügen </Button>
                                         </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
@@ -233,8 +236,8 @@ function saveDetails() {
                                                         <SelectValue class="col-span-3" placeholder="Wähle aus" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem :value="true"> Positiv </SelectItem>
-                                                        <SelectItem :value="false"> Negativ </SelectItem>
+                                                        <SelectItem :value="'true'"> Positiv </SelectItem>
+                                                        <SelectItem :value="'false'"> Negativ </SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </div>
@@ -242,7 +245,7 @@ function saveDetails() {
                                     </CardContent>
                                     <DialogFooter>
                                         <DialogClose as-child>
-                                            <Button type="submit" @click="addSchmauchspuren()"> Hinzufügen </Button>
+                                            <Button type="submit" @click="handleAddSchmauchspuren()"> Hinzufügen </Button>
                                         </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
@@ -294,7 +297,7 @@ function saveDetails() {
                                                     "
                                                     >Schmauchspuren kopieren</DropdownMenuItem
                                                 >
-                                                <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
+                                                <DropdownMenuItem @click="handleRemoveWeapon(weapon.id)">Löschen</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
@@ -332,7 +335,7 @@ function saveDetails() {
                                                     "
                                                     >Kopieren</DropdownMenuItem
                                                 >
-                                                <DropdownMenuItem @click="deleteSchmauchspuren(schmauchspurentest.id)">Löschen</DropdownMenuItem>
+                                                <DropdownMenuItem @click="handleRemoveSchmauchspuren(schmauchspurentest.id)">Löschen</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

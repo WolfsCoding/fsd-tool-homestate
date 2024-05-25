@@ -1,32 +1,24 @@
 <script setup lang="ts">
-import { MoreHorizontal, PlusCircle, Search } from "lucide-vue-next";
+import { MoreHorizontal } from "lucide-vue-next";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { Gutachten, LocalStorage } from "@/lib/localORM";
+import { useGutachten } from "@/lib/hooks/Gutachten";
+import { useDate } from "@/lib/hooks/Date";
 
 const router = useRouter();
 const { toast } = useToast();
-
-const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
-const gutachten: Ref<Gutachten[]> = ref(await gutachtenDB.getAll());
-
-const createDialog = ref({
-    akz: "",
-    gutachter: "",
-});
+const { remove: removeGutachten, gutachten } = useGutachten();
+const { getFormattedDate } = useDate();
 
 const props = defineProps(["search"]);
 
-function deleteGutachten(index: number) {
-    gutachtenDB.delete(gutachten.value[index].id);
-    gutachten.value.splice(index, 1);
+function handleRemoveGutachten(id: string) {
+    removeGutachten(id);
+
     toast({
         title: "Gutachten gelöscht",
         description: "Das Gutachten wurde erfolgreich gelöscht.",
@@ -57,9 +49,9 @@ function deleteGutachten(index: number) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow v-for="(gutachtenItem, gutachtenIndex) in gutachten.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="gutachtenItem.akz" :href="'/gutachten/' + gutachtenItem.id">
+                        <TableRow v-for="gutachtenItem in gutachten.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.gutachter.toLowerCase().includes(props.search.toLowerCase()))" :key="gutachtenItem.akz" :href="'/gutachten/' + gutachtenItem.id">
                             <TableCell> {{ gutachtenItem.akz }} </TableCell>
-                            <TableCell> {{ gutachtenItem.createdAt.getDate().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getMonth().toString().padStart(2, "0") }}.{{ gutachtenItem.createdAt.getFullYear() }} - {{ gutachtenItem.createdAt.getHours().toString().padStart(2, "0") }}:{{ gutachtenItem.createdAt.getMinutes().toString().padStart(2, "0") }} Uhr</TableCell>
+                            <TableCell> {{ getFormattedDate(gutachtenItem.createdAt, "DD.MM.YYYY mm:hh Uhr") }}</TableCell>
                             <TableCell> {{ gutachtenItem.gutachter }} </TableCell>
                             <TableCell class="[--table-padding:0] pl-4">
                                 <DropdownMenu>
@@ -72,7 +64,7 @@ function deleteGutachten(index: number) {
                                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
                                         <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)"> Öffnen </DropdownMenuItem>
                                         <DropdownMenuItem @click="gutachtenItem.copyToClipboard()">Gutachten kopieren</DropdownMenuItem>
-                                        <DropdownMenuItem @click="deleteGutachten(gutachtenIndex)">Löschen</DropdownMenuItem>
+                                        <DropdownMenuItem @click="handleRemoveGutachten(gutachtenItem.id)">Löschen</DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </TableCell>

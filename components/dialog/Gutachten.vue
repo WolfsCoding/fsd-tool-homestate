@@ -24,9 +24,10 @@
 import { Gutachten, LocalStorage, SingleLocalStorage } from "@/lib/localORM";
 import { useToast } from "../ui/toast";
 import { useSettings } from "@/lib/hooks/Settings";
+import { useGutachten } from "@/lib/hooks/Gutachten";
 
-const gutachtenDB = new LocalStorage<Gutachten>("gutachten", (data: any) => new Gutachten(data));
 const { settings } = useSettings();
+const { add: addGutachten } = useGutachten();
 
 const akz = ref("");
 const gutachter = ref(settings.value.gutachter);
@@ -38,6 +39,7 @@ async function createGutachten() {
             description: "Bitte fülle alle Felder aus.",
             variant: "destructive",
         });
+
         return;
     }
 
@@ -46,7 +48,7 @@ async function createGutachten() {
         gutachter: gutachter.value,
     });
 
-    gutachtenDB.add(createdGutachten);
+    addGutachten(createdGutachten);
 
     useToast().toast({
         title: "Gutachten erfolgreicherstellt",

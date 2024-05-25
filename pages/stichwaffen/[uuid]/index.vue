@@ -12,13 +12,14 @@ import { useToast } from "@/components/ui/toast/use-toast";
 import { LocalStorage, Stichwaffen, type IStichwaffe } from "@/lib/localORM";
 import { v4 } from "uuid";
 import { TextBuilder } from "@/lib/utils";
+import { useStichwaffen } from "@/lib/hooks/Stichwaffen";
 
-const route = useRoute();
+const { params } = useRoute();
 const router = useRouter();
 const { toast } = useToast();
+const { updateStichwaffe, getStichwaffe } = useStichwaffen();
 
-const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
-const stichwaffe: Ref<Stichwaffen | undefined> = ref(await stichwaffenDB.get(route.params.uuid));
+const stichwaffe = ref(await getStichwaffe(params.uuid));
 
 const activeTab = ref("Waffen");
 
@@ -31,7 +32,7 @@ const createDialog: Ref<Partial<IStichwaffe>> = ref({
 function saveDetails() {
     if (!stichwaffe.value) return;
 
-    stichwaffenDB.update(stichwaffe.value.id, stichwaffe.value);
+    updateStichwaffe(stichwaffe.value.id, stichwaffe.value);
 
     toast({
         title: "Details gespeichert",
@@ -43,7 +44,7 @@ function addWeapon() {
     if (!stichwaffe.value) return;
 
     stichwaffe.value.weapons.push({ id: v4(), from: createDialog.value.from || "", name: createDialog.value.name || "", dnas: createDialog.value.dnas || [] });
-    stichwaffenDB.update(stichwaffe.value.id, stichwaffe.value);
+    updateStichwaffe(stichwaffe.value.id, stichwaffe.value);
 
     createDialog.value.name = "";
     createDialog.value.dnas = [];
@@ -60,7 +61,7 @@ function deleteWeapon(weaponId: string) {
     const weaponIndex = stichwaffe.value.weapons.findIndex((weapon) => weapon.id === weaponId);
 
     stichwaffe.value.weapons.splice(weaponIndex, 1);
-    stichwaffenDB.update(stichwaffe.value.id, stichwaffe.value);
+    updateStichwaffe(stichwaffe.value.id, stichwaffe.value);
 
     toast({
         title: "Waffe gelöscht",
@@ -141,7 +142,7 @@ function deleteWeapon(weaponId: string) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id" :href="'/stichwaffen/' + route.params.uuid + '/' + weapon.id">
+                                <TableRow v-for="weapon in stichwaffe?.weapons" :key="weapon.id" :href="'/stichwaffen/' + params.uuid + '/' + weapon.id">
                                     <TableCell class="font-medium"> {{ weapon.from }} </TableCell>
                                     <TableCell class="font-medium"> {{ weapon.name }} </TableCell>
                                     <TableCell class=""> {{ weapon.dnas.length }} </TableCell>
@@ -154,7 +155,7 @@ function deleteWeapon(weaponId: string) {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
                                                 <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                                                <DropdownMenuItem @click="router.push('/stichwaffen/' + route.params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
+                                                <DropdownMenuItem @click="router.push('/stichwaffen/' + params.uuid + '/' + weapon.id)">Öffnen</DropdownMenuItem>
                                                 <DropdownMenuItem @click="new TextBuilder().addLine(weapon.name + ' - ' + weapon.from + ' - ' + stichwaffe?.akz).copyClipboard()">Beschriftung kopieren</DropdownMenuItem>
                                                 <DropdownMenuItem @click="deleteWeapon(weapon.id)">Löschen</DropdownMenuItem>
                                             </DropdownMenuContent>

@@ -6,17 +6,19 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useToast } from "@/components/ui/toast/use-toast";
 import { ENTRY_TYPES, SparbuchEntry } from "@/lib/localORM/tables/sparbuch";
 import { useSparbuch } from "@/lib/hooks/Sparbuch";
+import { useDate } from "@/lib/hooks/Date";
 
 const { toast } = useToast();
 
 const props = defineProps(["search"]);
-const { addSparbuchEntry, sparbuchEntrys, getSparbuchAmount, deleteSparbuchEntry } = useSparbuch();
+const { addSparbuchEntry, sparbuchEntrys, getSparbuchAmount, removeSparbuchEntry } = useSparbuch();
+const { getFormattedDate } = useDate();
 
 const type = ref(null);
 const betrag = ref("");
 const beschreibung = ref("");
 
-async function addEntry() {
+async function handleAddEntry() {
     if (betrag.value === "" || beschreibung.value === "" || type.value === null) {
         toast({
             title: "Fehler",
@@ -29,9 +31,9 @@ async function addEntry() {
 
     const value = parseFloat(betrag.value);
 
-    addSparbuchEntry(
+    await addSparbuchEntry(
         new SparbuchEntry({
-            datum: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().split(":").slice(0, 2).join(":") + " Uhr",
+            datum: getFormattedDate(new Date(), "DD.MM.YYYY mm:hh Uhr"),
             betrag: Math.round((type.value === ENTRY_TYPES.Zinsen ? value - getSparbuchAmount().value : type.value === ENTRY_TYPES.Einzahlung ? value : -value + Number.EPSILON) * 100) / 100,
             beschreibung: beschreibung.value,
             type: type.value,
@@ -44,8 +46,8 @@ async function addEntry() {
     });
 }
 
-async function deleteEntry(entry: SparbuchEntry) {
-    deleteSparbuchEntry(entry.id);
+async function handelRemoveEntry(entry: SparbuchEntry) {
+    await removeSparbuchEntry(entry.id);
 }
 </script>
 
@@ -82,7 +84,7 @@ async function deleteEntry(entry: SparbuchEntry) {
                         <Input id="ort" class="col-span-11" type="text" v-model="beschreibung" placeholder="Beschreibung" />
                     </div>
                     <div class="col-span-2">
-                        <Button id="save" class="w-full" @click="addEntry">Hinzufügen</Button>
+                        <Button id="save" class="w-full" @click="handleAddEntry">Hinzufügen</Button>
                     </div>
                 </div>
                 <Table>
@@ -119,7 +121,7 @@ async function deleteEntry(entry: SparbuchEntry) {
                                 </Badge>
                             </TableCell>
                             <TableCell class="[--table-padding:0]">
-                                <Button variant="ghost" @click="deleteEntry(entry)">
+                                <Button variant="ghost" @click="handelRemoveEntry(entry)">
                                     <i class="fa-duotone fa-trash"></i>
                                 </Button>
                             </TableCell>

@@ -1,29 +1,27 @@
 <script setup lang="ts">
-import { MoreHorizontal, Search } from "lucide-vue-next";
-
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Toxi } from "@/lib/localORM";
 import { Beschriftung, TYPES } from "@/lib/localORM/tables/beschriftung";
+import { useBeschriftungen } from "@/lib/hooks/Beschriftung";
+import { useDate } from "@/lib/hooks/Date";
 
-const router = useRouter();
+const { push: routerPush } = useRouter();
 const { toast } = useToast();
 
-const beschriftungsDB = new LocalStorage<Beschriftung>("beschriftungen", (data: any) => new Beschriftung(data));
-const beschriftungen: Ref<Beschriftung[]> = ref(await beschriftungsDB.getAll());
+const { add: addBeschriftung, beschriftungen, remove: removeBeschriftung } = useBeschriftungen();
+const { calculateRoundedOffsetInMinutes, getFormattedDate } = useDate();
 
 const minutes = ref("");
 const ort = ref("");
 const akz = ref("");
-const type = ref(TYPES.Eigntumsdelikt);
+const type = ref(TYPES.Eigentumsdelikt);
 
 const props = defineProps(["search"]);
 
-async function createBeschriftung() {
+async function handleAddBeschriftung() {
     if (minutes.value === "" || ort.value === "") {
         toast({
             title: "Fehler",
@@ -34,19 +32,17 @@ async function createBeschriftung() {
         return;
     }
 
-    const date = calculateOffset(-parseInt(minutes.value));
+    const date = calculateRoundedOffsetInMinutes(-parseInt(minutes.value));
 
-    beschriftungsDB.add(
+    addBeschriftung(
         new Beschriftung({
-            datum: date.getDate().toString().padStart(2, "0") + "." + date.getMonth().toString().padStart(2, "0") + "." + date.getFullYear(),
-            uhrzeit: date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0") + " Uhr",
+            datum: getFormattedDate(date, "DD.MM.YYYY"),
+            uhrzeit: getFormattedDate(date, "hh:mm Uhr"),
             ort: ort.value,
             akz: akz.value,
             type: type.value,
         })
     );
-
-    beschriftungen.value = await beschriftungsDB.getAll();
 
     toast({
         title: "Beschriftung hinzugefügt",
@@ -54,32 +50,13 @@ async function createBeschriftung() {
     });
 }
 
-async function deleteBeschriftung(beschriftung: Beschriftung) {
-    beschriftungsDB.delete(beschriftung.id);
-    beschriftungen.value = await beschriftungsDB.getAll();
+async function handleRemoveBeschriftung(beschriftung: Beschriftung) {
+    removeBeschriftung(beschriftung.id);
 
     toast({
         title: "Beschriftung gelöscht",
         description: "Die Beschriftung wurde erfolgreich gelöscht.",
     });
-}
-
-function calculateOffset(offsetInMinutes: number): Date {
-    const now = new Date();
-    const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
-    const offsetDate = new Date(now.getTime() + offsetInMilliseconds);
-
-    const roundedMinutes = Math.round(offsetDate.getMinutes() / 5) * 5;
-    offsetDate.setMinutes(roundedMinutes);
-    if (Math.abs(offsetInMinutes - (offsetDate.getTime() - now.getTime()) / 60000) > 5) {
-        if (offsetInMinutes > 0) {
-            offsetDate.setMinutes(roundedMinutes - 5);
-        } else {
-            offsetDate.setMinutes(roundedMinutes + 5);
-        }
-    }
-
-    return offsetDate;
 }
 </script>
 
@@ -117,7 +94,7 @@ function calculateOffset(offsetInMinutes: number): Date {
                         </Select>
                     </div>
                     <div class="col-span-1">
-                        <Button id="save" class="w-full" @click="createBeschriftung">Hinzufügen</Button>
+                        <Button id="save" class="w-full" @click="handleAddBeschriftung">Hinzufügen</Button>
                     </div>
                 </div>
                 <Table>
@@ -132,7 +109,6 @@ function calculateOffset(offsetInMinutes: number): Date {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <!-- Only show latest 20 entrys -->
                         <TableRow v-for="(beschriftung, analysenIndex) in beschriftungen.filter((x) => x.akz.toLowerCase().includes(props.search.toLowerCase()) || x.datum.toLowerCase().includes(props.search.toLowerCase()) || x.uhrzeit.toLowerCase().includes(props.search.toLowerCase()) || x.ort.toLowerCase().includes(props.search.toLowerCase()) || x.type.toLowerCase().includes(props.search.toLowerCase())).slice(0, 20)">
                             <TableCell> {{ beschriftung.datum }} </TableCell>
                             <TableCell> {{ beschriftung.uhrzeit }} </TableCell>
@@ -143,7 +119,7 @@ function calculateOffset(offsetInMinutes: number): Date {
                                 <Button variant="ghost" @click="beschriftung.copyToClipboard()">
                                     <i class="fa-duotone fa-clipboard"></i>
                                 </Button>
-                                <Button variant="ghost" @click="deleteBeschriftung(beschriftung)">
+                                <Button variant="ghost" @click="handleRemoveBeschriftung(beschriftung)">
                                     <i class="fa-duotone fa-trash"></i>
                                 </Button>
                             </TableCell>
