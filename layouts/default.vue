@@ -19,10 +19,11 @@ const navigation: {
     link: string;
     badge?: string;
 }[] = [
-    { name: "Ballistische Gutachten", icon: "fa-solid fa-gun", link: "/gutachten" },
-    { name: "Toxikologische Analysen", icon: "fa-regular fa-pills", link: "/toxikologisch" },
+    { name: "Ballistische Gutachten", icon: "fa-duotone fa-gun", link: "/gutachten" },
+    { name: "Toxikologische Analysen", icon: "fa-duotone fa-pills", link: "/toxikologisch" },
     { name: "Hieb und Stichwaffen", icon: "fa-duotone fa-knife", link: "/stichwaffen" },
     { name: "Beschriftung", icon: "fa-duotone fa-pencil", link: "/beschriftung" },
+    { name: "DNA Proben", icon: "fa-duotone fa-dna", link: "/dna" },
 ];
 
 const router = useRoute();
@@ -67,17 +68,26 @@ const { getSparbuchAmount } = useSparbuch();
                                                 <DropdownMenuSubContent>
                                                     <DropdownMenuItem @click="dialogType = 'Gutachten'">
                                                         <DialogTrigger>
+                                                            <i class="fa-solid fa-gun mr-3"></i>
                                                             <span>Ballistisches Gutachten</span>
                                                         </DialogTrigger>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem @click="dialogType = 'Drugs'">
                                                         <DialogTrigger>
+                                                            <i class="fa-regular fa-pills mr-3"></i>
                                                             <span>Toxikologische Analyse</span>
                                                         </DialogTrigger>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem @click="dialogType = 'Hieb'">
                                                         <DialogTrigger>
+                                                            <i class="fa-duotone fa-knife mr-3"></i>
                                                             <span>Hieb und Stichwaffen Analyse</span>
+                                                        </DialogTrigger>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem @click="dialogType = 'Dna'">
+                                                        <DialogTrigger>
+                                                            <i class="fa-duotone fa-knife mr-3"></i>
+                                                            <span>DNA Probe</span>
                                                         </DialogTrigger>
                                                     </DropdownMenuItem>
                                                 </DropdownMenuSubContent>
@@ -90,6 +100,7 @@ const { getSparbuchAmount } = useSparbuch();
                                 <DialogGutachten v-if="dialogType == 'Gutachten'" />
                                 <DialogDrugs v-else-if="dialogType == 'Drugs'" />
                                 <DialogHieb v-else-if="dialogType == 'Hieb'" />
+                                <DialogDNA v-else-if="dialogType == 'Dna'" />
                             </DialogContent>
                         </Dialog>
 
