@@ -5,12 +5,11 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { useDate } from "@/lib/hooks/Date";
 import { useDna } from "@/lib/hooks/Dna";
+import { toast } from "vue-sonner";
 
 const router = useRouter();
-const { toast } = useToast();
 const { getFormattedDate } = useDate();
 const { analysen, remove: removeAnalyse } = useDna();
 
@@ -19,8 +18,7 @@ const props = defineProps(["search"]);
 function handleDeleteAnalyse(analysenId: string) {
     removeAnalyse(analysenId);
 
-    toast({
-        title: "Analyse gelöscht",
+    toast("Analyse gelöscht", {
         description: "Die Analyse wurde erfolgreich gelöscht.",
     });
 }

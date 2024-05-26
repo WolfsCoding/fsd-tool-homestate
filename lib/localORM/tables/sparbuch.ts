@@ -1,5 +1,3 @@
-import { useToast } from "@/components/ui/toast";
-import { LocalStorage } from "..";
 import { BaseEntry } from "../BaseEntry";
 
 export class SparbuchEntry extends BaseEntry {

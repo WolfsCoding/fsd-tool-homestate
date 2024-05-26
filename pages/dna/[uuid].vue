@@ -8,11 +8,10 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { useDna } from "@/lib/hooks/Dna";
+import { toast } from "vue-sonner";
 
 const { params } = useRoute();
-const { toast } = useToast();
 const { addDna, removeDna, update: updateAnalyse, get: getAnalyse } = useDna();
 const analyse = ref(await getAnalyse(params.uuid));
 
@@ -36,8 +35,7 @@ async function handelAddDna() {
 
     createDialog.value.name = "";
 
-    toast({
-        title: "Droge hinzugefügt",
+    toast("Droge hinzugefügt", {
         description: "Die Droge wurde erfolgreich hinzugefügt.",
     });
 }
@@ -47,8 +45,7 @@ async function handleRemoveDna(analysenId: string) {
 
     removeDna(analyse.value.id, analysenId);
 
-    toast({
-        title: "Droge gelöscht",
+    toast("Droge gelöscht", {
         description: "Die Droge wurde erfolgreich gelöscht.",
     });
 }
@@ -58,8 +55,7 @@ function saveDetails() {
 
     updateAnalyse(analyse.value.id, analyse.value);
 
-    toast({
-        title: "Details gespeichert",
+    toast("Details gespeichert", {
         description: "Die Details wurden erfolgreich gespeichert.",
     });
 }

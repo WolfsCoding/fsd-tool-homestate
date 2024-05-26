@@ -3,12 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { ENTRY_TYPES, SparbuchEntry } from "@/lib/localORM/tables/sparbuch";
 import { useSparbuch } from "@/lib/hooks/Sparbuch";
 import { useDate } from "@/lib/hooks/Date";
-
-const { toast } = useToast();
+import { toast } from "vue-sonner";
 
 const props = defineProps(["search"]);
 const { addSparbuchEntry, sparbuchEntrys, getSparbuchAmount, removeSparbuchEntry } = useSparbuch();
@@ -20,10 +18,8 @@ const beschreibung = ref("");
 
 async function handleAddEntry() {
     if (betrag.value === "" || beschreibung.value === "" || type.value === null) {
-        toast({
-            title: "Fehler",
+        toast("Fehler", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
 
         return;
@@ -40,8 +36,7 @@ async function handleAddEntry() {
         })
     );
 
-    toast({
-        title: "Eintrag hinzugefügt",
+    toast("Eintrag hinzugefügt", {
         description: "Der Eintrag wurde erfolgreich hinzugefügt.",
     });
 }

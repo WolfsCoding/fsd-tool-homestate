@@ -1,20 +1,17 @@
 <script setup lang="ts">
-import { MoreHorizontal, PlusCircle, Search } from "lucide-vue-next";
+import { MoreHorizontal, PlusCircle } from "lucide-vue-next";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/components/ui/toast/use-toast";
-import { LocalStorage, Stichwaffen, type IStichwaffe } from "@/lib/localORM";
-import { v4 } from "uuid";
+import { LocalStorage, Stichwaffen } from "@/lib/localORM";
+import { toast } from "vue-sonner";
 
 const route = useRoute();
 const router = useRouter();
-const { toast } = useToast();
 
 const stichwaffenDB = new LocalStorage<Stichwaffen>("stichwaffen", (data: any) => new Stichwaffen(data));
 const stichwaffe: Ref<Stichwaffen | undefined> = ref(await stichwaffenDB.get(route.params.uuid));
@@ -27,10 +24,8 @@ function addDNA() {
     if (!stichwaffe.value) return;
 
     if (createDialog.value.name === "") {
-        toast({
-            title: "Fehler",
+        toast("Fehler", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
         return;
     }
@@ -39,8 +34,7 @@ function addDNA() {
     stichwaffenDB.update(route.params.uuid, stichwaffe.value);
     createDialog.value.name = "";
 
-    toast({
-        title: "DNA hinzugefügt",
+    toast("DNA hinzugefügt", {
         description: "Die DNA wurde erfolgreich hinzugefügt.",
     });
 }
@@ -53,8 +47,7 @@ function deleteDNA(dna: string) {
     stichwaffe.value.weapons.find((x) => x.id == route.params.weapon_uuid)?.dnas.splice(t.dnas.indexOf(dna), 1);
     stichwaffenDB.update(route.params.uuid, stichwaffe.value);
 
-    toast({
-        title: "DNA gelöscht",
+    toast("DNA gelöscht", {
         description: "Die DNA wurde erfolgreich gelöscht.",
     });
 }
@@ -64,8 +57,7 @@ function saveDetails() {
 
     stichwaffenDB.update(route.params.uuid, stichwaffe.value);
 
-    toast({
-        title: "Änderungen gespeichert",
+    toast("Änderungen gespeichert", {
         description: "Die Änderungen wurden erfolgreich gespeichert.",
     });
 }

@@ -21,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { LocalStorage, Stichwaffen } from "@/lib/localORM";
-import { useToast } from "../ui/toast";
+import { Stichwaffen } from "@/lib/localORM";
 import { useSettings } from "@/lib/hooks/Settings";
 import { useStichwaffen } from "@/lib/hooks/Stichwaffen";
+import { toast } from "vue-sonner";
 
 const { settings } = useSettings();
 const { addStichwaffe } = useStichwaffen();
@@ -34,10 +34,8 @@ const gutachter = ref(settings.value.gutachter);
 
 async function create() {
     if (akz.value === "" || gutachter.value === "") {
-        useToast().toast({
-            title: "Fehler",
+        toast("Fehler", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
         return;
     }
@@ -52,8 +50,7 @@ async function create() {
     akz.value = "";
     gutachter.value = "";
 
-    useToast().toast({
-        title: "Analyse erstellt",
+    toast("Analyse erstellt", {
         description: "Die Analyse wurde erfolgreich erstellt.",
     });
 

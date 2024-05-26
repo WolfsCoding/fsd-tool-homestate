@@ -1,8 +1,6 @@
 import { TextBuilder } from "@/lib/utils";
 import { BaseEntry } from "../BaseEntry";
-import { useToast } from "@/components/ui/toast";
-
-const { toast } = useToast();
+import { toast } from "vue-sonner";
 
 export interface IStichwaffe {
     id: string;
@@ -49,8 +47,7 @@ export class Stichwaffen extends BaseEntry {
 
         textBuilder.copyClipboard();
 
-        toast({
-            title: "Analyse kopiert",
+        toast("Analyse kopiert", {
             description: "Die Analyse wurde erfolgreich in deine Zwischenablage kopiert.",
         });
     }

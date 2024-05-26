@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { Toxi } from "@/lib/localORM";
-import { useToast } from "../ui/toast";
+import { toast } from "vue-sonner";
 import { useSettings } from "@/lib/hooks/Settings";
 import { useToxi } from "@/lib/hooks/Toxikologisch";
 
@@ -39,10 +39,8 @@ const forName = ref("");
 
 async function create() {
     if (!akz.value || !gutachter.value || !forName.value) {
-        useToast().toast({
-            title: "Fehler beim Erstellen",
+        toast("Fehler beim Erstellen", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
         return;
     }
@@ -59,8 +57,7 @@ async function create() {
     gutachter.value = "";
     forName.value = "";
 
-    useToast().toast({
-        title: "Analyse erstellt",
+    toast("Analyse erstellt", {
         description: "Die Analyse wurde erfolgreich erstellt.",
     });
 

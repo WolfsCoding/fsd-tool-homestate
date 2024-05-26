@@ -1,8 +1,6 @@
 import { TextBuilder } from "@/lib/utils";
 import { BaseEntry } from "../BaseEntry";
-import { useToast } from "@/components/ui/toast";
-
-const { toast } = useToast();
+import { toast } from "vue-sonner";
 
 export interface IWeapon {
     id: string;
@@ -74,8 +72,7 @@ export class Gutachten extends BaseEntry {
 
         textBuilder.copyClipboard();
 
-        toast({
-            title: "Gutachten kopiert",
+        toast("Gutachten kopiert", {
             description: "Das Gutachten wurde erfolgreich in deine Zwischenablage kopiert.",
         });
     }

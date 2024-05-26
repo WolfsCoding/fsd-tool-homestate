@@ -8,15 +8,14 @@ import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { LocalStorage, Stichwaffen, type IStichwaffe } from "@/lib/localORM";
 import { v4 } from "uuid";
 import { TextBuilder } from "@/lib/utils";
 import { useStichwaffen } from "@/lib/hooks/Stichwaffen";
+import { toast } from "vue-sonner";
 
 const { params } = useRoute();
 const router = useRouter();
-const { toast } = useToast();
 const { updateStichwaffe, getStichwaffe } = useStichwaffen();
 
 const stichwaffe = ref(await getStichwaffe(params.uuid));
@@ -34,8 +33,7 @@ function saveDetails() {
 
     updateStichwaffe(stichwaffe.value.id, stichwaffe.value);
 
-    toast({
-        title: "Details gespeichert",
+    toast("Details gespeichert", {
         description: "Die Details wurden erfolgreich gespeichert.",
     });
 }
@@ -49,8 +47,7 @@ function addWeapon() {
     createDialog.value.name = "";
     createDialog.value.dnas = [];
 
-    toast({
-        title: "Waffe hinzugefügt",
+    toast("Waffe hinzugefügt", {
         description: "Die Waffe wurde erfolgreich hinzugefügt.",
     });
 }
@@ -63,8 +60,7 @@ function deleteWeapon(weaponId: string) {
     stichwaffe.value.weapons.splice(weaponIndex, 1);
     updateStichwaffe(stichwaffe.value.id, stichwaffe.value);
 
-    toast({
-        title: "Waffe gelöscht",
+    toast("Waffe gelöscht", {
         description: "Die Waffe wurde erfolgreich gelöscht.",
     });
 }

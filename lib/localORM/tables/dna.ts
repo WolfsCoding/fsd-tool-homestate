@@ -1,9 +1,8 @@
 import { TextBuilder } from "@/lib/utils";
 import { BaseEntry } from "../BaseEntry";
-import { useToast } from "@/components/ui/toast";
 import { useDate } from "@/lib/hooks/Date";
+import { toast } from "vue-sonner";
 
-const { toast } = useToast();
 const { getFormattedDate } = useDate();
 
 export class DNA extends BaseEntry {
@@ -48,8 +47,7 @@ export class DNA extends BaseEntry {
 
         builder.copyClipboard();
 
-        toast({
-            title: "Analyse kopiert",
+        toast("Analyse kopiert", {
             description: "Die Analyse wurde erfolgreich in deine Zwischenablage kopiert.",
         });
     }

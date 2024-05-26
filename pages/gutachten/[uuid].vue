@@ -13,16 +13,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { Gutachten, WeaponNames } from "@/lib/localORM";
 import { useGutachten } from "@/lib/hooks/Gutachten";
+import { toast } from "vue-sonner";
 
 const { $locally }: { $locally: any } = useNuxtApp() as any;
 const route = useRoute();
-const { toast } = useToast();
 
 const { getById: getGutachtenById, update: updateGutachten, addWeapon: addWeaponToGutachten, removeWeapon: removeWeaponFromGutachten, addSchmauchspuren: addSchmauchspurenToGutachten, removeSchmauchspuren: removeSchmauchspurenFromGutachten } = useGutachten();
-const gutachten = ref<Gutachten | undefined>(await getGutachtenById(route.params.uuid));
+const gutachten = await getGutachtenById(route.params.uuid);
 
 const createWeaponDialog = ref({
     name: "",
@@ -53,8 +52,7 @@ function handleAddWeapon() {
     });
     createWeaponDialog.value = { name: "", model: "", serial: "", schmauchspuren: "false", zustand: "warm", munition: 0 };
 
-    toast({
-        title: "Waffe hinzugefügt",
+    toast("Waffe hinzugefügt", {
         description: "Die Waffe wurde erfolgreich hinzugefügt.",
     });
 }
@@ -64,8 +62,7 @@ function handleRemoveWeapon(uuid: string) {
 
     removeWeaponFromGutachten(gutachten.value.id, uuid);
 
-    toast({
-        title: "Waffe entfernt",
+    toast("Waffe entfernt", {
         description: "Die Waffe wurde erfolgreich entfernt.",
     });
 }
@@ -75,8 +72,7 @@ function handleAddSchmauchspuren() {
 
     addSchmauchspurenToGutachten(gutachten.value.id, createSchmauchspurenDialog.value.name, createSchmauchspurenDialog.value.schmauchspuren == "true");
 
-    toast({
-        title: "Schmauchspurentest hinzugefügt",
+    toast("Schmauchspurentest hinzugefügt", {
         description: "Der Schmauchspurentest wurde erfolgreich hinzugefügt.",
     });
 }
@@ -86,8 +82,7 @@ function handleRemoveSchmauchspuren(uuid: string) {
 
     removeSchmauchspurenFromGutachten(gutachten.value.id, uuid);
 
-    toast({
-        title: "Schmauchspurentest entfernt",
+    toast("Schmauchspurentest entfernt", {
         description: "Die Schmauchspurentest wurden erfolgreich entfernt.",
     });
 }
@@ -97,8 +92,7 @@ function saveDetails() {
 
     updateGutachten(gutachten.value.id, gutachten.value);
 
-    toast({
-        title: "Details gespeichert",
+    toast("Details gespeichert", {
         description: "Die Details wurden erfolgreich gespeichert.",
     });
 }

@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { MoreHorizontal, Search } from "lucide-vue-next";
+import { MoreHorizontal } from "lucide-vue-next";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { useToxi } from "@/lib/hooks/Toxikologisch";
 import { useDate } from "@/lib/hooks/Date";
+import { toast } from "vue-sonner";
 
 const router = useRouter();
-const { toast } = useToast();
 const { getFormattedDate } = useDate();
 const { analysen, remove: removeAnalyse } = useToxi();
 
@@ -19,8 +18,7 @@ const props = defineProps(["search"]);
 function handleDeleteToxi(analysenId: string) {
     removeAnalyse(analysenId);
 
-    toast({
-        title: "Analyse gelöscht",
+    toast("Analyse gelöscht", {
         description: "Die Analyse wurde erfolgreich gelöscht.",
     });
 }

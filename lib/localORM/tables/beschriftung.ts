@@ -1,7 +1,6 @@
 import { TextBuilder } from "@/lib/utils";
 import { BaseEntry } from "../BaseEntry";
-import { useToast } from "@/components/ui/toast";
-
+import { toast } from "vue-sonner";
 export class Beschriftung extends BaseEntry {
     datum: string = "";
     uhrzeit: string = "";
@@ -47,8 +46,7 @@ export class Beschriftung extends BaseEntry {
 
         new TextBuilder().addLine(text).copyClipboard();
 
-        useToast().toast({
-            title: "Beschriftung kopiert",
+        toast("Beschriftung kopiert", {
             description: "Die Beschriftung wurde in deine Zwischenablage kopiert.",
         });
     }

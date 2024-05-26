@@ -3,13 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { Beschriftung, TYPES } from "@/lib/localORM/tables/beschriftung";
 import { useBeschriftungen } from "@/lib/hooks/Beschriftung";
 import { useDate } from "@/lib/hooks/Date";
-
-const { push: routerPush } = useRouter();
-const { toast } = useToast();
+import { toast } from "vue-sonner";
 
 const { add: addBeschriftung, beschriftungen, remove: removeBeschriftung } = useBeschriftungen();
 const { calculateRoundedOffsetInMinutes, getFormattedDate } = useDate();
@@ -23,10 +20,8 @@ const props = defineProps(["search"]);
 
 async function handleAddBeschriftung() {
     if (minutes.value === "" || ort.value === "") {
-        toast({
-            title: "Fehler",
+        toast("Fehler", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
 
         return;
@@ -44,8 +39,7 @@ async function handleAddBeschriftung() {
         })
     );
 
-    toast({
-        title: "Beschriftung hinzugefügt",
+    toast("Beschriftung hinzugefügt", {
         description: "Die Beschriftung wurde erfolgreich hinzugefügt.",
     });
 }
@@ -53,8 +47,7 @@ async function handleAddBeschriftung() {
 async function handleRemoveBeschriftung(beschriftung: Beschriftung) {
     removeBeschriftung(beschriftung.id);
 
-    toast({
-        title: "Beschriftung gelöscht",
+    toast("Beschriftung gelöscht", {
         description: "Die Beschriftung wurde erfolgreich gelöscht.",
     });
 }

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import Toaster from "@/components/ui/toast/Toaster.vue";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 
 import { SpeedInsights } from "@vercel/speed-insights/nuxt";
@@ -145,20 +144,20 @@ const { getSparbuchAmount } = useSparbuch();
                 <DialogSettings />
             </header>
 
-            <ContextMenu>
-                <ContextMenuTrigger>
-                    <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-[#131314] rounded-2xl mb-4 mr-4">
-                        <NuxtPage :search="search" />
-                    </main>
-                </ContextMenuTrigger>
-                <ContextMenuContent>
-                    <!-- ToDo: Make context Menu -->
-                    <!-- <ContextMenuItem>Profile</ContextMenuItem>
+            <!-- <ContextMenu>
+                <ContextMenuTrigger> -->
+            <main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-[#131314] rounded-2xl mb-4 mr-4">
+                <NuxtPage :search="search" />
+            </main>
+            <!-- </ContextMenuTrigger>
+                    <ContextMenuContent>
+                    ToDo: Make context Menu
+                    <ContextMenuItem>Profile</ContextMenuItem>
                     <ContextMenuItem>Billing</ContextMenuItem>
                     <ContextMenuItem>Team</ContextMenuItem>
-                    <ContextMenuItem>Subscription</ContextMenuItem> -->
+                    <ContextMenuItem>Subscription</ContextMenuItem>
                 </ContextMenuContent>
-            </ContextMenu>
+            </ContextMenu> -->
         </div>
         <Toaster />
     </div>

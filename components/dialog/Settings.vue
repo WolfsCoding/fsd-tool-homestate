@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { Switch } from "../ui/switch";
-import { useToast } from "../ui/toast";
+import { toast } from "vue-sonner";
 import { useSettings } from "@/lib/hooks/Settings";
 
 const { settings, setSettings } = useSettings();
@@ -38,8 +38,7 @@ const { settings, setSettings } = useSettings();
 function saveSettings() {
     setSettings(settings.value);
 
-    useToast().toast({
-        title: "Einstellungen gespeichert",
+    toast("Einstellungen gespeichert", {
         description: "Die Einstellungen wurden erfolgreich gespeichert.",
     });
 }

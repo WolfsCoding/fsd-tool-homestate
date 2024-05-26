@@ -1,8 +1,6 @@
-import { useToast } from "@/components/ui/toast";
+import { toast } from "vue-sonner";
 import { LocalStorage } from "../localORM";
 import { ENTRY_TYPES, SparbuchEntry } from "../localORM/tables/sparbuch";
-
-const { toast } = useToast();
 
 const sparbuchDB = new LocalStorage<SparbuchEntry>("sparbuch", (data: any) => new SparbuchEntry(data));
 const sparbuchEntrys: Ref<SparbuchEntry[]> = ref(await sparbuchDB.getAll());
@@ -35,8 +33,7 @@ async function removeSparbuchEntry(id: string) {
 
     sparbuchEntrys.value = await sparbuchDB.getAll();
 
-    toast({
-        title: "Erfolgreich gelöscht",
+    toast("Erfolgreich gelöscht", {
         description: "Der Eintrag wurde erfolgreich gelöscht",
     });
 }

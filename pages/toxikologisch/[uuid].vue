@@ -8,12 +8,11 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { drugs } from "@/data/Drugs";
 import { useToxi } from "@/lib/hooks/Toxikologisch";
+import { toast } from "vue-sonner";
 
 const { params } = useRoute();
-const { toast } = useToast();
 const { get: getToxi, update: updateToxi, addDrug, removeDrug } = useToxi();
 const analyse = await getToxi(params.uuid);
 
@@ -44,8 +43,7 @@ async function handelAddDrug() {
         variables: createDialog.value.variables,
     });
 
-    toast({
-        title: "Droge hinzugefügt",
+    toast("Droge hinzugefügt", {
         description: "Die Droge wurde erfolgreich hinzugefügt.",
     });
 }
@@ -55,8 +53,7 @@ async function handleRemoveDrug(drugId: string) {
 
     removeDrug(params.uuid, drugId);
 
-    toast({
-        title: "Droge gelöscht",
+    toast("Droge gelöscht", {
         description: "Die Droge wurde erfolgreich gelöscht.",
     });
 }
@@ -71,8 +68,7 @@ function saveDetails() {
 
     updateToxi(analyse.value.id, analyse.value);
 
-    toast({
-        title: "Details gespeichert",
+    toast("Details gespeichert", {
         description: "Die Details wurden erfolgreich gespeichert.",
     });
 }

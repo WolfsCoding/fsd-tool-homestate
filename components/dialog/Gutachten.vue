@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { Gutachten, LocalStorage, SingleLocalStorage } from "@/lib/localORM";
-import { useToast } from "../ui/toast";
+import { toast } from "vue-sonner";
 import { useSettings } from "@/lib/hooks/Settings";
 import { useGutachten } from "@/lib/hooks/Gutachten";
 
@@ -34,10 +34,8 @@ const gutachter = ref(settings.value.gutachter);
 
 async function createGutachten() {
     if (akz.value === "" || gutachter.value === "") {
-        useToast().toast({
-            title: "Fehler",
+        toast("Fehler", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
 
         return;
@@ -50,8 +48,7 @@ async function createGutachten() {
 
     addGutachten(createdGutachten);
 
-    useToast().toast({
-        title: "Gutachten erfolgreicherstellt",
+    toast("Gutachten erfolgreicherstellt", {
         description: "UUID: " + createdGutachten.id,
     });
 

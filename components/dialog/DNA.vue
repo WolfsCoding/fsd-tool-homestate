@@ -25,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "../ui/toast";
 import { useSettings } from "@/lib/hooks/Settings";
 import { useDna } from "@/lib/hooks/Dna";
 import { DNA } from "@/lib/localORM/tables/dna";
+import { toast } from "vue-sonner";
 
 const { settings } = useSettings();
 const { add: addAnalyse } = useDna();
@@ -39,10 +39,8 @@ const forName = ref("");
 
 async function create() {
     if (!akz.value || !gutachter.value || !forName.value) {
-        useToast().toast({
-            title: "Fehler beim Erstellen",
+        toast("Fehler beim Erstellen", {
             description: "Bitte fülle alle Felder aus.",
-            variant: "destructive",
         });
         return;
     }
@@ -59,8 +57,7 @@ async function create() {
     gutachter.value = "";
     forName.value = "";
 
-    useToast().toast({
-        title: "Analyse erstellt",
+    toast("Analyse erstellt", {
         description: "Die Analyse wurde erfolgreich erstellt.",
     });
 
