@@ -1,32 +1,9 @@
 <script setup lang="ts">
-import {
-  CircleUser,
-  File,
-  Home,
-  LineChart,
-  ListFilter,
-  MoreHorizontal,
-  Package,
-  Package2,
-  PanelLeft,
-  PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
-  Users2,
-} from 'lucide-vue-next';
-import { v4 } from 'uuid';
+import { MoreHorizontal, PlusCircle } from 'lucide-vue-next';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,7 +21,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
   Table,
   TableBody,
@@ -63,17 +39,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Gutachten, WeaponNames } from '@/lib/localORM';
+import { WeaponNames } from '@/lib/localORM';
 import { useGutachten } from '@/lib/hooks/Gutachten';
 import { toast } from 'vue-sonner';
+import { useDialog } from '@/components/root/useDialog';
 
 const { $locally }: { $locally: any } = useNuxtApp() as any;
 const route = useRoute();
@@ -87,6 +56,80 @@ const {
   removeSchmauchspuren: removeSchmauchspurenFromGutachten,
 } = useGutachten();
 const gutachten = await getGutachtenById(route.params.uuid);
+
+const { openDialog } = useDialog();
+
+async function handleEditWeapon(weappnId: string) {
+  const weapon = gutachten.value?.weapons.find((w) => w.id === weappnId);
+  if (!weapon) return;
+
+  const result = await openDialog(
+    'Waffe bearbeiten',
+    'Bearbeite die Waffe hier. Klicke auf speichern, wenn du fertig bist.',
+    [
+      {
+        label: 'Name',
+        type: 'text',
+        value: weapon?.name || '',
+      },
+      {
+        label: 'Model',
+        type: 'select',
+        value: weapon?.model || '',
+        options: WeaponNames.map((weapon) => ({
+          label: weapon.title,
+          type: 'group',
+          options: weapon.models.map((model) => ({
+            label: model,
+            type: 'item',
+            value: weapon.title + ' ' + model,
+          })),
+        })),
+      },
+      {
+        label: 'Seriennummer',
+        type: 'text',
+        value: weapon?.serial || '',
+      },
+      {
+        label: 'Schmauchspuren',
+        type: 'select',
+        value: weapon?.schmauchspuren ? 'Ja' : 'Nein',
+        options: [
+          { type: 'item', label: 'Ja', value: 'Ja' },
+          { type: 'item', label: 'Nein', value: 'Nein' },
+        ],
+      },
+      {
+        label: 'Zustand',
+        type: 'select',
+        value: weapon.zustand?.charAt(0).toUpperCase() + weapon.zustand?.slice(1) || 'kalt',
+        options: [
+          { type: 'item', label: 'Kalt', value: 'kalt' },
+          { type: 'item', label: 'Warm', value: 'warm' },
+        ],
+      },
+      {
+        label: 'Munition',
+        type: 'text',
+        value: weapon?.munition.toString() || '0',
+      },
+    ]
+  );
+
+  if (!result) return;
+
+  weapon.name = result.get('Name') || '';
+  weapon.model = result.get('Model') || '';
+  weapon.serial = result.get('Seriennummer') || '';
+  weapon.schmauchspuren = result.get('Schmauchspuren') === 'Ja';
+  weapon.zustand = result.get('Zustand')?.toLocaleLowerCase() || 'kalt';
+  weapon.munition = parseInt(result.get('Munition') || '0');
+
+  if (!gutachten.value) return;
+
+  updateGutachten(gutachten.value.id, gutachten.value);
+}
 
 const createWeaponDialog = ref({
   name: '',
@@ -416,7 +459,9 @@ function saveDetails() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                        <DropdownMenuItem>Bearbeiten</DropdownMenuItem>
+                        <DropdownMenuItem @click="handleEditWeapon(weapon.id)"
+                          >Bearbeiten</DropdownMenuItem
+                        >
                         <DropdownMenuItem
                           @click="
                             () => {
