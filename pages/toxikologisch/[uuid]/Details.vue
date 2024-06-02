@@ -39,10 +39,9 @@ import { useToxi } from '@/lib/hooks/Toxikologisch';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 
-const { params } = useRoute();
-const { getTab, switchTab } = useCustomRoute();
+const { getTab, switchTab, route } = useCustomRoute();
 const { get: getToxi, update: updateToxi, addDrug, removeDrug } = useToxi();
-const analyse = await getToxi(params.uuid);
+const analyse = await getToxi(route.params.uuid);
 
 const activeTab = ref('Details');
 
