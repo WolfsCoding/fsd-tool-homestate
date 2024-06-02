@@ -74,7 +74,7 @@ function handleRemoveGutachten(id: string) {
                   x.gutachter.toLowerCase().includes(props.search.toLowerCase())
               )"
               :key="gutachtenItem.akz"
-              :href="'/gutachten/' + gutachtenItem.id"
+              :href="'/gutachten/' + gutachtenItem.id + '/Waffen'"
             >
               <TableCell> {{ gutachtenItem.akz }} </TableCell>
               <TableCell>
@@ -90,7 +90,9 @@ function handleRemoveGutachten(id: string) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                    <DropdownMenuItem @click="router.push('/gutachten/' + gutachtenItem.id)">
+                    <DropdownMenuItem
+                      @click="router.push('/gutachten/' + gutachtenItem.id + '/Waffen')"
+                    >
                       Öffnen
                     </DropdownMenuItem>
                     <DropdownMenuItem @click="gutachtenItem.copyToClipboard()"

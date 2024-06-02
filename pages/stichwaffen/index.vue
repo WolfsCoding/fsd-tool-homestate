@@ -74,7 +74,7 @@ function handleDeleteStichwaffe(analyseId: string) {
                   x.gutachter.toLowerCase().includes(props.search.toLowerCase())
               )"
               :key="analyse.akz"
-              :href="'/stichwaffen/' + analyse.id"
+              :href="'/stichwaffen/' + analyse.id + '/Waffen'"
             >
               <TableCell> {{ analyse.akz }} </TableCell>
               <TableCell>
@@ -90,7 +90,9 @@ function handleDeleteStichwaffe(analyseId: string) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                    <DropdownMenuItem @click="router.push('/stichwaffen/' + analyse.id)">
+                    <DropdownMenuItem
+                      @click="router.push('/stichwaffen/' + analyse.id + '/Waffen')"
+                    >
                       Öffnen
                     </DropdownMenuItem>
                     <DropdownMenuItem @click="analyse.copyToClipboard()"
