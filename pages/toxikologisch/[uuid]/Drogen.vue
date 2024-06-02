@@ -41,7 +41,7 @@ import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 
 const { switchTab, route } = useCustomRoute();
 const { get: getToxi, addDrug, removeDrug } = useToxi();
-const analyse = await getToxi(route.sparams.uuid);
+const analyse = await getToxi(route.params.uuid);
 
 const activeTab = ref('Drogen');
 
