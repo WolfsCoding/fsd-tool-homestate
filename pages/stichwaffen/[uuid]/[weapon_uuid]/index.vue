@@ -31,7 +31,6 @@ import { LocalStorage, Stichwaffen } from '@/lib/localORM';
 import { toast } from 'vue-sonner';
 
 const route = useRoute();
-const router = useRouter();
 
 const stichwaffenDB = new LocalStorage<Stichwaffen>(
   'stichwaffen',
