@@ -16,7 +16,6 @@ class Dialog {
 
   open(): Promise<Map<string, string>> {
     dialogs.value.push(this);
-    console.log(dialogs.value);
 
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
@@ -25,7 +24,6 @@ class Dialog {
   }
 
   close() {
-    console.log('close');
     if (this.resolve && this.reject) {
       this.reject('Canceled by user');
     }
