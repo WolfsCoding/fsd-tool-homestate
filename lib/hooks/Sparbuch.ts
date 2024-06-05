@@ -24,7 +24,7 @@ function getSparbuchAmount(): ComputedRef<number> {
       amount = Math.round(amount * 100) / 100;
     }
 
-    return amount;
+    return Math.round(amount * 100) / 100;
   });
 }
 
