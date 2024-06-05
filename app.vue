@@ -38,11 +38,11 @@ interface AlertData {
   description: string;
 }
 
-const { data: alerts, refresh: refreshAlerts } = await useAsyncData<AlertData[]>(
-  'alerts',
+const { data: alerts, refresh: refreshAlerts } = useAsyncData<AlertData[]>(
+  'fsd_alerts',
   async () => {
     const { data } = await client
-      .from('alerts')
+      .from('fsd_alerts')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -52,8 +52,8 @@ const { data: alerts, refresh: refreshAlerts } = await useAsyncData<AlertData[]>
 
 onMounted(() => {
   realtimeChannel = client
-    .channel('public:alerts')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'alerts' }, () =>
+    .channel('public:fsd_alerts')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'fsd_alerts' }, () =>
       refreshAlerts()
     );
 
