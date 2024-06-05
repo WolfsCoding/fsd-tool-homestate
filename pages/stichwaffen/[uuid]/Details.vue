@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { MoreHorizontal, PlusCircle, Search } from 'lucide-vue-next';
-
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
   Breadcrumb,
@@ -14,7 +11,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { type IStichwaffe } from '@/lib/localORM';
-import { v4 } from 'uuid';
 import { useStichwaffen } from '@/lib/hooks/Stichwaffen';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';

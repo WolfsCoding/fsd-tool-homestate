@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import { MoreHorizontal, PlusCircle } from 'lucide-vue-next';
-
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
   Breadcrumb,
@@ -18,46 +9,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { drugs } from '@/data/Drugs';
 import { useToxi } from '@/lib/hooks/Toxikologisch';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 
-const { getTab, switchTab, route } = useCustomRoute();
+const { switchTab, route } = useCustomRoute();
 const { get: getToxi, update: updateToxi, addDrug, removeDrug } = useToxi();
 const analyse = await getToxi(route.params.uuid);
 
 const activeTab = ref('Details');
-
-const createDialog: Ref<{
-  name: string;
-  amount: number;
-  tested: number;
-  unit: string;
-  variables: { key: string; name: string; value: string }[];
-}> = ref({
-  name: '',
-  amount: 0,
-  tested: 0,
-  unit: '',
-  variables: [],
-});
 
 function saveDetails() {
   if (!analyse.value) return;

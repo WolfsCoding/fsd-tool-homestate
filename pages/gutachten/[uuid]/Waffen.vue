@@ -55,8 +55,6 @@ const {
 } = useGutachten();
 
 const gutachten = await getGutachtenById(route.params.uuid);
-console.log(gutachten);
-console.log(route.params);
 
 const { openDialog } = useDialog();
 

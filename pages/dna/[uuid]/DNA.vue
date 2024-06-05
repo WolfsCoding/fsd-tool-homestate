@@ -41,7 +41,6 @@ import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 const { route, getTab, switchTab } = useCustomRoute();
 const { addDna, removeDna, update: updateAnalyse, get: getAnalyse } = useDna();
 const analyse = ref(await getAnalyse(route.params.uuid));
-console.log(route);
 
 const activeTab = ref('DNA');
 
