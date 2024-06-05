@@ -1,8 +1,18 @@
-import { v4 } from "uuid";
-import { LocalStorage, Toxi, type IDrug } from "../localORM";
-import { drugs } from "@/data/Drugs";
+import { v4 } from 'uuid';
+import { LocalStorage, Toxi, type IDrug } from '../localORM';
+import type { DrugData } from '@/data/Drugs';
 
-const toxiDB = new LocalStorage<Toxi>("toxi", (data: any) => new Toxi(data));
+const client = useSupabaseClient();
+const { data: drugs, refresh: refreshAlerts } = useAsyncData<DrugData[]>('fsd_drugs', async () => {
+  const { data } = await client
+    .from('fsd_drugs')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  return data as DrugData[];
+});
+
+const toxiDB = new LocalStorage<Toxi>('toxi', (data: any) => new Toxi(data));
 const analysen: Ref<Toxi[]> = ref(await toxiDB.getAll());
 
 async function add(toxi: Toxi) {
@@ -52,7 +62,7 @@ async function addDrug(
             return { key: x.key, value: x.value };
           })
         )
-        .getAsString() || "",
+        .getAsString() || '',
   });
 
   await update(toxiId, toxi);

@@ -34,10 +34,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { drugs } from '@/data/Drugs';
+import { type DrugData } from '@/data/Drugs';
 import { useToxi } from '@/lib/hooks/Toxikologisch';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';
+import type { RealtimeChannel } from '@supabase/supabase-js';
+
+const client = useSupabaseClient();
+let realtimeChannel: RealtimeChannel;
+
+const { data: drugs, refresh: refreshAlerts } = useAsyncData<DrugData[]>('fsd_drugs', async () => {
+  const { data } = await client
+    .from('fsd_drugs')
+    .select(
+      `
+      *,
+      fsd_drugs_variables (
+        name, placeholder
+      )
+    `
+    )
+    .order('created_at', { ascending: false });
+
+  data?.map((x: any) => {
+    x.variables = x.fsd_drugs_variables || [];
+
+    delete x.fsd_drugs_variables;
+
+    return x;
+  });
+
+  return data as DrugData[];
+});
+
+if (!drugs.value) drugs.value = [];
+
+onMounted(() => {
+  realtimeChannel = client
+    .channel('public:fsd_drugs')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'fsd_drugs' }, () =>
+      refreshAlerts()
+    );
+
+  realtimeChannel.subscribe();
+});
+
+onUnmounted(() => {
+  client.removeChannel(realtimeChannel);
+});
 
 const { switchTab, route } = useCustomRoute();
 const { get: getToxi, addDrug, removeDrug } = useToxi();
@@ -86,7 +130,7 @@ async function handleRemoveDrug(drugId: string) {
 }
 
 function selectDrug() {
-  const drug = drugs.find((x) => x.name === createDialog.value.name);
+  const drug = drugs.value.find((x) => x.name === createDialog.value.name);
   createDialog.value.variables =
     drug?.variables.map((x) => ({ key: x.placeholder, name: x.name, value: '' })) || [];
 }
