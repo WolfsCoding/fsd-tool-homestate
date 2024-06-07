@@ -16,7 +16,7 @@ function getSparbuchAmount(): ComputedRef<number> {
       if (entry.type == ENTRY_TYPES.Einzahlung) {
         amount += entry.betrag;
       } else if (entry.type == ENTRY_TYPES.Auszahlung) {
-        amount -= entry.betrag;
+        amount += entry.betrag;
       } else if (entry.type == ENTRY_TYPES.Zinsen) {
         amount += entry.betrag;
       }
