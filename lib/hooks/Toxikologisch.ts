@@ -1,16 +1,37 @@
 import { v4 } from 'uuid';
 import { LocalStorage, Toxi, type IDrug } from '../localORM';
-import type { DrugData } from '@/data/Drugs';
+import { drugsData, type DrugData } from '@/data/Drugs';
 
-const client = useSupabaseClient();
-const { data: drugs, refresh: refreshAlerts } = useAsyncData<DrugData[]>('fsd_drugs', async () => {
-  const { data } = await client
-    .from('fsd_drugs')
-    .select('*')
-    .order('created_at', { ascending: false });
+const config = useRuntimeConfig();
 
-  return data as DrugData[];
-});
+const drugs = drugsData;
+// const { data: drugs, refresh: refreshAlerts } = await useAsyncData<DrugData[]>(
+//   'fsd_drugs',
+//   async () => {
+//     const client = useSupabaseClient();
+//     const { data } = await client
+//       .from('fsd_drugs')
+//       .select(
+//         `
+//       *,
+//       fsd_drugs_variables (
+//         name, placeholder
+//       )
+//     `
+//       )
+//       .order('created_at', { ascending: false });
+
+//     data?.map((x: any) => {
+//       x.variables = x.fsd_drugs_variables || [];
+
+//       delete x.fsd_drugs_variables;
+
+//       return x;
+//     });
+
+//     return (data as DrugData[]) || [];
+//   }
+// );
 
 const toxiDB = new LocalStorage<Toxi>('toxi', (data: any) => new Toxi(data));
 const analysen: Ref<Toxi[]> = ref(await toxiDB.getAll());
@@ -48,21 +69,19 @@ async function addDrug(
 
   if (!toxi) return;
 
+  const analyse = drugs.value?.find((x) => x.name === drug.name)?.analyse;
+
+  drug.variables.forEach((x) => {
+    analyse?.replace(x.key, x.value);
+  });
+
   toxi.drugs.push({
     id: v4(),
     name: drug.name,
     amount: drug.amount,
     tested: drug.tested,
     unit: drug.unit,
-    analyse:
-      drugs
-        .find((x) => x.name === drug.name)
-        ?.analyse.replaceVariables(
-          drug.variables.map((x) => {
-            return { key: x.key, value: x.value };
-          })
-        )
-        .getAsString() || '',
+    analyse: analyse || '',
   });
 
   await update(toxiId, toxi);

@@ -34,54 +34,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { type DrugData } from '@/data/Drugs';
+import { type DrugData, drugsData } from '@/data/Drugs';
 import { useToxi } from '@/lib/hooks/Toxikologisch';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
+const drugs = drugsData;
+
 const client = useSupabaseClient();
 let realtimeChannel: RealtimeChannel;
 
-const { data: drugs, refresh: refreshAlerts } = useAsyncData<DrugData[]>('fsd_drugs', async () => {
-  const { data } = await client
-    .from('fsd_drugs')
-    .select(
-      `
-      *,
-      fsd_drugs_variables (
-        name, placeholder
-      )
-    `
-    )
-    .order('created_at', { ascending: false });
+// const { data: drugs, refresh: refreshAlerts } = useAsyncData<DrugData[]>('fsd_drugs', async () => {
+//   const { data } = await client
+//     .from('fsd_drugs')
+//     .select(
+//       `
+//       *,
+//       fsd_drugs_variables (
+//         name, placeholder
+//       )
+//     `
+//     )
+//     .order('created_at', { ascending: false });
 
-  data?.map((x: any) => {
-    x.variables = x.fsd_drugs_variables || [];
+//   data?.map((x: any) => {
+//     x.variables = x.fsd_drugs_variables || [];
 
-    delete x.fsd_drugs_variables;
+//     delete x.fsd_drugs_variables;
 
-    return x;
-  });
+//     return x;
+//   });
 
-  return data as DrugData[];
-});
+//   return data as DrugData[];
+// });
 
 if (!drugs.value) drugs.value = [];
 
-onMounted(() => {
-  realtimeChannel = client
-    .channel('public:fsd_drugs')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'fsd_drugs' }, () =>
-      refreshAlerts()
-    );
+// onMounted(() => {
+//   realtimeChannel = client
+//     .channel('public:fsd_drugs')
+//     .on('postgres_changes', { event: '*', schema: 'public', table: 'fsd_drugs' }, () =>
+//       refreshAlerts()
+//     );
 
-  realtimeChannel.subscribe();
-});
+//   realtimeChannel.subscribe();
+// });
 
-onUnmounted(() => {
-  client.removeChannel(realtimeChannel);
-});
+// onUnmounted(() => {
+//   client.removeChannel(realtimeChannel);
+// });
 
 const { switchTab, route } = useCustomRoute();
 const { get: getToxi, addDrug, removeDrug } = useToxi();
