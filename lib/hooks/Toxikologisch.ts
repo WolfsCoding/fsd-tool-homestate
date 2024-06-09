@@ -69,10 +69,10 @@ async function addDrug(
 
   if (!toxi) return;
 
-  const analyse = drugs.value?.find((x) => x.name === drug.name)?.analyse;
+  let analyse = drugs.value?.find((x) => x.name === drug.name)?.analyse;
 
   drug.variables.forEach((x) => {
-    analyse?.replace(x.key, x.value);
+    analyse = analyse?.replace(x.key, x.value);
   });
 
   toxi.drugs.push({
