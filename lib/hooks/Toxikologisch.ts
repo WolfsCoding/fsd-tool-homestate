@@ -69,11 +69,11 @@ async function addDrug(
 
   if (!toxi) return;
 
-  let analyse = drugs.value?.find((x) => x.name === drug.name)?.analyse;
+  const analyse = ref(drugs.value?.find((x) => x.name === drug.name)?.analyse || '');
 
-  drug.variables.forEach((x) => {
-    analyse = analyse?.replace(x.key, x.value);
-  });
+  for (const variable of drug.variables) {
+    analyse.value = analyse.value.replaceAll(variable.key, variable.value);
+  }
 
   toxi.drugs.push({
     id: v4(),
@@ -81,7 +81,7 @@ async function addDrug(
     amount: drug.amount,
     tested: drug.tested,
     unit: drug.unit,
-    analyse: analyse || '',
+    analyse: analyse.value,
   });
 
   await update(toxiId, toxi);
