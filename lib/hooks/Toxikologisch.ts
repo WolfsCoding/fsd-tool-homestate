@@ -5,33 +5,6 @@ import { drugsData, type DrugData } from '@/data/Drugs';
 const config = useRuntimeConfig();
 
 const drugs = drugsData;
-// const { data: drugs, refresh: refreshAlerts } = await useAsyncData<DrugData[]>(
-//   'fsd_drugs',
-//   async () => {
-//     const client = useSupabaseClient();
-//     const { data } = await client
-//       .from('fsd_drugs')
-//       .select(
-//         `
-//       *,
-//       fsd_drugs_variables (
-//         name, placeholder
-//       )
-//     `
-//       )
-//       .order('created_at', { ascending: false });
-
-//     data?.map((x: any) => {
-//       x.variables = x.fsd_drugs_variables || [];
-
-//       delete x.fsd_drugs_variables;
-
-//       return x;
-//     });
-
-//     return (data as DrugData[]) || [];
-//   }
-// );
 
 const toxiDB = new LocalStorage<Toxi>('toxi', (data: any) => new Toxi(data));
 const analysen: Ref<Toxi[]> = ref(await toxiDB.getAll());
