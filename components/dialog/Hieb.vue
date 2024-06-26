@@ -5,7 +5,7 @@
   </DialogHeader>
   <div class="grid gap-4 py-4">
     <div class="grid grid-cols-4 items-center gap-4">
-      <Label for="akz" class="text-right"> Akz. </Label>
+      <Label for="akz" class="text-right"> Aktenzeichen </Label>
       <Input id="akz" class="col-span-3" type="text" v-model="akz" />
     </div>
     <div class="grid grid-cols-4 items-center gap-4">

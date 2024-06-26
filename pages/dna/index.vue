@@ -60,7 +60,7 @@ function handleDeleteAnalyse(analysenId: string) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Akz.</TableHead>
+              <TableHead>Aktenzeichen</TableHead>
               <TableHead>Erstellt am</TableHead>
               <TableHead>Gutachter</TableHead>
               <TableHead>Im Auftrag von</TableHead>

@@ -151,7 +151,7 @@ async function handleRemoveBeschriftung(beschriftung: Beschriftung) {
               <TableHead>Datum</TableHead>
               <TableHead>Uhrzeit</TableHead>
               <TableHead>Ort</TableHead>
-              <TableHead>Akz.</TableHead>
+              <TableHead>Aktenzeichen</TableHead>
               <TableHead>Type</TableHead>
               <TableHead></TableHead>
             </TableRow>

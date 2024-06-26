@@ -201,7 +201,7 @@ function handleRemoveSchmauchspuren(uuid: string) {
                               $locally.copyClipboard(
                                 'Schmauchspurentest - ' +
                                   schmauchspurentest.name +
-                                  (gutachten?.akz == '' ? '' : ' - Akz.: ' + gutachten?.akz) +
+                                  (gutachten?.akz == '' ? '' : ' - Az.: ' + gutachten?.akz) +
                                   ' - ' +
                                   (schmauchspurentest.schmauchspuren ? 'Positiv' : 'Negativ')
                               );

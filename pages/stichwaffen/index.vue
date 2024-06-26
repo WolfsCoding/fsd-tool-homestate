@@ -60,7 +60,7 @@ function handleDeleteStichwaffe(analyseId: string) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Akz.</TableHead>
+              <TableHead>Aktenzeichen</TableHead>
               <TableHead>Erstellt am</TableHead>
               <TableHead>Gutachter</TableHead>
               <TableHead></TableHead>
