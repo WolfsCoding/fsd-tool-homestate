@@ -24,7 +24,7 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Cannabis Samen:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die Samen zeigen die typische ovale Form und dunkle Musterung, die für Cannabissamen charakteristisch sind..'
+        '- **Mikroskopische Analyse:** Die Samen zeigen die typische ovale Form und dunkle Musterung, die für Cannabissamen charakteristisch sind.'
       )
       .addLine('- **Chemische Analyse:** Ein Farbreaktionstest ergab keine Reaktion.')
       .addLine(
@@ -44,10 +44,10 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Cannabis Knospen:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Knospen stimmen mit denen von Cannabis sativa überein. Charakteristische Trichome sind auf der Oberfläche der Knospen sichtbar.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich grün, was eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis, darstellt.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis.'
+        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Knospen stimmen mit denen von Cannabis sativa überein. Charakteristische Trichome sind auf der Oberfläche der Knospen sichtbar.'
       )
       .addLine(
         '- **Quantitative Analyse:** Der THC-Gehalt wurde mittels Gaschromatographie (GC) bestimmt und beträgt &k-g&% des Gesamtgewichts der Cannabisknospen.'
@@ -70,7 +70,7 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Joints:` <br>')
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich grün, was eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis, darstellt.'
       )
       .addLine(
         '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Selbst gedrehten Zigaretten stimmen mit denen von Cannabis sativa überein.'
@@ -96,7 +96,7 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Kokain:` <br>')
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Kokain.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich rote, was eine positive Reaktion auf Kokain darstellt.'
       )
       .addLine(
         '- **Mikroskopische Analyse:** Das Pulver zeigt feine kristalline Strukturen, die für Kokain charakteristisch sind.'
@@ -136,7 +136,7 @@ export const drugsData: Ref<
         '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata.'
+        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine blaue Färbung an der Einschnittstelle, dies stellt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata da.'
       )
       .addLine('')
       .addLine('`Schlussfolgerung:`')
@@ -154,7 +154,7 @@ export const drugsData: Ref<
         '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata.'
+        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine blaue Färbung an der Einschnittstelle, dies stellt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata da.'
       )
       .addLine('')
       .addLine('`Schlussfolgerung:`')
@@ -169,10 +169,10 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Heroin:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Das Pulver zeigt keine spezifischen morphologischen Merkmale.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich bräunlich, was eine positive Reaktion auf Heroin darstellt.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Diacetylmorphin, besser bekannt als Heroin.'
+        '- **Mikroskopische Analyse:** Das Pulver zeigt keine spezifischen morphologischen Merkmale.'
       )
       .addLine(
         '- **Quantitative Analyse:** Der Heroin-Gehalt wurde mittels Gaschromatographie-Massenspektrometrie (GC-MS) bestimmt und beträgt &k-g&% des Gesamtgewichts der Probe.'
@@ -202,10 +202,10 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`LSD:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die Papierstücke zeigen keine spezifischen morphologischen Merkmale, sind jedoch typisch für LSD-Blotter.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich blau, was eine positive Reaktion auf LSD darstellt.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Lysergsäurediethylamid, besser bekannt als LSD.'
+        '- **Mikroskopische Analyse:** Die Papierstücke zeigen keine spezifischen morphologischen Merkmale, sind jedoch typisch für LSD-Blotter.'
       )
       .addLine(
         '- **Quantitative Analyse:** Der LSD-Gehalt wurde mittels Gaschromatographie-Massenspektrometrie (GC-MS) bestimmt und beträgt &k-g& µg pro Blotter.'
@@ -228,10 +228,10 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`MDMA:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die Tabletten zeigen charakteristische Prägungen und Farbgebungen, die für MDMA-Tabletten typisch sind.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich lila, was eine positive Reaktion auf MDMA auch bekannt unter Ectasy darstellt.'
       )
       .addLine(
-        "- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf 3,4-Methylendioxy-N-methylamphetamin, besser bekannt als MDMA oder 'Ecstasy'."
+        '- **Mikroskopische Analyse:** Die Tabletten zeigen charakteristische Prägungen und Farbgebungen, die für MDMA-Tabletten typisch sind.'
       )
       .addLine(
         '- **Quantitative Analyse:** Der MDMA-Gehalt wurde mittels Gaschromatographie-Massenspektrometrie (GC-MS) bestimmt und beträgt &k-g&% des Gesamtgewichts der Tabletten.'
@@ -261,10 +261,10 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Methamphetamin:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Das Pulver zeigt charakteristische große Kristalle, die für Methamphetamin typisch sind.'
+        '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich pfirsichfarbend, was eine positive Reaktion auf Methamphetamin darstellt.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Farbreaktionstest zeigte eine positive Reaktion auf Methamphetamin.'
+        '- **Mikroskopische Analyse:** Das Pulver zeigt charakteristische große Kristalle, die für Methamphetamin typisch sind.'
       )
       .addLine(
         '- **Quantitative Analyse:** Der Methamphetamin-Gehalt wurde mittels Gaschromatographie-Massenspektrometrie (GC-MS) bestimmt und beträgt &k-g&% des Gesamtgewichts der Probe.'
