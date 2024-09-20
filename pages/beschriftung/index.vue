@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Beschriftung, TYPES } from '@/lib/localORM/tables/beschriftung';
+import { Beschriftung, type T_TYPES, TYPES } from '@/lib/localORM/tables/beschriftung';
 import { useBeschriftungen } from '@/lib/hooks/Beschriftung';
 import { useDate } from '@/lib/hooks/Date';
 import { toast } from 'vue-sonner';
@@ -26,7 +26,7 @@ const { calculateRoundedOffsetInMinutes, getFormattedDate } = useDate();
 const minutes = ref('');
 const ort = ref('');
 const akz = ref('');
-const type = ref(TYPES.Eigentumsdelikt);
+const type = ref<T_TYPES>(TYPES.Eigentumsdelikt);
 
 const props = defineProps(['search']);
 
@@ -81,7 +81,7 @@ async function handleCopyBeschriftung() {
 }
 
 async function handleRemoveBeschriftung(beschriftung: Beschriftung) {
-  removeBeschriftung(beschriftung.id);
+  await removeBeschriftung(beschriftung.id);
 
   toast('Beschriftung gelöscht', {
     description: 'Die Beschriftung wurde erfolgreich gelöscht.',
@@ -123,7 +123,7 @@ async function handleRemoveBeschriftung(beschriftung: Beschriftung) {
               class="col-span-11"
               type="text"
               v-model="akz"
-              placeholder="Aktenzeichen"
+              :placeholder="type == 'Einbruch Auto' ? 'Kennzeichen' : 'Aktenzeichen'"
             />
           </div>
           <div class="col-span-3">
