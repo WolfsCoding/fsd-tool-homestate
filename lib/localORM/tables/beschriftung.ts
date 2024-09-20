@@ -26,22 +26,29 @@ export class Beschriftung extends BaseEntry {
         text += " - ";
         text += this.ort;
 
-        if (this.akz != "") {
+        if (this.akz != "" && this.type == TYPES.Einbruch_Auto) {
             text += " - ";
             text += this.akz;
         }
 
         switch (this.type) {
             case TYPES.Schussgefecht:
-                text += " - ";
-                text += "SG";
+                text += " (SG)";
                 break;
             case TYPES.Messerstecherei:
-                text += " - ";
-                text += "MS";
+                text += " (MS)";
+                break;
+            case TYPES.Einbruch_Haus:
+            case TYPES.Einbruch_Auto:
+                text += " (EINBRUCH)"
                 break;
             default:
                 break;
+        }
+
+        if (this.akz != "" && this.type != TYPES.Einbruch_Auto) {
+            text += " - ";
+            text += this.akz;
         }
 
         new TextBuilder().addLine(text).copyClipboard();
@@ -57,6 +64,8 @@ export const TYPES = {
     Schussgefecht: "Schussgefecht",
     Messerstecherei: "Messerstecherei",
     Eigentumsdelikt: "Eigentumsdelikt",
+    Einbruch_Auto: "Einbruch Auto",
+    Einbruch_Haus: "Einbruch Haus",
 } as const;
 
 export type T_TYPES = (typeof TYPES)[keyof typeof TYPES];
