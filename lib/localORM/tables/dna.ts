@@ -34,7 +34,7 @@ export class DNA extends BaseEntry {
     builder.addLine('<!-- Titel: DNA Probe - ' + this.dnas.map((x) => x.name).join(', ') + ' -->');
     builder.addLine('');
     builder.addLine(
-      '`Datum:` ' + getFormattedDate(this.createdAt, 'DD.MM.YYYY - HH:mm Uhr') + '<br>'
+      '`Datum:` ' + getFormattedDate(this.createdAt, 'DD.MM.YYYY - hh:mm Uhr') + '<br>'
     );
     builder.addLine('`Forensiker:` ' + this.gutachter + '<br>');
     builder.addLine('`Im Auftrag von:` ' + this.forName + '<br>');
