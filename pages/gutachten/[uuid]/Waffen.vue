@@ -381,7 +381,7 @@ function handleRemoveWeapon(uuid: string) {
                           @click="
                             () => {
                               $locally.copyClipboard(
-                                weapon.model + ' - ' + weapon.name + ' - Az.: ' + gutachten?.akz
+                                weapon.name + ' - ' + weapon.model + ' - (' + weapon.munition + ') - Az ' + gutachten?.akz + ' - Positiv'
                               );
                             }
                           "
