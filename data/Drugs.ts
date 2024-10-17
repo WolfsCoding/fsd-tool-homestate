@@ -133,15 +133,15 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Schlauchpilze:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
+        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine blaue Färbung an der Einschnittstelle, dies stellt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata da.'
+        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
       .addLine('')
       .addLine('`Schlussfolgerung:`')
       .addLine(
-        '- Die analysierten Proben enthalten Pilze der Art Psilocybe semilanceata, welche Psilocybin und Psilocin enthalten, beides psychoaktive Substanzen, die als Betäubungsmittel gelten. Bei den Pilzen handelt es sich um einen Schlauchpilze.'
+        '- Die analysierten Proben enthalten Pilze der Art Schlauchpilze, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.'
       )
       .getAsString(),
     variables: [],
@@ -151,15 +151,15 @@ export const drugsData: Ref<
     analyse: new TextBuilder()
       .addLine('`Glatzköpfe:` <br>')
       .addLine(
-        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
+        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin.'
       )
       .addLine(
-        '- **Chemische Analyse:** Ein Oxydationstest zeigt eine blaue Färbung an der Einschnittstelle, dies stellt eine positive Reaktion auf Psilocybin, den Hauptwirkstoff von Psilocybe semilanceata da.'
+        '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
       .addLine('')
       .addLine('`Schlussfolgerung:`')
       .addLine(
-        '- Die analysierten Proben enthalten Pilze der Art Psilocybe semilanceata, welche Psilocybin und Psilocin enthalten, beides psychoaktive Substanzen, die als Betäubungsmittel gelten. Bei den Pilzen handelt es sich um einen Glatzköpfe.'
+        '- Die analysierten Proben enthalten Pilze der Art Glatzköpfe, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.'
       )
       .getAsString(),
     variables: [],
