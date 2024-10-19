@@ -290,6 +290,47 @@ export const drugsData: Ref<
     ],
   },
   {
+    name: 'Maische',
+    analyse: new TextBuilder()
+      .addLine('`Maische:` <br>')
+      .addLine('`Bestandteile:`')
+      .addLine(
+        '- Mais'
+      )
+      .addLine(
+        '- Zucker'
+      )
+      .addLine(
+        '- Wasser'
+      )
+      .addLine('`Ergebnisse:`')
+      .addLine(
+        '- **Chemische Analyse:** Es wurde eine chemische Analyse durchgeführt, um die Zusammensetzung des Alkohols zu bestimmen. Ergebnisse deuten auf eine Mischung aus Mais, Wasser, Zucker und Hefe hin.'
+      )
+      .addLine(
+        '- **Mikroskopische Analyse:** Es wurden mikroskopische Untersuchungen durchgeführt, um Verunreinigungen und ungewöhnliche Bestandteile zu identifizieren. Ergebnisse weisen Maiszellen und Hefebakterien auf.'
+      )
+      .addLine(
+        '- **Quantitative Analyse:** Eine quantitative Analyse wurde durchgeführt, um den Alkoholgehalt und mögliche Giftstoffe zu bestimmen. Ergebnisse zeigen einen Gehalt von &e-g&% Ethanol (Alkohol) und &m-g&% Methanol (Methylalkohol).'
+      )
+      .addLine('')
+      .addLine('`Schlussfolgerung:`')
+      .addLine(
+        '- Die untersuchten Proben weisen einen für Moonshine Maische üblichen Ethanol und Methanol gehalt auf. Die zusammensetzung der Maische und der Methanolgehalt weisen daraufhin das diese für die Produktion von Moonshine hergestellt wurde.'
+      )
+      .getAsString(),
+    variables: [
+      {
+        name: 'Ethanol Gehalt (In %)',
+        placeholder: '&e-g&',
+      },
+      {
+        name: 'Methanol Gehalt (In %)',
+        placeholder: '&m-g&',
+      },
+    ],
+  },
+  {
     name: 'Ibuprofen',
     analyse: new TextBuilder()
       .addLine('`Ibuprofen:` <br>')
