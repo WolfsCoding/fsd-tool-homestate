@@ -27,7 +27,7 @@ export class DNA extends BaseEntry {
     builder.addLine(
       '<!-- Titel: [FSD-FA] Az. ' +
         this.akz +
-        ' DNA Probe - ' +
+        ' - DNA Probe - ' +
         this.dnas.map((x) => x.name).join(', ') +
         ' -->'
     );

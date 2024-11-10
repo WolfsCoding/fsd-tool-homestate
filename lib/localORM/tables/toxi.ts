@@ -24,7 +24,7 @@ export class Toxi extends BaseEntry {
     builder.addLine(
       '<!-- Titel: [FSD-TXA] Az. ' +
         this.akz +
-        ' ' +
+        ' - ' +
         this.drugs.map((x) => x.name).join(', ') +
         ' -->'
     );
