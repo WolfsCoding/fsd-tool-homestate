@@ -1,8 +1,9 @@
-import { TextBuilder } from '../lib/utils';
+import { TextBuilder } from '@/lib/utils';
 
 export interface DrugData {
   name: string;
   analyse: string;
+  schlussfolgerung: string;
   variables: {
     name: string;
     placeholder: string;
@@ -13,6 +14,7 @@ export const drugsData: Ref<
   {
     name: string;
     analyse: string;
+    schlussfolgerung: string;
     variables: {
       name: string;
       placeholder: string;
@@ -22,7 +24,9 @@ export const drugsData: Ref<
   {
     name: 'Cannabis Samen',
     analyse: new TextBuilder()
-      .addLine('`Cannabis Samen:` <br>')
+      .addLine('```')
+      .addLine('Cannabis Samen:')
+      .addLine('```')
       .addLine(
         '- **Mikroskopische Analyse:** Die Samen zeigen die typische ovale Form und dunkle Musterung, die für Cannabissamen charakteristisch sind.'
       )
@@ -30,19 +34,16 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Es wurde keine signifikante Menge an Tetrahydrocannabinol (THC) oder anderen Cannabinoiden in den Samen nachgewiesen.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine('- Die analysierten Cannabissamen enthalten keine psychoaktiven Substanzen wie THC.')
-      .addLine(
-        '- Die ausgewachsene Pflanze aus den Samen kann bei geeigneten Anbaubedingungen über einen relevanten THC-Gehalt verfügen.'
-      )
       .getAsString(),
-    variables: [],
+    schlussfolgerung: '- Die analysierten Cannabissamen enthalten keine psychoaktiven Substanzen wie THC. Die ausgewachsene Pflanze aus den Samen kann bei geeigneten Anbaubedingungen über einen relevanten THC-Gehalt verfügen.',
+    variables: []
   },
   {
     name: 'Cannabis Knospen',
     analyse: new TextBuilder()
-      .addLine('`Cannabis Knospen:` <br>')
+      .addLine('```')
+      .addLine('Cannabis Knospen:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich grün, was eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis, darstellt.'
       )
@@ -52,23 +53,21 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Der THC-Gehalt wurde mittels Gaschromatographie (GC) bestimmt und beträgt &k-g&% des Gesamtgewichts der Cannabisknospen.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Es handelt sich um **weibliche Cannabisknospen**. Der THC-Gehalt variierte, was auf verschiedene Cannabis-Sorten hindeutet. In den meisten Fällen wurde ein Spitzenwert von über &k-g&% THC-Gehalt festgestellt.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Es handelt sich um **weibliche Cannabisknospen**. Der THC-Gehalt variierte, was auf verschiedene Cannabis-Sorten hindeutet. In den meisten Fällen wurde ein Spitzenwert von über &k-g&% THC-Gehalt festgestellt.',
     variables: [
       {
         name: 'THC Gehalt (In %)',
-        placeholder: '&k-g&',
-      },
-    ],
+        placeholder: '&k-g&'
+      }
+    ]
   },
   {
     name: 'Joints',
     analyse: new TextBuilder()
-      .addLine('`Joints:` <br>')
+      .addLine('```')
+      .addLine('Joints:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich grün, was eine positive Reaktion auf Tetrahydrocannabinol (THC), den Hauptwirkstoff von Cannabis, darstellt.'
       )
@@ -78,23 +77,21 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Der THC-Gehalt wurde mittels Gaschromatographie (GC) bestimmt und beträgt &k-g&% des Gesamtgewichts.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierten selbst gedrehten Zigaretten variieren im THC-Gehalt. Die Probe weist einen THC-Gehalt von durchschnittlich &k-g&% auf. THC ist ein psychoaktives Cannabinoid und als Betäubungsmittel klassifiziert. Es handelt sich bei den analysierten selbst gedrehten Zigaretten um Joints.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die analysierten selbst gedrehten Zigaretten variieren im THC-Gehalt. Die Probe weist einen THC-Gehalt von durchschnittlich &k-g&% auf. THC ist ein psychoaktives Cannabinoid und als Betäubungsmittel klassifiziert. Es handelt sich bei den analysierten selbst gedrehten Zigaretten um Joints.',
     variables: [
       {
         name: 'THC Gehalt (In %)',
-        placeholder: '&k-g&',
-      },
-    ],
+        placeholder: '&k-g&'
+      }
+    ]
   },
   {
     name: 'Kokain',
     analyse: new TextBuilder()
-      .addLine('`Kokain:` <br>')
+      .addLine('```')
+      .addLine('Kokain:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich rote, was eine positive Reaktion auf Kokain darstellt.'
       )
@@ -107,67 +104,61 @@ export const drugsData: Ref<
       .addLine(
         '- **Analyse von Streckmitteln:** Die restlichen &s-g&% der Probe bestehen aus verschiedenen Streckmitteln, darunter &s&.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierte Probe enthält &k-g&% Kokain und &s-g&% verschiedene Streckmittel. Kokain ist ein starkes Stimulans, das als Betäubungsmittel eingestuft wird. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die analysierte Probe enthält &k-g&% Kokain und &s-g&% verschiedene Streckmittel. Kokain ist ein starkes Stimulans, das als Betäubungsmittel eingestuft wird. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen.',
     variables: [
       {
         name: 'Kokain Gehalt (In %)',
-        placeholder: '&k-g&',
+        placeholder: '&k-g&'
       },
       {
         name: 'Streckmittel Gehalt (In %)',
-        placeholder: '&s-g&',
+        placeholder: '&s-g&'
       },
       {
         name: 'Streckmittel',
-        placeholder: '&s&',
-      },
-    ],
+        placeholder: '&s&'
+      }
+    ]
   },
   {
     name: 'Schlauchpilze',
     analyse: new TextBuilder()
-      .addLine('`Schlauchpilze:` <br>')
+      .addLine('```')
+      .addLine('Schlauchpilze:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin.'
       )
       .addLine(
         '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierten Proben enthalten Pilze der Art Schlauchpilze, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.'
-      )
       .getAsString(),
-    variables: [],
+    schlussfolgerung: '- Die analysierten Proben enthalten Pilze der Art Schlauchpilze, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.',
+    variables: []
   },
   {
     name: 'Glatzköpfe',
     analyse: new TextBuilder()
-      .addLine('`Glatzköpfe:` <br>')
+      .addLine('```')
+      .addLine('Glatzköpfe:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Oxydationstest zeigt eine positive Reaktion auf Psilocybin.'
       )
       .addLine(
         '- **Mikroskopische Analyse:** Die morphologischen Merkmale der Pilze stimmen mit denen von Psilocybe semilanceata überein.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierten Proben enthalten Pilze der Art Glatzköpfe, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.'
-      )
       .getAsString(),
-    variables: [],
+    schlussfolgerung: '- Die analysierten Proben enthalten Pilze der Art Schlauchpilze, welche Psilocybin enthalten, dies ist eine psychoaktive Substanzen, die als Betäubungsmittel gilt.',
+    variables: []
   },
   {
     name: 'Heroin',
     analyse: new TextBuilder()
-      .addLine('`Heroin:` <br>')
+      .addLine('```')
+      .addLine('Heroin:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich bräunlich, was eine positive Reaktion auf Heroin darstellt.'
       )
@@ -180,27 +171,25 @@ export const drugsData: Ref<
       .addLine(
         '- **Analyse von Streckmitteln:** Die restlichen &s-g&% der Probe bestehen aus verschiedenen Streckmitteln, darunter Paracetamol, Koffein und Milchzucker (Laktose).'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierte Probe enthält &k-g&% Heroin und &s-g&% verschiedene Streckmittel. Heroin ist ein starkes Opioid, das als Betäubungsmittel gilt. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die analysierte Probe enthält &k-g&% Heroin und &s-g&% verschiedene Streckmittel. Heroin ist ein starkes Opioid, das als Betäubungsmittel gilt. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen.',
     variables: [
       {
         name: 'Heroin Gehalt (In %)',
-        placeholder: '&k-g&',
+        placeholder: '&k-g&'
       },
       {
         name: 'Streckmittel Gehalt (In %)',
-        placeholder: '&s-g&',
-      },
-    ],
+        placeholder: '&s-g&'
+      }
+    ]
   },
   {
     name: 'LSD',
     analyse: new TextBuilder()
-      .addLine('`LSD:` <br>')
+      .addLine('```')
+      .addLine('LSD:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich blau, was eine positive Reaktion auf LSD darstellt.'
       )
@@ -210,23 +199,21 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Der LSD-Gehalt wurde mittels Gaschromatographie-Massenspektrometrie (GC-MS) bestimmt und beträgt &k-g& µg pro Blotter.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierten Papierstücke enthalten jeweils &k-g& µg LSD. LSD ist ein starkes Halluzinogen, das als Betäubungsmittel klassifiziert wird und für seine intensiven psychischen Wirkungen bekannt ist.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die analysierten Papierstücke enthalten jeweils &k-g& µg LSD. LSD ist ein starkes Halluzinogen, das als Betäubungsmittel klassifiziert wird und für seine intensiven psychischen Wirkungen bekannt ist.',
     variables: [
       {
         name: 'LSD Gehalt (In µg)',
-        placeholder: '&k-g&',
-      },
-    ],
+        placeholder: '&k-g&'
+      }
+    ]
   },
   {
     name: 'MDMA',
     analyse: new TextBuilder()
-      .addLine('`MDMA:` <br>')
+      .addLine('```')
+      .addLine('MDMA:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich lila, was eine positive Reaktion auf MDMA auch bekannt unter Ectasy darstellt.'
       )
@@ -238,28 +225,25 @@ export const drugsData: Ref<
       )
       .addLine(
         '- **Analyse von Streckmitteln:** Die restlichen &s-g&% der Tabletten bestehen aus verschiedenen Streckmitteln, darunter Koffein und Mannitol.'
-      )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        "- Die analysierten Tabletten enthalten &k-g&% MDMA und &s-g&% verschiedene Streckmittel. MDMA, häufig als 'Ecstasy' bezeichnet, ist ein psychoaktives Stimulans und Empathogen, das als Betäubungsmittel gilt. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen."
-      )
-      .getAsString(),
+      ).getAsString(),
+    schlussfolgerung: '- Die analysierten Tabletten enthalten &k-g&% MDMA und &s-g&% verschiedene Streckmittel. MDMA, häufig als \'Ecstasy\' bezeichnet, ist ein psychoaktives Stimulans und Empathogen, das als Betäubungsmittel gilt. Streckmittel werden häufig hinzugefügt, um das Volumen der Droge zu erhöhen und den Gewinn zu maximieren, können jedoch gesundheitliche Risiken bergen.',
     variables: [
       {
         name: 'MDMA Gehalt (In %)',
-        placeholder: '&k-g&',
+        placeholder: '&k-g&'
       },
       {
         name: 'Streckmittel Gehalt (In %)',
-        placeholder: '&s-g&',
-      },
-    ],
+        placeholder: '&s-g&'
+      }
+    ]
   },
   {
     name: 'Methamphetamin',
     analyse: new TextBuilder()
-      .addLine('`Methamphetamin:` <br>')
+      .addLine('```')
+      .addLine('Methamphetamin:')
+      .addLine('```')
       .addLine(
         '- **Chemische Analyse:** Ein Farbreaktionstest färbte sich pfirsichfarbend, was eine positive Reaktion auf Methamphetamin darstellt.'
       )
@@ -272,27 +256,25 @@ export const drugsData: Ref<
       .addLine(
         '- **Analyse von Streckmitteln:** Die restlichen &s-g&% der Probe bestehen aus verschiedenen Streckmitteln, darunter Koffein.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die analysierte Probe enthält &k-g&% Methamphetamin und &s-g&% verschiedenen Streckmitteln, darunter Koffein.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die analysierte Probe enthält &k-g&% Methamphetamin und &s-g&% verschiedenen Streckmitteln, darunter Koffein.',
     variables: [
       {
         name: 'Methamphetamin Gehalt (In %)',
-        placeholder: '&k-g&',
+        placeholder: '&k-g&'
       },
       {
         name: 'Streckmittel Gehalt (In %)',
-        placeholder: '&s-g&',
-      },
-    ],
+        placeholder: '&s-g&'
+      }
+    ]
   },
   {
     name: 'Maische',
     analyse: new TextBuilder()
-      .addLine('`Maische:` <br>')
+      .addLine('```')
+      .addLine('Maische:')
+      .addLine('```')
       .addLine('`Bestandteile:`')
       .addLine(
         '- Mais'
@@ -313,22 +295,18 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Eine quantitative Analyse wurde durchgeführt, um den Alkoholgehalt und mögliche Giftstoffe zu bestimmen. Ergebnisse zeigen einen Gehalt von &e-g&% Ethanol (Alkohol) und &m-g&% Methanol (Methylalkohol).'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die untersuchten Proben weisen einen für Moonshine Maische üblichen Ethanol und Methanol gehalt auf. Die zusammensetzung der Maische und der Methanolgehalt weisen daraufhin das diese für die Produktion von Moonshine hergestellt wurde.'
-      )
       .getAsString(),
+    schlussfolgerung: '- Die untersuchten Proben weisen einen für Moonshine Maische üblichen Ethanol und Methanol gehalt auf. Die zusammensetzung der Maische und der Methanolgehalt weisen daraufhin das diese für die Produktion von Moonshine hergestellt wurde.',
     variables: [
       {
         name: 'Ethanol Gehalt (In %)',
-        placeholder: '&e-g&',
+        placeholder: '&e-g&'
       },
       {
         name: 'Methanol Gehalt (In %)',
-        placeholder: '&m-g&',
-      },
-    ],
+        placeholder: '&m-g&'
+      }
+    ]
   },
   {
     name: 'Ibuprofen',
@@ -343,13 +321,9 @@ export const drugsData: Ref<
       .addLine(
         '- **Quantitative Analyse:** Die untersuchte Probe besteht aus reinem Ibuprofen als Arzneimittel, das zur Schmerzlinderung eingesetzt werden kann.'
       )
-      .addLine('')
-      .addLine('`Schlussfolgerung:`')
-      .addLine(
-        '- Die untersuchte Probe ist frei verkäufliches Ibuprofen als Schmerzmittel, das zur Linderung von Kopfschmerzen, Zahnschmerzen, Regelschmerzen und Muskelschmerzen eingesetzt wird. Es handelt sich hierbei um ein legales Produkt.'
-      )
       .getAsString(),
-    variables: [],
+    schlussfolgerung: '- Die untersuchte Probe ist frei verkäufliches Ibuprofen als Schmerzmittel, das zur Linderung von Kopfschmerzen, Zahnschmerzen, Regelschmerzen und Muskelschmerzen eingesetzt wird. Es handelt sich hierbei um ein legales Produkt.',
+    variables: []
   },
   {
     name: 'Sudafed',
@@ -409,13 +383,8 @@ export const drugsData: Ref<
       .addLine(
         '- Überdosierungen können toxische Wirkungen hervorrufen und sind forensisch relevant.'
       )
-      .addLine('')
-      .addLine('**Fazit:**')
-      .addLine(
-        '- Sudafed bietet bedeutenden therapeutischen Nutzen, birgt jedoch auch erhebliches Missbrauchspotenzial. Forensische Analysen und strenge rechtliche Regulierungen sind entscheidend, um den Missbrauch, insbesondere die illegale Methamphetamin-Produktion, zu verhindern und strafrechtlich zu verfolgen.'
-      )
-      .addLine('')
       .getAsString(),
-    variables: [],
-  },
+    schlussfolgerung: '- Sudafed bietet bedeutenden therapeutischen Nutzen, birgt jedoch auch erhebliches Missbrauchspotenzial. Forensische Analysen und strenge rechtliche Regulierungen sind entscheidend, um den Missbrauch, insbesondere die illegale Methamphetamin-Produktion, zu verhindern und strafrechtlich zu verfolgen.',
+    variables: []
+  }
 ]);

@@ -16,6 +16,10 @@
       <Label for="gutachter" class="text-right"> Im Auftrag von </Label>
       <Input id="gutachter" class="col-span-3" type="text" v-model="forName" />
     </div>
+    <div class="grid grid-cols-4 items-center gap-4">
+      <Label for="fromName" class="text-right"> Abgenommen von </Label>
+      <Input id="fromName" class="col-span-3" type="text" v-model="fromName" />
+    </div>
   </div>
   <DialogFooter>
     <DialogClose as-child>
@@ -36,9 +40,10 @@ const { add: addToxi } = useToxi();
 const akz = ref('');
 const gutachter = ref(settings.value.gutachter);
 const forName = ref('');
+const fromName = ref('');
 
 async function create() {
-  if (!akz.value || !gutachter.value || !forName.value) {
+  if (!akz.value || !gutachter.value || !forName.value || !fromName.value) {
     toast('Fehler beim Erstellen', {
       description: 'Bitte fülle alle Felder aus.',
     });
@@ -49,6 +54,7 @@ async function create() {
     akz: akz.value,
     gutachter: gutachter.value,
     forName: forName.value,
+    fromName: fromName.value
   });
 
   addToxi(newAnalyse);
@@ -56,6 +62,7 @@ async function create() {
   akz.value = '';
   gutachter.value = '';
   forName.value = '';
+  fromName.value = '';
 
   toast('Analyse erstellt', {
     description: 'Die Analyse wurde erfolgreich erstellt.',

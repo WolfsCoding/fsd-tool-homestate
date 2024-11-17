@@ -6,6 +6,7 @@ export class Toxi extends BaseEntry {
   akz: string = '';
   gutachter: string = '';
   forName: string = '';
+  fromName: string = '';
   drugs: IDrug[] = [];
 
   constructor(data: Partial<Toxi>) {
@@ -13,6 +14,7 @@ export class Toxi extends BaseEntry {
     this.akz = data.akz || '';
     this.gutachter = data.gutachter || '';
     this.forName = data.forName || '';
+    this.fromName = data.fromName || '';
     this.drugs = data.drugs || [];
   }
 
@@ -32,9 +34,10 @@ export class Toxi extends BaseEntry {
       '<!-- Titel: Toxikologische Analyse - ' + this.drugs.map((x) => x.name).join(', ') + ' -->'
     );
     builder.addLine('');
-    builder.addLine('`Datum:` ' + formatDate(new Date()));
-    builder.addLine('');
-    builder.addLine('`Im Auftrag von:` ' + this.forName);
+    builder.addLine('`Datum:`' + formatDate(this.updatedAt || new Date()) + '<br>');
+    builder.addLine('`Forensiker:`' + this.gutachter + '<br>');
+    builder.addLine('`Im Auftrag von:`' + this.forName + '<br>');
+    builder.addLine('`Abgenommen von:`' + this.fromName + '<br>');
     builder.addLine('');
     builder.addLine('---');
     builder.addLine('');
@@ -50,8 +53,10 @@ export class Toxi extends BaseEntry {
     }
 
     builder.addLine('```');
+    builder.addLine('---');
+    builder.addLine('`davon getestet (10%):`');
     builder.addLine('```');
-    builder.addLine('davon getestest (10%):');
+    builder.addLine('    Produkt                Menge                Einheit');
     builder.addLine('```');
     builder.addLine('```');
 
@@ -64,19 +69,29 @@ export class Toxi extends BaseEntry {
     }
 
     builder.addLine('```');
-    builder.addLine('```');
-    builder.addLine('weitere Informationen:');
-    builder.addLine('```');
     builder.addLine('');
     builder.addLine('---');
 
     for (const drug of this.drugs) {
       builder.addLine(drug.analyse);
-      builder.addLine('---');
       builder.addLine('');
     }
 
-    builder.addLine('`Forensiker:` ' + this.gutachter);
+    builder.addLine('---');
+    builder.addLine('```');
+    builder.addLine('Schlussfolgerung:');
+    builder.addLine('```');
+    for (const drug of this.drugs) {
+      builder.addLine(
+        '`' + drug.name + '` '
+      );
+      builder.addLine(drug.schlussfolgerung);
+    }
+
+    builder.addLine('---');
+    builder.addLine('```');
+    builder.addLine('Bemerkung:');
+    builder.addLine('```');
 
     builder.copyClipboard();
 
@@ -93,6 +108,7 @@ export interface IDrug {
   tested: number;
   unit: string;
   analyse: string;
+  schlussfolgerung: string;
 }
 
 function formatDate(date: Date): string {

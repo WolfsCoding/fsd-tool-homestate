@@ -1,8 +1,6 @@
 import { v4 } from 'uuid';
-import { LocalStorage, Toxi, type IDrug } from '../localORM';
-import { drugsData, type DrugData } from '@/data/Drugs';
-
-const config = useRuntimeConfig();
+import { LocalStorage, Toxi } from '../localORM';
+import { drugsData } from '@/data/Drugs';
 
 const drugs = drugsData;
 
@@ -43,9 +41,11 @@ async function addDrug(
   if (!toxi) return;
 
   const analyse = ref(drugs.value?.find((x) => x.name === drug.name)?.analyse || '');
+  const schlussfolgerung = ref(drugs.value?.find((x) => x.name === drug.name)?.schlussfolgerung || '');
 
   for (const variable of drug.variables) {
     analyse.value = analyse.value.replaceAll(variable.key, variable.value);
+    schlussfolgerung.value = schlussfolgerung.value.replaceAll(variable.key, variable.value);
   }
 
   toxi.drugs.push({
@@ -55,6 +55,7 @@ async function addDrug(
     tested: drug.tested,
     unit: drug.unit,
     analyse: analyse.value,
+    schlussfolgerung: schlussfolgerung.value
   });
 
   await update(toxiId, toxi);

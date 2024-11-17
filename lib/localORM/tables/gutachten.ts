@@ -28,6 +28,7 @@ export interface IGutachten {
 export class Gutachten extends BaseEntry {
   akz: string = '';
   gutachter: string = '';
+  forName: string = '';
   weapons: IWeapon[] = [];
   schmauchspuren: ISchnmauchspuren[] = [];
 
@@ -35,6 +36,7 @@ export class Gutachten extends BaseEntry {
     super(data);
     this.akz = data.akz || '';
     this.gutachter = data.gutachter || '';
+    this.forName = data.forName || '';
     this.weapons = data.weapons || [];
     this.schmauchspuren = data.schmauchspuren || [];
   }
@@ -59,7 +61,11 @@ export class Gutachten extends BaseEntry {
           : 'Schusswaffen') +
         ' -->'
     );
+    textBuilder.addLine('`Datum:`' + this.createdAt.getDate() + '.' + this.createdAt.getMonth() + '.' + this.createdAt.getFullYear() + '<br>');
+    textBuilder.addLine('`Forensiker:`' + this.gutachter  + '<br>');
+    textBuilder.addLine('`Im Auftrag von:`' + this.forName  + '<br>');
     textBuilder.addLine('');
+    textBuilder.addLine('---');
     textBuilder.addLine(
       '| Name | Schusswaffe | Modell | Seriennummer | Schmauchspuren |  Zustand | Munition'
     );
@@ -76,9 +82,9 @@ export class Gutachten extends BaseEntry {
     if (this.schmauchspuren.length > 0) {
       textBuilder.addLine('');
       textBuilder.addLine('---');
-      textBuilder.addLine('');
-      textBuilder.addLine('`Schmauchspuren Tests:`');
-      textBuilder.addLine('');
+      textBuilder.addLine('```');
+      textBuilder.addLine('Schmauchspuren Tests:');
+      textBuilder.addLine('```');
 
       for (const schmauchspuren of this.schmauchspuren) {
         textBuilder.addLine(
@@ -95,7 +101,9 @@ export class Gutachten extends BaseEntry {
     textBuilder.addLine('');
     textBuilder.addLine('---');
     textBuilder.addLine('');
-    textBuilder.addLine(`Gutachter: ${this.gutachter}`);
+    textBuilder.addLine('```');
+    textBuilder.addLine('Bemerkung');
+    textBuilder.addLine('```');
 
     textBuilder.copyClipboard();
 

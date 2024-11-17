@@ -29,6 +29,7 @@ function saveDetails() {
     description: 'Die Details wurden erfolgreich gespeichert.',
   });
 }
+
 </script>
 
 <template>
@@ -77,6 +78,11 @@ function saveDetails() {
               <div class="grid grid-cols-12 items-center gap-4">
                 <Label for="gutachter" class=""> Im Auftrag von </Label>
                 <Input id="gutachter" class="col-span-11" type="text" v-model="analyse.forName" />
+              </div>
+              
+              <div class="grid grid-cols-12 items-center gap-4">
+                <Label for="fromName" class=""> Abgenommen von </Label>
+                <Input id="fromName" class="col-span-11" type="text" v-model="analyse.fromName" />
               </div>
 
               <div class="flex gap-2 justify-start">

@@ -12,6 +12,7 @@ export interface IStichwaffe {
 export class Stichwaffen extends BaseEntry {
   akz: string = '';
   gutachter: string = '';
+  forName: string = '';
   weapons: IStichwaffe[] = [];
 
   constructor(data: Partial<Stichwaffen>) {
@@ -19,6 +20,7 @@ export class Stichwaffen extends BaseEntry {
 
     this.akz = data.akz || '';
     this.gutachter = data.gutachter || '';
+    this.forName = data.forName || '';
     this.weapons = data.weapons || [];
   }
 
@@ -46,7 +48,11 @@ export class Stichwaffen extends BaseEntry {
           : this.weapons.map((x) => x.name).join(', ')) +
         ' -->'
     );
+    textBuilder.addLine('`Datum:`' + this.createdAt.getDate() + '.' + this.createdAt.getMonth() + '.' + this.createdAt.getFullYear() + "<br>");
+    textBuilder.addLine('`Forensiker:`' + this.gutachter + "<br>");
+    textBuilder.addLine('`Im Auftrag von:`' + this.forName + "<br>");
     textBuilder.addLine('');
+    textBuilder.addLine('---');
     textBuilder.addLine(
       '| Name des Täters | Tatwaffe | ' +
         Array.from({ length: maxDnaCount }, (_, i) => 'DNA ' + (i + 1)).join(' | ') +
@@ -64,8 +70,9 @@ export class Stichwaffen extends BaseEntry {
 
     textBuilder.addLine('');
     textBuilder.addLine('---');
-    textBuilder.addLine('');
-    textBuilder.addLine('`Gutachter:`' + this.gutachter);
+    textBuilder.addLine('```');
+    textBuilder.addLine('Bemerkung:');
+    textBuilder.addLine('```');
 
     textBuilder.copyClipboard();
 

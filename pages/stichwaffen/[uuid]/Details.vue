@@ -10,24 +10,16 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { type IStichwaffe } from '@/lib/localORM';
 import { useStichwaffen } from '@/lib/hooks/Stichwaffen';
 import { toast } from 'vue-sonner';
 import { useCustomRoute } from '@/lib/hooks/CustomRoute';
 
-const router = useRouter();
 const { updateStichwaffe, getStichwaffe } = useStichwaffen();
-const { getTab, switchTab, route } = useCustomRoute();
+const { switchTab, route } = useCustomRoute();
 
 const stichwaffe = ref(await getStichwaffe(route.params.uuid));
 
 const activeTab = ref('Details');
-
-const createDialog: Ref<Partial<IStichwaffe>> = ref({
-  from: '',
-  name: '',
-  dnas: [],
-});
 
 function saveDetails() {
   if (!stichwaffe.value) return;
@@ -90,6 +82,15 @@ function saveDetails() {
                   class="col-span-11"
                   type="text"
                   v-model="stichwaffe.gutachter"
+                />
+              </div>
+              <div class="grid grid-cols-12 items-center gap-4">
+                <Label for="gutachter" class=""> Im Auftrag von </Label>
+                <Input
+                  id="gutachter"
+                  class="col-span-11"
+                  type="text"
+                  v-model="stichwaffe.forName"
                 />
               </div>
 

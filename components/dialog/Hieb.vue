@@ -12,6 +12,10 @@
       <Label for="gutachter" class="text-right"> Gutachter </Label>
       <Input id="gutachter" class="col-span-3" type="text" v-model="gutachter" />
     </div>
+    <div class="grid grid-cols-4 items-center gap-4">
+      <Label for="gutachter" class="text-right"> Im Auftrag von </Label>
+      <Input id="gutachter" class="col-span-3" type="text" v-model="forName" />
+    </div>
   </div>
   <DialogFooter>
     <DialogClose as-child>
@@ -31,6 +35,7 @@ const { addStichwaffe } = useStichwaffen();
 
 const akz = ref('');
 const gutachter = ref(settings.value.gutachter);
+const forName = ref('');
 
 async function create() {
   if (akz.value === '' || gutachter.value === '') {
@@ -43,6 +48,7 @@ async function create() {
   const newStichwaffe = new Stichwaffen({
     akz: akz.value,
     gutachter: gutachter.value,
+    forName: forName.value,
   });
 
   addStichwaffe(newStichwaffe);

@@ -89,6 +89,15 @@ function saveDetails() {
                   v-model="gutachten.gutachter"
                 />
               </div>
+              <div class="grid grid-cols-12 items-center gap-4">
+                <Label for="gutachter" class=""> Im Auftrag von </Label>
+                <Input
+                  id="gutachter"
+                  class="col-span-11"
+                  type="text"
+                  v-model="gutachten.forName"
+                />
+              </div>
 
               <div class="flex gap-2 justify-start">
                 <Button @click="saveDetails"> Änderungen speichern </Button>
