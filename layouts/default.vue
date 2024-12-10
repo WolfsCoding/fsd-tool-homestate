@@ -237,4 +237,5 @@ const { getSparbuchAmount } = useSparbuch();
     <Toaster />
     <RootDialog />
   </div>
+  <NewSite />
 </template>
